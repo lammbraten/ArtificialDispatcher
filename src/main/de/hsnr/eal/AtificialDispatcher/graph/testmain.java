@@ -1,5 +1,7 @@
 package de.hsnr.eal.AtificialDispatcher.graph;
 
+import org.jgrapht.EdgeFactory;
+
 import de.westnordost.osmapi.OsmConnection;
 
 public class testmain {
@@ -8,6 +10,8 @@ public class testmain {
 		System.out.print("Hallo Welt");
 		
 		OsmConnection osm;
+		
+		EdgeFactory ef; 
 
 	}
 
