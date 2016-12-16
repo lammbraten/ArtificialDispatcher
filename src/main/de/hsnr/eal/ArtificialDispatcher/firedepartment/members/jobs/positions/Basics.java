@@ -1,10 +1,10 @@
-package de.hsnr.eal.AtificialDispatcher.firedepartment.members.jobs.positions;
+package de.hsnr.eal.ArtificialDispatcher.firedepartment.members.jobs.positions;
 
 import java.util.List;
 
-import de.hsnr.eal.AtificialDispatcher.firedepartment.members.equipment.Equipment;
+import de.hsnr.eal.ArtificialDispatcher.firedepartment.members.equipment.Equipment;
 
-public class General implements Position {
+public class Basics implements Position {
 
 	@Override
 	public String getName() {

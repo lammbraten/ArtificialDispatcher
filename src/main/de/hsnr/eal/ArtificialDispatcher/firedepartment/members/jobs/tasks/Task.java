@@ -1,8 +1,8 @@
-package de.hsnr.eal.AtificialDispatcher.firedepartment.members.jobs.tasks;
+package de.hsnr.eal.ArtificialDispatcher.firedepartment.members.jobs.tasks;
 
 import java.util.List;
 
-import de.hsnr.eal.AtificialDispatcher.firedepartment.members.FireFighter;
+import de.hsnr.eal.ArtificialDispatcher.firedepartment.members.FireFighter;
 
 public interface Task {
 	int getRequiredTime();

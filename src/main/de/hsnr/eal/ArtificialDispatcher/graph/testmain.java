@@ -1,4 +1,4 @@
-package de.hsnr.eal.AtificialDispatcher.graph;
+package de.hsnr.eal.ArtificialDispatcher.graph;
 
 import org.jgrapht.EdgeFactory;
 

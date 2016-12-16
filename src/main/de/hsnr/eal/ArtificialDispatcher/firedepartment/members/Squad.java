@@ -1,4 +1,4 @@
-package de.hsnr.eal.AtificialDispatcher.firedepartment.members;
+package de.hsnr.eal.ArtificialDispatcher.firedepartment.members;
 
 import java.util.List;
 
