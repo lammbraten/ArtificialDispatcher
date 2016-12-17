@@ -1,6 +1,9 @@
-package de.hsnr.eal.ArtificialDispatcher.gui;
+package de.hsnr.eal.ArtificialDispatcher.gui.deprecated;
 
 import javax.swing.JPanel;
+
+import de.hsnr.eal.ArtificialDispatcher.events.Event;
+
 import javax.swing.JLabel;
 
 public class EventPanelListElement extends JPanel {
@@ -13,10 +16,10 @@ public class EventPanelListElement extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public EventPanelListElement(String name) {
+	public EventPanelListElement(Event e) {
 		setLayout(null);
 		
-		JLabel einsatzName = new JLabel(name);
+		JLabel einsatzName = new JLabel(e.getName());
 		einsatzName.setBounds(10, 11, 217, 14);
 		add(einsatzName);
 		
@@ -24,5 +27,10 @@ public class EventPanelListElement extends JPanel {
 		vehicles.setBounds(10, 31, 46, 14);
 		add(vehicles);
 
+	}
+
+	public String getNr() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

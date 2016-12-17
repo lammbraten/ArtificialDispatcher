@@ -1,17 +1,24 @@
 package de.hsnr.eal.ArtificialDispatcher.gui;
 
 import java.awt.EventQueue;
+import java.util.List;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JScrollBar;
+
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
+import javax.swing.ListCellRenderer;
 import javax.swing.JList;
 import javax.swing.AbstractListModel;
 import javax.swing.BoxLayout;
+import javax.swing.DefaultListModel;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.ScrollPaneConstants;
@@ -23,6 +30,10 @@ import org.jxmapviewer.input.PanMouseInputListener;
 import org.jxmapviewer.input.ZoomMouseWheelListenerCursor;
 import org.jxmapviewer.viewer.DefaultTileFactory;
 import org.jxmapviewer.viewer.GeoPosition;
+
+import de.hsnr.eal.ArtificialDispatcher.events.Event;
+import de.hsnr.eal.ArtificialDispatcher.gui.test.TestListCellRenderer.Item;
+import de.hsnr.eal.ArtificialDispatcher.gui.test.TestListCellRenderer.ItemCellRenderer;
 
 public class AppWindow {
 
@@ -135,18 +146,24 @@ public class AppWindow {
 		mainFrame.getContentPane().add(mapViewer, BorderLayout.CENTER);
 		
 
-		
-		
-
-		EventPanelListElement[] values = new EventPanelListElement[] {new EventPanelListElement("Heckenbrand "), new EventPanelListElement("Mülleimer"), new EventPanelListElement("Wohnungsbrand"), new EventPanelListElement("Lagerhalle")};
+        DefaultListModel model = new DefaultListModel();
+        model.addElement(new Event("Wohnungsbrand"));
+        model.addElement(new Event("Heckenbrand"));
+        model.addElement(new Event("Mülleimer"));
+        
+        JList list = new JList(model);
+        list.setCellRenderer(new EventPanelRenderer());
+        
+		/*EventPanelListElement[] values = new EventPanelListElement[] {new EventPanelListElement("Heckenbrand "), new EventPanelListElement("Mülleimer"), new EventPanelListElement("Wohnungsbrand"), new EventPanelListElement("Lagerhalle")};
 
 
 		JScrollPane eventListScrollPane = new JScrollPane(new EventPanelListElement("Heckenbrand "));
 		eventListScrollPane.add(new EventPanelListElement("Mülleimer"));
-		
+		*/
 		JPanel eventPanel = new JPanel();
 		eventPanel.setLayout(new BorderLayout(0, 0));
-		eventPanel.add(eventListScrollPane, BorderLayout.CENTER);
+		//eventPanel.add(eventListScrollPane, BorderLayout.CENTER);
+		eventPanel.add(list);
 		JLabel eventLabel = new JLabel("Aktuelle Eins\u00E4tze");
 		eventPanel.add(eventLabel, BorderLayout.NORTH);
 		
@@ -157,5 +174,6 @@ public class AppWindow {
 		JPanel viewSelectPanel = new JPanel();
 		mainFrame.getContentPane().add(viewSelectPanel, BorderLayout.NORTH);
 	}
+	
 
 }
