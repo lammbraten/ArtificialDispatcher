@@ -1,11 +1,11 @@
 package de.hsnr.eal.ArtificialDispatcher.firedepartment.members.equipment;
 
-public class Equipment {
+public class EquipmentItem {
 	private int typeId;
 	private String name;
 	private int setupTime;
 	private int neededPeople;
-	Equipment(int typeId, String name, int setupTime, int neededPeople){
+	EquipmentItem(int typeId, String name, int setupTime, int neededPeople){
 		this.typeId = typeId;
 		this.name = name;
 		this.setupTime = setupTime;

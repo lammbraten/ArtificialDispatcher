@@ -27,9 +27,16 @@ public class TestPLDatabase {
 	@Test
 	public void testGetVehiclesOfStation() {
 		PLDatabase pldb = new PLDatabase(FILE_PATH);
-		 ArrayList<Vehicle> vehicles = pldb.getVehiclesObjectsOfStation(1);
-		 for(Vehicle vehicle : vehicles)
-			 System.out.println(vehicle);
+		 ArrayList<Vehicle> vehicles;
+		try {
+			vehicles = pldb.getVehiclesObjectsOfStation(1);
+			 for(Vehicle vehicle : vehicles)
+				 System.out.println(vehicle);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 	}
 
 }

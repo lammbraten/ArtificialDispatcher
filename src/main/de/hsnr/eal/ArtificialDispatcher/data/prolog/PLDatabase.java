@@ -64,7 +64,8 @@ public class PLDatabase {
         return vehicles;
 	}
 	
-	public ArrayList<Vehicle> getVehiclesObjectsOfStation(int stationId){
+	
+	public ArrayList<Vehicle> getVehiclesObjectsOfStation(int stationId) throws Exception{
 		Map<String, Term>[] vehicles = getVehiclesOfStation(stationId);
 		ArrayList<Vehicle> vehicleObjects = new ArrayList<Vehicle>();
 		
@@ -76,13 +77,35 @@ public class PLDatabase {
 		return vehicleObjects;
 		
 	}
+	
+	private Map<String, Term> getEquipment(int id){
+		String tEquipment = "equipment(" + id + ", Name, SetupTime, NeededPeople)";
+        Query qEquipmemt = new Query(tEquipment);
+        
+        return qEquipmemt.getSolution();
+	}
+	
+	private Term getVehicleType(String typeTerm) throws Exception{
+		String tVehicle = "vehicleType(" + typeTerm + ", Equipment, Tank, EmergencySpeed, NormSpeed)";
+        Query qVehicle = new Query(tVehicle);
+        
+        if(!qVehicle.hasSolution())
+        	throw new Exception("no vehicleType found. Prolog Error 10");
+        return qVehicle.getSolution().get(typeTerm);
+	}
+	
+	
 
-	private void constructVehicle(int stationId, Map<String, Term> vehicleMap) {
-		int number =  Integer.parseInt(vehicleMap.get("Number").toString());
+	private void constructVehicle(int stationId, Map<String, Term> vehicleMap) throws Exception {
+		int id =  Integer.parseInt(vehicleMap.get("Number").toString());
 		String name = vehicleMap.get("Name").toString().replace("'", "");
-		String type = vehicleMap.get("Type").toString().replace("'", "");
+		String typeTerm = vehicleMap.get("Type").toString().replace("'", "");
 		int station = stationId;
+		
+		
+		Term vehicle = getVehicleType(typeTerm);
 
+		System.out.println(vehicle.toString());
 		
 		
 	}
