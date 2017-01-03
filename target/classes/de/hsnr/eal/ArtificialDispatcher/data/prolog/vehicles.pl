@@ -1,14 +1,12 @@
-b(23).
-
-%atna = Atemschutznotfallausr√ºstung
-vehicleEquipment('HLF-BF', ['tragbareLeiter', 'brandbek√§mpfung', 'rettungssatz', 'hebekissen', ['tank', 2000]] ).
-vehicleEquipment('HLF', ['tragbareLeiter', 'brandbek√§mpfung', 'rettungssatz', ['tank', 2000]] ).
-vehicleEquipment('HLF-A', ['tragbareLeiter', 'brandbek√§mpfung', 'rettungssatz', 'atna', ['tank', 2000]] ). 
-vehicleEquipment('LF8', ['tragbareLeiter', 'brandbek√§mpfung', ['tank', 600]] ). 
-vehicleEquipment('LF20', ['tragbareLeiter', 'brandbek√§mpfung', ['tank', 1600]] ). 
+%atna = Atemschutznotfallausr¸stung
+vehicleEquipment('HLF-BF', ['tragbareLeiter', 'brandbek‰mpfung', 'rettungssatz', 'hebekissen', ['tank', 2000]] ).
+vehicleEquipment('HLF', ['tragbareLeiter', 'brandbek‰mpfung', 'rettungssatz', ['tank', 2000]] ).
+vehicleEquipment('HLF-A', ['tragbareLeiter', 'brandbek‰mpfung', 'rettungssatz', 'atna', ['tank', 2000]] ). 
+vehicleEquipment('LF8', ['tragbareLeiter', 'brandbek‰mpfung', ['tank', 600]] ). 
+vehicleEquipment('LF20', ['tragbareLeiter', 'brandbek‰mpfung', ['tank', 1600]] ). 
 vehicleEquipment('ELW', ['funkplatz', 'laufkarten']). 
 vehicleEquipment('RW2-K', ['tragbareLeiter', 'hebekissen', 'kran', 'rettungssatz']). 
-vehicleEquipment('GTLF', ['brandbek√§mpfung', ['tank', 8000]] ). 
+vehicleEquipment('GTLF', ['brandbek‰mpfung', ['tank', 8000]] ). 
 vehicleEquipment('DLK-23', ['drehleiter'] ). 
 
 vehicle(000, 'ELW', 'ELW-1-1', 01).
@@ -45,7 +43,7 @@ vehicle(019, 'LF20', 'LF-8-2', 08).
 
 station(01, 'Hauptwache', 'BF', 4149803115).
 station(02, 'Feuerwache 2', 'BF', 1607634076).
-station(03, 'LZ H√ºls', 'FF', 2939317437).
+station(03, 'LZ H¸ls', 'FF', 2939317437).
 station(04, 'LG Traar', 'FF', 259433027).
 station(05, 'LG Gellep-Stratum', 'FF', 2494720511).
 station(06, 'LG Oppum', 'FF', 1476442386).
