@@ -1,14 +1,27 @@
+%equipment (Id, Name, Rüstzeit, Personal)
 %atna = Atemschutznotfallausrüstung
-vehicleEquipment('HLF-BF', ['tragbareLeiter', 'brandbekämpfung', 'rettungssatz', 'hebekissen', ['tank', 2000]] ).
-vehicleEquipment('HLF', ['tragbareLeiter', 'brandbekämpfung', 'rettungssatz', ['tank', 2000]] ).
-vehicleEquipment('HLF-A', ['tragbareLeiter', 'brandbekämpfung', 'rettungssatz', 'atna', ['tank', 2000]] ). 
-vehicleEquipment('LF8', ['tragbareLeiter', 'brandbekämpfung', ['tank', 600]] ). 
-vehicleEquipment('LF20', ['tragbareLeiter', 'brandbekämpfung', ['tank', 1600]] ). 
-vehicleEquipment('ELW', ['funkplatz', 'laufkarten']). 
-vehicleEquipment('RW2-K', ['tragbareLeiter', 'hebekissen', 'kran', 'rettungssatz']). 
-vehicleEquipment('GTLF', ['brandbekämpfung', ['tank', 8000]] ). 
-vehicleEquipment('DLK-23', ['drehleiter'] ). 
+equipment(00, 'Drehleiterpark', 02, 2).
+equipment(01, 'tragbare Leiter', 03, 3).
+equipment(02, 'Ausrüstung zur Brandbekämpfung', 03, 4).
+equipment(03, 'Rettungssatz', 02, 3).
+equipment(04, 'Hebekissen', 02, 3).
+equipment(05, 'Funkplatz', 01, 1).
+equipment(06, 'Laufkarten', 01, 1).
+equipment(07, 'Kran', 02, 2).
+equipment(08, 'AtemschutznotfallausrÃ¼stung', 01, 2).
 
+%vehicleType(Typ, [Ausrüstung], Wassertank, speed(Einsatz), speed (normal)
+vehicleType('HLF-BF', [01, 01, 02, 03, 04], 2000, 60, 50).
+vehicleType('HLF', [01, 01, 02, 03], 2000, 60, 50).
+vehicleType('HLF-A', [01, 02, 03, 08], 2000, 60, 50). 
+vehicleType('LF8', [01, 02], 600, 60, 50). 
+vehicleType('LF20', [01, 02], 1600, 60, 50). 
+vehicleType('ELW', [05, 06], 0, 70, 50). 
+vehicleType('RW2-K', [01, 04, 07, 03], 0, 50, 40). 
+vehicleType('GTLF', [02], 0, 50, 40). 
+vehicleType('DLK-23', [00], 0, 50, 40). 
+
+%vehicle(Id, Typ, Name, Station, Besatzung)
 vehicle(000, 'ELW', 'ELW-1-1', 01).
 vehicle(001, 'HLF-BF', 'HLF-1-1', 01).
 vehicle(002, 'DLK-23', 'DLK-1-1', 01).

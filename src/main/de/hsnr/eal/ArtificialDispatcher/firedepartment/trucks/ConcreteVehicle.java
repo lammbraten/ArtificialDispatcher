@@ -1,8 +1,10 @@
 package de.hsnr.eal.ArtificialDispatcher.firedepartment.trucks;
 
-import de.hsnr.eal.ArtificialDispatcher.firedepartment.members.Squad;
+import java.util.List;
 
-public class AbstractEngine implements Engine {
+import de.hsnr.eal.ArtificialDispatcher.firedepartment.members.equipment.Equipment;
+
+public class ConcreteVehicle implements Vehicle {
 
 	@Override
 	public int getSpeed() {
@@ -11,27 +13,27 @@ public class AbstractEngine implements Engine {
 	}
 
 	@Override
-	public int getSeats() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public Squad getCrew() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void setCrew(Squad ff) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
 	public int getHomeStation() {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+
+	@Override
+	public long getLocation() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public long setLocation() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public List<Equipment> getEquipment() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

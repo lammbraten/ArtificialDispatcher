@@ -10,6 +10,7 @@ import org.junit.Test;
 
 import de.hsnr.eal.ArtificialDispatcher.data.prolog.PLDatabase;
 import de.hsnr.eal.ArtificialDispatcher.firedepartment.stations.Station;
+import de.hsnr.eal.ArtificialDispatcher.firedepartment.trucks.Vehicle;
 
 public class TestPLDatabase {
 
@@ -21,6 +22,14 @@ public class TestPLDatabase {
 		 ArrayList<Station> stations = pldb.getStationObjects();
 		 for(Station station : stations)
 			 System.out.println(station);
+	}
+	
+	@Test
+	public void testGetVehiclesOfStation() {
+		PLDatabase pldb = new PLDatabase(FILE_PATH);
+		 ArrayList<Vehicle> vehicles = pldb.getVehiclesObjectsOfStation(1);
+		 for(Vehicle vehicle : vehicles)
+			 System.out.println(vehicle);
 	}
 
 }

@@ -8,9 +8,8 @@ public class Station {
 	
 	public Station(int id, String name, String type, String location){
 		this.id = id;
-		this.name = name.replace("'", "");
+		this.name = name;
 		this.location = location;
-		type = type.replace("'", "");
 				
 		if(type.equals(StationType.BF.name()))
 			this.type = StationType.BF;
