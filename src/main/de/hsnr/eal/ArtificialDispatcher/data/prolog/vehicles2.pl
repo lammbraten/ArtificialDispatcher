@@ -1,5 +1,15 @@
-elw = [].
-hlf_bf = ['Tragbare Leiter', 'Brandbekämpfung', 'Rettungssatz', 'Hebekissen'].
+b(23).
+
+%atna = Atemschutznotfallausrüstung
+vehicleEquipment('HLF-BF', ['tragbareLeiter', 'brandbekämpfung', 'rettungssatz', 'hebekissen', ['tank', 2000]] ).
+vehicleEquipment('HLF', ['tragbareLeiter', 'brandbekämpfung', 'rettungssatz', ['tank', 2000]] ).
+vehicleEquipment('HLF-A', ['tragbareLeiter', 'brandbekämpfung', 'rettungssatz', 'atna', ['tank', 2000]] ). 
+vehicleEquipment('LF8', ['tragbareLeiter', 'brandbekämpfung', ['tank', 600]] ). 
+vehicleEquipment('LF20', ['tragbareLeiter', 'brandbekämpfung', ['tank', 1600]] ). 
+vehicleEquipment('ELW', ['funkplatz', 'laufkarten']). 
+vehicleEquipment('RW2-K', ['tragbareLeiter', 'hebekissen', 'kran', 'rettungssatz']). 
+vehicleEquipment('GTLF', ['brandbekämpfung', ['tank', 8000]] ). 
+vehicleEquipment('DLK-23', ['drehleiter'] ). 
 
 vehicle(000, 'ELW', 'ELW-1-1', 01).
 vehicle(001, 'HLF-BF', 'HLF-1-1', 01).
@@ -24,7 +34,7 @@ vehicle(014, 'HLF-A', 'HLF-6-1', 06).
 vehicle(015, 'LF20', 'LF-6-1', 06).
 
 vehicle(016, 'HLF-A', 'HLF-7-1', 07).
-vehicle(017, 'LF', 'LF-7-1', 07).
+vehicle(017, 'LF20', 'LF-7-1', 07).
 
 vehicle(018, 'LF8', 'LF-8-1', 08).
 vehicle(019, 'LF20', 'LF-8-2', 08).

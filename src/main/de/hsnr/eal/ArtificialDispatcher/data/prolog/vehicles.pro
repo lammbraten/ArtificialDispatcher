@@ -1,3 +1,5 @@
+b(23).
+
 %atna = Atemschutznotfallausrüstung
 vehicleEquipment('HLF-BF', ['tragbareLeiter', 'brandbekämpfung', 'rettungssatz', 'hebekissen', ['tank', 2000]] ).
 vehicleEquipment('HLF', ['tragbareLeiter', 'brandbekämpfung', 'rettungssatz', ['tank', 2000]] ).
