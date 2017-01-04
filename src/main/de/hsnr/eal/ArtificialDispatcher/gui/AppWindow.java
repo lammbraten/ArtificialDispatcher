@@ -1,6 +1,7 @@
 package de.hsnr.eal.ArtificialDispatcher.gui;
 
 import java.awt.EventQueue;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JFrame;
@@ -31,13 +32,20 @@ import org.jxmapviewer.input.ZoomMouseWheelListenerCursor;
 import org.jxmapviewer.viewer.DefaultTileFactory;
 import org.jxmapviewer.viewer.GeoPosition;
 
+import de.hsnr.eal.ArtificialDispatcher.data.prolog.PLDatabase;
 import de.hsnr.eal.ArtificialDispatcher.events.Event;
+import de.hsnr.eal.ArtificialDispatcher.firedepartment.stations.Station;
+import de.hsnr.eal.ArtificialDispatcher.firedepartment.trucks.Vehicle;
 import de.hsnr.eal.ArtificialDispatcher.gui.test.TestListCellRenderer.Item;
 import de.hsnr.eal.ArtificialDispatcher.gui.test.TestListCellRenderer.ItemCellRenderer;
 
 public class AppWindow {
 
+	private static final String FILE_PATH = "C:\\Users\\lammbraten\\Dropbox\\Master\\1.Semester\\EAL\\Projekt\\Implementierung\\ArtificialDispatcher\\src\\main\\de\\hsnr\\eal\\ArtificialDispatcher\\data\\prolog\\vehicles.pl";
 	private JFrame mainFrame;
+	private PLDatabase pldb;
+	private ArrayList<Vehicle> vehicles;
+	private ArrayList<Station> stations;
 
 	/**
 	 * Launch the application.
@@ -59,7 +67,22 @@ public class AppWindow {
 	 * Create the application.
 	 */
 	public AppWindow() {
+		loadDb();
 		initialize();
+	}
+
+	private void loadDb() {
+		pldb = new PLDatabase(FILE_PATH);
+		stations = pldb.getStationObjects();
+		 vehicles = new ArrayList<Vehicle>();
+		
+		try {
+			for(Station station : stations)
+				vehicles.addAll(pldb.getVehiclesObjectsOfStation(station.getId()));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 	}
 
 	/**
@@ -70,14 +93,15 @@ public class AppWindow {
 		mainFrame.setTitle("Artificial Dispatcher / K\u00FCnstliche Leitstelle\r\n");
 		mainFrame.setBounds(100, 100, 1920, 950);
 		mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		JList vehicleList = new JList();
-		vehicleList.setModel(new AbstractListModel() {
-			String[] values = new String[] {"HLF", "DLK", "LF"};
+		JList<Vehicle> vehicleList = new JList<Vehicle>();
+		vehicleList.setModel(new AbstractListModel<Vehicle>() {
+			private static final long serialVersionUID = 4873049741922975858L;
+			ArrayList<Vehicle> values = vehicles;
 			public int getSize() {
-				return values.length;
+				return values.size();
 			}
-			public Object getElementAt(int index) {
-				return values[index];
+			public Vehicle getElementAt(int index) {
+				return values.get(index);
 			}
 		});
 		JList radioList = new JList();
