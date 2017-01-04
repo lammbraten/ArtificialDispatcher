@@ -93,17 +93,14 @@ public class AppWindow {
 		mainFrame.setTitle("Artificial Dispatcher / K\u00FCnstliche Leitstelle\r\n");
 		mainFrame.setBounds(100, 100, 1920, 950);
 		mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		JList<Vehicle> vehicleList = new JList<Vehicle>();
-		vehicleList.setModel(new AbstractListModel<Vehicle>() {
-			private static final long serialVersionUID = 4873049741922975858L;
-			ArrayList<Vehicle> values = vehicles;
-			public int getSize() {
-				return values.size();
-			}
-			public Vehicle getElementAt(int index) {
-				return values.get(index);
-			}
-		});
+		
+        DefaultListModel<Vehicle> vehicleModel = new DefaultListModel<Vehicle>();
+        for(Vehicle vehicle : vehicles)
+        	vehicleModel.addElement(vehicle);
+        
+        JList<Vehicle> vehicleList = new JList<Vehicle>(vehicleModel);
+        vehicleList.setCellRenderer(new VehiclePanelRenderer());
+        
 		JList radioList = new JList();
 		radioList.setModel(new AbstractListModel() {
 			String[] values = new String[] {"Kommen ", "H\u00F6rt", "Verstande", "Moin Uwe"};
@@ -139,7 +136,7 @@ public class AppWindow {
 		vehicleSplitPane.setOneTouchExpandable(true);
 		vehicleSplitPane.setDividerLocation(450);
 		vehicleSplitPane.setDividerSize(10);
-		vehicleSplitPane.setPreferredSize(new Dimension(400,500));
+		vehicleSplitPane.setPreferredSize(new Dimension(270, 500));
 
 		//Provide minimum sizes for the two components in the split pane
 		Dimension minimumSize = new Dimension(200, 250);
@@ -170,23 +167,17 @@ public class AppWindow {
 		mainFrame.getContentPane().add(mapViewer, BorderLayout.CENTER);
 		
 
-        DefaultListModel model = new DefaultListModel();
-        model.addElement(new Event("Wohnungsbrand"));
-        model.addElement(new Event("Heckenbrand"));
-        model.addElement(new Event("Mülleimer"));
+        DefaultListModel<Event> eventModel = new DefaultListModel<Event>();
+        eventModel.addElement(new Event("Wohnungsbrand"));
+        eventModel.addElement(new Event("Heckenbrand"));
+        eventModel.addElement(new Event("Mülleimer"));
         
-        JList list = new JList(model);
+        JList<Event> list = new JList<Event>(eventModel);
         list.setCellRenderer(new EventPanelRenderer());
         
-		/*EventPanelListElement[] values = new EventPanelListElement[] {new EventPanelListElement("Heckenbrand "), new EventPanelListElement("Mülleimer"), new EventPanelListElement("Wohnungsbrand"), new EventPanelListElement("Lagerhalle")};
 
-
-		JScrollPane eventListScrollPane = new JScrollPane(new EventPanelListElement("Heckenbrand "));
-		eventListScrollPane.add(new EventPanelListElement("Mülleimer"));
-		*/
 		JPanel eventPanel = new JPanel();
 		eventPanel.setLayout(new BorderLayout(0, 0));
-		//eventPanel.add(eventListScrollPane, BorderLayout.CENTER);
 		eventPanel.add(list);
 		JLabel eventLabel = new JLabel("Aktuelle Eins\u00E4tze");
 		eventPanel.add(eventLabel, BorderLayout.NORTH);

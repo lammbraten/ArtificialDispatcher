@@ -8,6 +8,7 @@ import de.hsnr.eal.ArtificialDispatcher.firedepartment.members.equipment.Equipme
 import de.hsnr.eal.ArtificialDispatcher.graph.Route;
 
 public interface Vehicle {
+	public Status getStatus();
 	public int getSpeed();
 	//public int getSeats();
 	//public Squad getCrew();

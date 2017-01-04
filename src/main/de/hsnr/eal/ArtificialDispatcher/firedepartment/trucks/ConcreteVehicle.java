@@ -33,7 +33,7 @@ public class ConcreteVehicle implements Vehicle {
 	
 	@Override
 	public String toString(){
-		return name + ": Besatzung: " + crewStrength + " Status: " + fmsStatus + " Beladung: " + equipment;
+		return name + ": Besatzung: " + crewStrength + " Status: " + fmsStatus; //+ " Beladung: " + equipment;
 	}
 	
 	@Override
@@ -99,6 +99,11 @@ public class ConcreteVehicle implements Vehicle {
 	@Override
 	public void setRoute(Route route) {
 		this.route = route;
+	}
+	
+	@Override
+	public Status getStatus(){
+		return fmsStatus;
 	}
 	
 }

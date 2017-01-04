@@ -110,6 +110,7 @@ public class PLDatabase {
 		int id =  Integer.parseInt(vehicleMap.get("Number").toString());
 		String name = vehicleMap.get("Name").toString().replace("'", "");
 		String typeTerm = vehicleMap.get("Type").toString();
+		String type = vehicleMap.get("Type").toString().replace("'", "");
 		int station = stationId;
 		int crewStrength = vehicleMap.get("CrewStrength").intValue();
 		
@@ -119,7 +120,7 @@ public class PLDatabase {
 		int normSpeed = vehicleType.get("NormSpeed").intValue();
 		int tankVolume = vehicleType.get("TankVolume").intValue();
 		
-		return new ConcreteVehicle(id, typeTerm, name, station, crewStrength, equipmentItems, emergencySpeed, normSpeed, tankVolume);
+		return new ConcreteVehicle(id, type, name, station, crewStrength, equipmentItems, emergencySpeed, normSpeed, tankVolume);
 	}
 
 	private List<EquipmentItem> loadEquipment(Term equipmentTerm[]) throws Exception {
