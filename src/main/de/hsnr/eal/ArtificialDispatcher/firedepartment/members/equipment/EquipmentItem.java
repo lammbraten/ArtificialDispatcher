@@ -5,7 +5,8 @@ public class EquipmentItem {
 	private String name;
 	private int setupTime;
 	private int neededPeople;
-	EquipmentItem(int typeId, String name, int setupTime, int neededPeople){
+	
+	public EquipmentItem(int typeId, String name, int setupTime, int neededPeople){
 		this.typeId = typeId;
 		this.name = name;
 		this.setupTime = setupTime;
@@ -37,6 +38,7 @@ public class EquipmentItem {
 	
 	@Override
 	public String toString(){
-		return name + " needs " + setupTime+ " mins and " + neededPeople + " FireFighters to setup";
+		//return name + " needs " + setupTime+ " mins and " + neededPeople + " FireFighters to setup";
+		return name;
 	}
 }

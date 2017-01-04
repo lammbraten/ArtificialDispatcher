@@ -19,21 +19,20 @@ public class TestPLDatabase {
 	@Test
 	public void testGetStations() {
 		PLDatabase pldb = new PLDatabase(FILE_PATH);
-		 ArrayList<Station> stations = pldb.getStationObjects();
-		 for(Station station : stations)
-			 System.out.println(station);
+		ArrayList<Station> stations = pldb.getStationObjects();
+		for(Station station : stations)
+			System.out.println(station);
 	}
 	
 	@Test
 	public void testGetVehiclesOfStation() {
 		PLDatabase pldb = new PLDatabase(FILE_PATH);
-		 ArrayList<Vehicle> vehicles;
+		ArrayList<Vehicle> vehicles;
 		try {
-			vehicles = pldb.getVehiclesObjectsOfStation(1);
-			 for(Vehicle vehicle : vehicles)
-				 System.out.println(vehicle);
+			vehicles = pldb.getVehiclesObjectsOfStation(3);
+			for(Vehicle vehicle : vehicles)
+				System.out.println(vehicle);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 

@@ -17,29 +17,25 @@ public class ConcreteVehicle implements Vehicle {
 	private int tankVolume;
 	private long location;
 	private Route route;
+	private Status fmsStatus;
 	
 	public ConcreteVehicle(int id, String typeTerm, String name, int homeStationId, int crewStrength,
-			List<String> equipmentTerm, int emergencySpeed, int normSpeed, int tankVolume){
+			List<EquipmentItem> equipmentTerm, int emergencySpeed, int normSpeed, int tankVolume){
 		this.id = id;
 		this.type = VehicleType.parseType(typeTerm);
 		this.name = name;
 		this.homeStationId = homeStationId;
 		this.crewStrength = crewStrength;
-		this.equipment = generateEquipment(equipmentTerm);
-		
+		this.equipment = equipmentTerm;
+		this.fmsStatus = Status.ZWEI;
+				
 	}
 	
-	private List<EquipmentItem> generateEquipment(List<String> equipmentTerm) {
-		ArrayList<EquipmentItem> equipment = new ArrayList<EquipmentItem>();
-		
-		for(String item : equipmentTerm){
-			
-			
-			//equipment.add(new EquipmentItem(crewStrength, item, crewStrength, crewStrength))
-		}
-		return null;
+	@Override
+	public String toString(){
+		return name + ": Besatzung: " + crewStrength + " Status: " + fmsStatus + " Beladung: " + equipment;
 	}
-
+	
 	@Override
 	public int getId() {
 		return id;

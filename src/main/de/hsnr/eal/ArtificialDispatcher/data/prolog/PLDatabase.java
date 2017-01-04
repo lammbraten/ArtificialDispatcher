@@ -9,7 +9,9 @@ import org.jpl7.Atom;
 import org.jpl7.Query;
 import org.jpl7.Term;
 
+import de.hsnr.eal.ArtificialDispatcher.firedepartment.members.equipment.EquipmentItem;
 import de.hsnr.eal.ArtificialDispatcher.firedepartment.stations.Station;
+import de.hsnr.eal.ArtificialDispatcher.firedepartment.trucks.ConcreteVehicle;
 import de.hsnr.eal.ArtificialDispatcher.firedepartment.trucks.Vehicle;
 
 public class PLDatabase {
@@ -48,7 +50,7 @@ public class PLDatabase {
     		int number =  Integer.parseInt(stations[i].get("Number").toString());
     		String name = stations[i].get("Name").toString().replace("'", "");
     		String type = stations[i].get("Type").toString().replace("'", "");
-    		String node = stations[i].get("Node").toString();
+    		long node = stations[i].get("Node").longValue();
     		stationObjects.add(new Station(number, name, type, node));
         }
         	
@@ -56,7 +58,7 @@ public class PLDatabase {
 	}
 	
 	private Map<String, Term>[] getVehiclesOfStation(int stationId){
-		String tVehicles = "vehicle(Number, Type, Name, "+ stationId +")";
+		String tVehicles = "vehicle(Number, Type, Name, "+ stationId +", CrewStrength)";
         Query qVehicles = new Query(tVehicles);
         
         Map<String, Term>[] vehicles = qVehicles.allSolutions();
@@ -71,7 +73,7 @@ public class PLDatabase {
 		
         for(int i = 0; i < vehicles.length; i++){
         	Map<String, Term> vehicleMap = vehicles[i];
-    		constructVehicle(stationId, vehicleMap);
+        	vehicleObjects.add(constructVehicle(stationId, vehicleMap));
         }		
 		
 		return vehicleObjects;
@@ -82,31 +84,59 @@ public class PLDatabase {
 		String tEquipment = "equipment(" + id + ", Name, SetupTime, NeededPeople)";
         Query qEquipmemt = new Query(tEquipment);
         
-        return qEquipmemt.getSolution();
+        return qEquipmemt.oneSolution();
 	}
 	
-	private Term getVehicleType(String typeTerm) throws Exception{
-		String tVehicle = "vehicleType(" + typeTerm + ", Equipment, Tank, EmergencySpeed, NormSpeed)";
+	private EquipmentItem getEquipmentObject(int id) {
+		Map<String, Term> item = getEquipment(id);
+		String name = item.get("Name").toString().replace("'", "");
+		int setupTime = item.get("SetupTime").intValue();
+		int neededPeople = item.get("NeededPeople").intValue();
+		return new EquipmentItem(id, name, setupTime, neededPeople);
+	}
+
+	private Map<String, Term> getVehicleType(String typeTerm) throws Exception{
+		String tVehicle = "vehicleType(" + typeTerm + ", Equipment, TankVolume, EmergencySpeed, NormSpeed)";
         Query qVehicle = new Query(tVehicle);
         
         if(!qVehicle.hasSolution())
         	throw new Exception("no vehicleType found. Prolog Error 10");
-        return qVehicle.getSolution().get(typeTerm);
+        return qVehicle.oneSolution();
 	}
 	
 	
 
-	private void constructVehicle(int stationId, Map<String, Term> vehicleMap) throws Exception {
+	private ConcreteVehicle constructVehicle(int stationId, Map<String, Term> vehicleMap) throws Exception {
 		int id =  Integer.parseInt(vehicleMap.get("Number").toString());
 		String name = vehicleMap.get("Name").toString().replace("'", "");
-		String typeTerm = vehicleMap.get("Type").toString().replace("'", "");
+		String typeTerm = vehicleMap.get("Type").toString();
 		int station = stationId;
+		int crewStrength = vehicleMap.get("CrewStrength").intValue();
 		
+		Map<String, Term> vehicleType = getVehicleType(typeTerm);
+		List<EquipmentItem> equipmentItems = loadEquipment(vehicleType.get("Equipment").toTermArray());
+		int emergencySpeed = vehicleType.get("EmergencySpeed").intValue();
+		int normSpeed = vehicleType.get("NormSpeed").intValue();
+		int tankVolume = vehicleType.get("TankVolume").intValue();
 		
-		Term vehicle = getVehicleType(typeTerm);
+		return new ConcreteVehicle(id, typeTerm, name, station, crewStrength, equipmentItems, emergencySpeed, normSpeed, tankVolume);
+	}
 
-		System.out.println(vehicle.toString());
+	private List<EquipmentItem> loadEquipment(Term equipmentTerm[]) throws Exception {
+		ArrayList<EquipmentItem> items = new ArrayList<EquipmentItem>();
+		int[] equipmentIds = parsePLListToIntArray(equipmentTerm);
 		
+		for(int i = 0; i < equipmentIds.length; i++)
+			items.add(getEquipmentObject(equipmentIds[i]));
 		
+		return items;
+	}
+
+	private int[] parsePLListToIntArray(Term[] listTerm) {
+		int l = listTerm.length;
+		int arr[] =  new int[l];
+		for(int i = 0; i < l; i++)
+			arr[i] = listTerm[i].intValue();
+		return arr;
 	}
 }
