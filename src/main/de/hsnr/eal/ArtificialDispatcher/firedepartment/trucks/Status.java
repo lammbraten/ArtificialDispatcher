@@ -1,22 +1,26 @@
 package de.hsnr.eal.ArtificialDispatcher.firedepartment.trucks;
 
+import java.awt.Color;
+
 public enum Status {
-	EINS(1, "Frei auf Funk"), 
-	ZWEI(2, "Einsatzbereit auf Wache"), 
-	DREI(3, "Einsatz übernommen / auf Anfahrt"),
-	VIER(4, "Ankunft am Einsatzort"),
-	FUENF(5, "Sprechwunsch"),
-	SECHS(6, "nicht einsatzbereit"),
-	SIEBEN(7, "Patient aufgenommen"),
-	ACHT(8, "am Transportziel"),	
-	NEUN(9, "Notarzt aufgenommen"),
-	NULL(0, "NOTFALL!");
+	EINS(1, "Frei auf Funk", Color.YELLOW), 
+	ZWEI(2, "Einsatzbereit auf Wache", Color.GREEN), 
+	DREI(3, "Einsatz übernommen / auf Anfahrt", Color.ORANGE),
+	VIER(4, "Ankunft am Einsatzort", Color.RED),
+	FUENF(5, "Sprechwunsch", Color.MAGENTA),
+	SECHS(6, "nicht einsatzbereit", Color.GRAY),
+	SIEBEN(7, "Patient aufgenommen", Color.CYAN),
+	ACHT(8, "am Transportziel", Color.CYAN),	
+	NEUN(9, "Notarzt aufgenommen", Color.CYAN),
+	NULL(0, "NOTFALL!", Color.BLACK);
 
 	private int n;
 	private String label;
-	Status(int n, String label){
+	private Color color;
+	Status(int n, String label, Color color){
 		this.n = n;
 		this.label = label;
+		this.color = color;
 	}
 	
 	@Override
@@ -30,6 +34,10 @@ public enum Status {
 	
 	public int getNumber(){
 		return n;
+	}
+
+	public Color getColor() {
+		return color;
 	}
 	
 }

@@ -18,6 +18,8 @@ import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 
 import de.hsnr.eal.ArtificialDispatcher.events.Event;
+import de.hsnr.eal.ArtificialDispatcher.firedepartment.members.equipment.EquipmentItem;
+import de.hsnr.eal.ArtificialDispatcher.firedepartment.trucks.Status;
 import de.hsnr.eal.ArtificialDispatcher.firedepartment.trucks.Vehicle;
 
 public class VehiclePanelRenderer extends JPanel implements ListCellRenderer<Vehicle>{
@@ -46,6 +48,7 @@ public class VehiclePanelRenderer extends JPanel implements ListCellRenderer<Veh
 		statusPnl.setBounds(200, 5, 40, 40);
 		add(statusPnl);
 		statusPnl.setLayout(null);
+		statusLbl.setToolTipText("no Tooltipp");
 		
 		statusLbl.setHorizontalAlignment(SwingConstants.CENTER);
 		statusLbl.setBounds(5, 5, 30, 30);
@@ -97,9 +100,13 @@ public class VehiclePanelRenderer extends JPanel implements ListCellRenderer<Veh
 
          setEnabled(list.isEnabled());
          nameLbl.setText(value.getName());
-         statusLbl.setText(value.getStatus().toString());
+         setStatus(value.getStatus());
          strkeLbl.setText("Stärke: " + value.getCrewStrength());
          typeLbl.setText(value.getType().toString());
+         
+         for(EquipmentItem eItem : value.getEquipment()){
+        	 System.out.println(value.getType().toString() + ": " + eItem );
+         }
 
 
 
@@ -117,6 +124,12 @@ public class VehiclePanelRenderer extends JPanel implements ListCellRenderer<Veh
          setBorder(border);
 
 		return this;
+	}
+
+	private void setStatus(Status status) {
+		statusPnl.setBackground(status.getColor());
+		statusLbl.setText(status.toString());
+		statusLbl.setToolTipText(status.getLabel());
 	}
 	
 }

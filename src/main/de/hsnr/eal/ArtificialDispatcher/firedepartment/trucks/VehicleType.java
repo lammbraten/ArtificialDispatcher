@@ -26,7 +26,7 @@ public enum VehicleType {
 
 	public static VehicleType parseType(String typeTerm) {
 		if(typeTerm.equals(HLF_BF.toString()))
-			return VehicleType.HLF;
+			return VehicleType.HLF_BF;
 		if(typeTerm.equals(HLF.toString()))
 			return VehicleType.HLF;
 		if(typeTerm.equals(HLF_A.toString()))
