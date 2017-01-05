@@ -38,6 +38,14 @@ import de.hsnr.eal.ArtificialDispatcher.firedepartment.stations.Station;
 import de.hsnr.eal.ArtificialDispatcher.firedepartment.trucks.Vehicle;
 import de.hsnr.eal.ArtificialDispatcher.gui.test.TestListCellRenderer.Item;
 import de.hsnr.eal.ArtificialDispatcher.gui.test.TestListCellRenderer.ItemCellRenderer;
+import javax.swing.JButton;
+import java.awt.FlowLayout;
+import java.awt.GridLayout;
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
+import java.awt.CardLayout;
+import net.miginfocom.swing.MigLayout;
+import javax.swing.JToolBar;
 
 public class AppWindow {
 
@@ -183,11 +191,27 @@ public class AppWindow {
 		eventPanel.add(eventLabel, BorderLayout.NORTH);
 		
 		mainFrame.getContentPane().add(eventPanel, BorderLayout.WEST);
-		
 
 		
 		JPanel viewSelectPanel = new JPanel();
 		mainFrame.getContentPane().add(viewSelectPanel, BorderLayout.NORTH);
+		viewSelectPanel.setMinimumSize(new Dimension(1900, 100));
+		viewSelectPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		
+		JToolBar eventSpawnerToolBar = new JToolBar();
+		viewSelectPanel.add(eventSpawnerToolBar);
+		
+		EventSpawnerPanel evsPanel = new EventSpawnerPanel();
+		eventSpawnerToolBar.add(evsPanel);
+		
+		JToolBar tickControlToolBar = new JToolBar();
+		viewSelectPanel.add(tickControlToolBar);
+		
+		TickControllPanel tcPanel = new TickControllPanel();
+		tickControlToolBar.add(tcPanel);
+
+		
+
 	}
 	
 

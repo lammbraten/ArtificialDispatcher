@@ -2,24 +2,26 @@
 %atna = Atemschutznotfallausrüstung
 equipment(00, 'Drehleiterpark', 02, 2).
 equipment(01, 'tragbare Leiter', 03, 3).
-equipment(02, 'Ausrüstung zur Brandbekämpfung', 03, 4).
+equipment(02, 'Ausrüstung zur Brandbekämpfung', 03, 2).
 equipment(03, 'Rettungssatz', 02, 3).
 equipment(04, 'Hebekissen', 02, 3).
 equipment(05, 'Funkplatz', 01, 1).
 equipment(06, 'Laufkarten', 01, 1).
 equipment(07, 'Kran', 02, 2).
 equipment(08, 'Atemschutznotfallausrüstung', 01, 2).
+equipment(09, 'Atemschutzgerät', 01, 0).
+equipment(10, 'Zieh Fix', 01, 1).
 
 %vehicleType(Typ, [Ausrüstung], Wassertank, speed(Einsatz), speed (normal)
-vehicleType('HLF-BF', [01, 01, 02, 03, 04], 2000, 60, 50).
-vehicleType('HLF', [01, 01, 02, 03], 2000, 60, 50).
-vehicleType('HLF-A', [01, 02, 03, 08], 2000, 60, 50). 
-vehicleType('LF8', [01, 02], 600, 60, 50). 
-vehicleType('LF20', [01, 02], 1600, 60, 50). 
+vehicleType('HLF-BF', [01, 01, 02, 03, 04, 09, 09, 09, 09, 10], 2000, 60, 50).
+vehicleType('HLF', [01, 01, 01, 02, 03, 09, 09, 09, 09], 2000, 60, 50).
+vehicleType('HLF-A', [01, 01, 02, 03, 08, 09, 09, 09, 09, 09, 09, 10], 2000, 60, 50). 
+vehicleType('LF8', [01, 02, 09, 09, 09, 09], 600, 60, 50). 
+vehicleType('LF20', [01, 01, 02, 02, 09, 09, 09, 09], 1600, 60, 50). 
 vehicleType('ELW', [05, 06], 0, 70, 50). 
-vehicleType('RW2-K', [01, 04, 07, 03], 0, 50, 40). 
-vehicleType('GTLF', [02], 0, 50, 40). 
-vehicleType('DLK-23', [00], 0, 50, 40). 
+vehicleType('RW2-K', [01, 04, 07, 03, 10], 0, 50, 40). 
+vehicleType('GTLF', [02, 02, 09, 09], 0, 50, 40). 
+vehicleType('DLK-23', [00, 09, 09], 0, 50, 40). 
 
 %vehicle(Id, Typ, Name, Station, Besatzung)
 vehicle(000, 'ELW', 'ELW-1-1', 01, 2).
@@ -27,7 +29,7 @@ vehicle(001, 'HLF-BF', 'HLF-1-1', 01, 7).
 vehicle(002, 'DLK-23', 'DLK-1-1', 01, 2).
 vehicle(003, 'HLF-BF', 'HLF-1-2', 01, 5).
 vehicle(004, 'RW2-K', 'RW-1-1', 01, 2).
-vehicle(005, 'GTLF', 'GTLF-1-1', 01, 1).
+vehicle(005, 'GTLF', 'GTLF-1-1', 01, 2).
 
 vehicle(006, 'HLF-BF', 'HLF-2-1', 02, 6).
 vehicle(007, 'DLK-23', 'DLK-2-1', 02, 2).
