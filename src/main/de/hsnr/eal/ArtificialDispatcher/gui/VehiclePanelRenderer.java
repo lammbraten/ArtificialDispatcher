@@ -104,12 +104,6 @@ public class VehiclePanelRenderer extends JPanel implements ListCellRenderer<Veh
          strkeLbl.setText("Stärke: " + value.getCrewStrength());
          typeLbl.setText(value.getType().toString());
          
-         for(EquipmentItem eItem : value.getEquipment()){
-        	 System.out.println(value.getType().toString() + ": " + eItem );
-         }
-
-
-
          Border border = null;
          if (cellHasFocus) {
              if (isSelected) {
