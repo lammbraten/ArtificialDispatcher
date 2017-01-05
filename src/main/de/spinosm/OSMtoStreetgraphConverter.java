@@ -10,11 +10,11 @@ import java.util.LinkedList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import de.hsnr.eal.ArtificialDispatcher.data.map.DefaultDataProvider;
+import de.hsnr.eal.ArtificialDispatcher.data.map.LocalProvider;
 import de.hsnr.eal.ArtificialDispatcher.graph.RouteableVertex;
 import de.hsnr.eal.ArtificialDispatcher.graph.StreetGraph;
 import de.hsnr.eal.ArtificialDispatcher.graph.algorithm.BreadthFirstSearch;
-import de.hsnr.eal.ArtificialDispatcher.graph.data.DefaultDataProvider;
-import de.hsnr.eal.ArtificialDispatcher.graph.data.LocalProvider;
 import de.hsnr.eal.ArtificialDispatcher.graph.weights.CrowFliesDistanceWeight;
 import de.hsnr.eal.ArtificialDispatcher.graph.weights.CrowFliesTimeWeight;
 import de.hsnr.eal.ArtificialDispatcher.graph.weights.DefaultCostFunction;

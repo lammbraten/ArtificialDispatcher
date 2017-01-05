@@ -43,7 +43,7 @@ public class Dijkstra extends ObservableShortestPath {
 	}
 
 	@Override
-	public List<RouteableVertex> getShortestPath(RouteableVertex start, RouteableVertex end) {
+	public List<RouteableVertex> getShortestPath(RouteableVertex start, RouteableVertex end) throws Exception {
 		endVertex = end;		
 		init(start);
 
@@ -52,14 +52,17 @@ public class Dijkstra extends ObservableShortestPath {
 
 	/**
 	 * @return
+	 * @throws Exception 
 	 */
-	List<RouteableVertex> iterateThrougGraph() {
+	List<RouteableVertex> iterateThrougGraph() throws Exception {
+		int i = 0;
 		while(!toVisitVertices.isEmpty()){
 			if(isEndVertexFound())
 				return buildShortestPathTo(endVertex);
 			checkNextVertex();
+			i++;
 		}
-		return null;
+		throw new Exception("No Path found! " + i);
 	}
 	
 	RouteableVertex checkNextVertex() {

@@ -50,11 +50,15 @@ eventType(03, 'Dachstuhlbrand - P-Fenster', [10, 11, 02]).
 eventType(03, 'Lagerhallenbrand', [10, 10, 11, 11]).
 eventType(04, 'Lagerhallenbrand - P-Vermisst', [10, 10, 11, 11, 04]).
 eventType(04, 'Lagerhallenbrand - Ausgedehnt', [10, 10, 10, 11, 11]).
+GasExplosion
 eventType(02, 'BMA', [00]).
 
 %Technische Hilfe
 eventType(05, 'Türöffnung', [12]).
 eventType(05, 'Katze auf Baum', [01]).
 eventType(05, 'Türöffnung', [12]).
+Bauunfall
+Aufzug
+Schachtrettung
 
 %aao(CodeWordId, [VehicleTypes])

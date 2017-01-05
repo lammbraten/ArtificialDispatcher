@@ -32,6 +32,29 @@ public class OsmHighwayValues {
 	
 	private static final double TOMS = 3.6;
 	
+	public static boolean isRouateableForFireTruck(Way way) {
+		String value = way.getTags().get("highway");
+		if(value.equals(MOTORWAY)||
+				value.equals(TRUNK)||
+				value.equals(PRIMARY)||
+				value.equals(SECONDARY)||
+				value.equals(TERTIARY)||
+				value.equals(UNCLASSIFIED)||
+				value.equals(RESIDENTIAL)||
+				value.equals(SERVICE)||
+				value.equals(MOTORWAY_LINK)||
+				value.equals(TRUNK_LINK)||
+				value.equals(PRIMARY_LINK)||
+				value.equals(SECONDARY_LINK)||
+				value.equals(TERTIARY_LINK)||
+				value.equals(LIVING_STREET)||
+				value.equals(BUS_GUIDEWAY)||
+				value.equals(ROAD)||
+				value.equals(TRACK))
+			return true;
+		return false;
+	}
+	
 	public static boolean isRouateableForCars(Way way) {
 		String value = way.getTags().get("highway");
 		if(value.equals(MOTORWAY)||

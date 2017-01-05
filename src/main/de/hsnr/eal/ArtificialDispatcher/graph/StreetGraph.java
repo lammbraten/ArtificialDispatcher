@@ -6,8 +6,8 @@ import java.util.TreeSet;
 
 import org.jgrapht.graph.SimpleDirectedWeightedGraph;
 
-import de.hsnr.eal.ArtificialDispatcher.graph.data.DataProvider;
-import de.hsnr.eal.ArtificialDispatcher.graph.data.DefaultDataProvider;
+import de.hsnr.eal.ArtificialDispatcher.data.map.DataProvider;
+import de.hsnr.eal.ArtificialDispatcher.data.map.DefaultDataProvider;
 
 public class StreetGraph extends SimpleDirectedWeightedGraph<RouteableVertex, StreetEdge> implements Serializable{
 

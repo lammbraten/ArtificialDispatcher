@@ -1,4 +1,4 @@
-package de.hsnr.eal.ArtificialDispatcher.graph.data;
+package de.hsnr.eal.ArtificialDispatcher.data.map;
 
 import java.io.File;
 import java.util.LinkedList;

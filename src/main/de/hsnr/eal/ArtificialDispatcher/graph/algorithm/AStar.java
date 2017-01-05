@@ -25,7 +25,7 @@ public class AStar extends Dijkstra {
 	}
 	
 	@Override
-	public List<RouteableVertex> getShortestPath(RouteableVertex start, RouteableVertex end) {
+	public List<RouteableVertex> getShortestPath(RouteableVertex start, RouteableVertex end) throws Exception {
 		endVertex = end;		
 		this.init(start);
 

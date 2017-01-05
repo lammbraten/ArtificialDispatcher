@@ -1,4 +1,4 @@
-package de.hsnr.eal.ArtificialDispatcher.graph.data;
+package de.hsnr.eal.ArtificialDispatcher.data.map;
 
 import java.util.HashSet;
 import java.util.Set;

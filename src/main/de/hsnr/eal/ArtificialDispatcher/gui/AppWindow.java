@@ -32,6 +32,7 @@ import org.jxmapviewer.input.ZoomMouseWheelListenerCursor;
 import org.jxmapviewer.viewer.DefaultTileFactory;
 import org.jxmapviewer.viewer.GeoPosition;
 
+import de.hsnr.eal.ArtificialDispatcher.data.map.MapLoader;
 import de.hsnr.eal.ArtificialDispatcher.data.prolog.PLDatabase;
 import de.hsnr.eal.ArtificialDispatcher.events.Event;
 import de.hsnr.eal.ArtificialDispatcher.firedepartment.stations.Station;
@@ -52,6 +53,7 @@ public class AppWindow {
 	private static final String FILE_PATH = "C:\\Users\\lammbraten\\Dropbox\\Master\\1.Semester\\EAL\\Projekt\\Implementierung\\ArtificialDispatcher\\src\\main\\de\\hsnr\\eal\\ArtificialDispatcher\\data\\prolog\\vehicles.pl";
 	private JFrame mainFrame;
 	private PLDatabase pldb;
+	private MapLoader ml; 
 	private ArrayList<Vehicle> vehicles;
 	private ArrayList<Station> stations;
 
@@ -75,8 +77,15 @@ public class AppWindow {
 	 * Create the application.
 	 */
 	public AppWindow() {
+		loadGraph();
 		loadDb();
 		initialize();
+	}
+
+	private void loadGraph() {
+		ml = new MapLoader();
+		System.out.println(ml.calcPath(36481934l, 305047455l));
+
 	}
 
 	private void loadDb() {

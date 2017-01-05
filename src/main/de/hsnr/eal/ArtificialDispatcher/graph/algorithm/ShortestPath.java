@@ -9,7 +9,7 @@ import de.hsnr.eal.ArtificialDispatcher.graph.RouteableVertex;
 import de.hsnr.eal.ArtificialDispatcher.graph.StreetGraph;
 
 public interface ShortestPath extends Serializable {
-	public List<RouteableVertex> getShortestPath(RouteableVertex start, RouteableVertex end);
+	public List<RouteableVertex> getShortestPath(RouteableVertex start, RouteableVertex end) throws Exception;
 	public StreetGraph getGraph();
 	public void setGraph(StreetGraph g);
 	public List<RouteableVertex> getBorderVertices();

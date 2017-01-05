@@ -18,6 +18,8 @@ public class Common {
 				return OsmHighwayValues.isRouateableForCars(way);	
 			case TRUCK:
 				return OsmHighwayValues.isRouateableForTrucks(way);
+			case FIRETRUCK:
+				return OsmHighwayValues.isRouateableForFireTruck(way);
 			case PEDESTRIAN:
 				return OsmHighwayValues.isRouateableForPedestrians(way);
 			case BICYCLE:
@@ -35,6 +37,8 @@ public class Common {
 			case CAR:
 				return OsmHighwayValues.getCarSpeedLimits(way);	
 			case TRUCK:
+				return OsmHighwayValues.getTruckSpeedLimits(way);
+			case FIRETRUCK:
 				return OsmHighwayValues.getTruckSpeedLimits(way);
 			case PEDESTRIAN:
 				return OsmHighwayValues.getPedestrianSpeeds(way);

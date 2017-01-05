@@ -6,10 +6,10 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.LinkedList;
 
+import de.hsnr.eal.ArtificialDispatcher.data.map.DataProvider;
+import de.hsnr.eal.ArtificialDispatcher.data.map.DefaultDataProvider;
 import de.hsnr.eal.ArtificialDispatcher.graph.RouteableVertex;
 import de.hsnr.eal.ArtificialDispatcher.graph.algorithm.ShortestPath;
-import de.hsnr.eal.ArtificialDispatcher.graph.data.DataProvider;
-import de.hsnr.eal.ArtificialDispatcher.graph.data.DefaultDataProvider;
 import de.hsnr.eal.ArtificialDispatcher.spinosm.gui.GraphMapViewer;
 
 public class ShortestPathViewer {

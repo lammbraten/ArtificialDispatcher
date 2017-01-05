@@ -13,16 +13,16 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
+import de.hsnr.eal.ArtificialDispatcher.data.map.DataProvider;
+import de.hsnr.eal.ArtificialDispatcher.data.map.DefaultDataProvider;
+import de.hsnr.eal.ArtificialDispatcher.data.map.LocalProvider;
+import de.hsnr.eal.ArtificialDispatcher.data.map.OsmApiWrapper;
 import de.hsnr.eal.ArtificialDispatcher.graph.RouteableVertex;
 import de.hsnr.eal.ArtificialDispatcher.graph.StreetGraph;
 import de.hsnr.eal.ArtificialDispatcher.graph.algorithm.AStar;
 import de.hsnr.eal.ArtificialDispatcher.graph.algorithm.BiDirectionalDijkstra;
 import de.hsnr.eal.ArtificialDispatcher.graph.algorithm.Dijkstra;
 import de.hsnr.eal.ArtificialDispatcher.graph.algorithm.ShortestPath;
-import de.hsnr.eal.ArtificialDispatcher.graph.data.DataProvider;
-import de.hsnr.eal.ArtificialDispatcher.graph.data.DefaultDataProvider;
-import de.hsnr.eal.ArtificialDispatcher.graph.data.LocalProvider;
-import de.hsnr.eal.ArtificialDispatcher.graph.data.OsmApiWrapper;
 import de.hsnr.eal.ArtificialDispatcher.graph.weights.CrowFliesDistanceWeight;
 import de.hsnr.eal.ArtificialDispatcher.graph.weights.CrowFliesHeuristic;
 import de.hsnr.eal.ArtificialDispatcher.graph.weights.CrowFliesTimeHeuristic;
@@ -370,7 +370,11 @@ public class AnalyseRoutePlaning {
 				initAnalyse();
 			startTimeMeasurment();
 			sp.setGraph(sg);
-			sp.getShortestPath(startVertex, endVertex);
+			try {
+				sp.getShortestPath(startVertex, endVertex);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 			stopTimeMeasurment();
 			printResults(sp, i);
 			if(save)

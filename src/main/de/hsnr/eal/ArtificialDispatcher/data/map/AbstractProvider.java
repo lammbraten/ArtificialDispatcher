@@ -1,4 +1,4 @@
-package de.hsnr.eal.ArtificialDispatcher.graph.data;
+package de.hsnr.eal.ArtificialDispatcher.data.map;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -108,7 +108,7 @@ abstract class AbstractProvider implements DataProvider, OsmDataHandler {
 	protected boolean hasAnotherRoute(List<Way> waysOfNode) {
 		int routeableWaysCounter = 0;	
 		for(Way way: waysOfNode){
-			if(Common.wayIsUseable(way, Vehicle.CAR))
+			if(Common.wayIsUseable(way, Vehicle.FIRETRUCK))
 				routeableWaysCounter++;
 			if(routeableWaysCounter >= 2)
 				return true;
