@@ -9,6 +9,7 @@ import java.util.List;
 import org.junit.Test;
 
 import de.hsnr.eal.ArtificialDispatcher.data.prolog.PLDatabase;
+import de.hsnr.eal.ArtificialDispatcher.emergency.EmergencyType;
 import de.hsnr.eal.ArtificialDispatcher.firedepartment.stations.Station;
 import de.hsnr.eal.ArtificialDispatcher.firedepartment.trucks.Vehicle;
 
@@ -32,6 +33,20 @@ public class TestPLDatabase {
 			vehicles = pldb.getVehiclesObjectsOfStation(3);
 			for(Vehicle vehicle : vehicles)
 				System.out.println(vehicle);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
+	
+	@Test
+	public void testGetEmergenyTypeObjects() {
+		PLDatabase pldb = new PLDatabase(FILE_PATH);
+		List<EmergencyType> emergencyTypes;
+		try {
+			emergencyTypes = pldb.getEmergencyTypeObjects();
+			for(EmergencyType emergencyType : emergencyTypes)
+				System.out.println(emergencyType);	
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

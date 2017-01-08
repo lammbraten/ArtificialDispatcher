@@ -47,27 +47,39 @@ public class EmergencyTask {
 	}
 
 	
+	@Override
+	public String toString(){
+		return this.name + ", Equipment: " + neededEquipment;
+	}
+	
 	public int getId() {
 		return id;
 	}
+	
 	public String getName() {
 		return name;
 	}
+	
 	public List<EquipmentItem> getNeededEquipment() {
 		return neededEquipment;
 	}
+	
 	public List<EquipmentItem> getAltNeededEquipment() {
 		return altNeededEquipment;
 	}
+	
 	public int getEstimatedTime() {
 		return estimatedTime;
 	}
+	
 	public int getStartTimestamp() {
 		return startTimestamp;
 	}
+	
 	public boolean isFinished() {
 		return finished;
 	}
+	
 	public boolean isFinished(int actTimestamp) {
 		if(getRestTime(actTimestamp) >= 0)
 			finished = true;

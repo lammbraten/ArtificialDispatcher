@@ -90,7 +90,7 @@ task(08, 'Klein-Brandbekämpfung', [[02, 09]], 6).
 task(09, 'Brandbekämpfung', [[02, 09, 09]], 9).
 task(10, 'Groß-Brandbekämpfung', [[02, 09, 09]], 20).
 task(11, 'Brandbekämpfung über Drehleiter', [[02, 09, 00]], 10).
-task(12, 'Türöffnung', [[10],[00],[01]], 5).
+task(12, 'Türöffnung', [[10],[00]], 5).
 
 %
 % PRIORITÄT einführen. ?

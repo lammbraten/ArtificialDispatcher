@@ -9,6 +9,8 @@ import org.jpl7.Atom;
 import org.jpl7.Query;
 import org.jpl7.Term;
 
+import de.hsnr.eal.ArtificialDispatcher.emergency.EmergencyTask;
+import de.hsnr.eal.ArtificialDispatcher.emergency.EmergencyType;
 import de.hsnr.eal.ArtificialDispatcher.firedepartment.members.equipment.EquipmentItem;
 import de.hsnr.eal.ArtificialDispatcher.firedepartment.stations.Station;
 import de.hsnr.eal.ArtificialDispatcher.firedepartment.trucks.ConcreteVehicle;
@@ -133,11 +135,83 @@ public class PLDatabase {
 		return items;
 	}
 
-	private int[] parsePLListToIntArray(Term[] listTerm) {
+	private int[] parsePLListToIntArray(Term listTerm[]) {
 		int l = listTerm.length;
 		int arr[] =  new int[l];
 		for(int i = 0; i < l; i++)
 			arr[i] = listTerm[i].intValue();
 		return arr;
+	}
+	
+	private List<Term[]> parsePLListToListIntArray(Term[] terms) {
+		ArrayList<Term[]> list = new ArrayList<Term[]>();
+		for(int i = 0; i < terms.length; i++)
+			list.add(terms[i].toTermArray());
+		return list;
+	}
+
+	private Map<String, Term>[] getEmergencyTypes(){
+		String tEmergencyType = "emergencyType(CodeWordId, Name, TaskIds)";
+        Query qEmergencyType = new Query(tEmergencyType);
+        
+        Map<String, Term>[] emergencyTypes = qEmergencyType.allSolutions();
+       	
+        return emergencyTypes;
+		
+	}
+	
+	public List<EmergencyType> getEmergencyTypeObjects() throws Exception{
+		Map<String, Term>[] emergencyType = getEmergencyTypes();
+		ArrayList<EmergencyType> emergemcyTypeObjects = new ArrayList<EmergencyType>();
+
+        for(int i = 0; i < emergencyType.length; i++){
+    		int codeWordId =  emergencyType[i].get("CodeWordId").intValue();
+    		String codeWord = getCodeWord(codeWordId);
+    		String name = emergencyType[i].get("Name").toString().replace("'", "");
+    		List<EmergencyTask> tasks = loadTasks(emergencyType[i].get("TaskIds").toTermArray());
+
+    		emergemcyTypeObjects.add(new EmergencyType(codeWord, name, tasks));
+        }
+        	
+        return emergemcyTypeObjects;
+	}
+	
+	private List<EmergencyTask> loadTasks(Term[] taskTerm) throws Exception {
+		ArrayList<EmergencyTask> tasks = new ArrayList<EmergencyTask>();
+		int[] taskIds = parsePLListToIntArray(taskTerm);
+		
+		for(int i = 0; i < taskIds.length; i++)
+			tasks.add(getTaskObject(taskIds[i]));
+		
+		return tasks;
+
+	}
+
+	private EmergencyTask getTaskObject(int id) throws Exception {
+		Map<String, Term> task = getTask(id);
+		String name = task.get("Name").toString().replace("'", "");
+		List<Term[]> equipmentTerms = parsePLListToListIntArray(task.get("EquipmentTerms").toTermArray());
+		List<EquipmentItem> neededEquipment = loadEquipment(equipmentTerms.get(0));
+		List<EquipmentItem> altEquipment = null;
+		if(equipmentTerms.size() > 1)
+			altEquipment = loadEquipment(equipmentTerms.get(1));
+
+		int estimatedTime = task.get("EstimatedTime").intValue();
+		
+		return new EmergencyTask(id, name, neededEquipment, altEquipment, estimatedTime);
+	}
+
+	private Map<String, Term> getTask(int id) {
+		String tTask = "task(" + id + ", Name, EquipmentTerms, EstimatedTime)";
+        Query qTask= new Query(tTask);
+        
+        return qTask.oneSolution();
+	}
+
+	private String getCodeWord(int codeWordId) {
+		String tCodeWord = "codeWord(" + codeWordId  + ", Name)";
+        Query qCodeWord = new Query(tCodeWord);
+		
+        return qCodeWord.oneSolution().get("Name").toString().replace("'", "");
 	}
 }
