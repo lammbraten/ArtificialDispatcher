@@ -8,18 +8,18 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-public class EventSpawnerPanel extends JPanel {
+public class EmergencySpawnerPanel extends JPanel {
 
 	/**
 	 * Create the panel.
 	 */
-	public EventSpawnerPanel() {
+	public EmergencySpawnerPanel() {
 		setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
 		JButton generateNewEventBtn = new JButton("Neuen Einsatz er\u00F6ffnen");
 		generateNewEventBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				NewEventWindow dialog = new NewEventWindow();
+				NewEmergencyWindow dialog = new NewEmergencyWindow();
 				dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 				dialog.setVisible(true);
 			}

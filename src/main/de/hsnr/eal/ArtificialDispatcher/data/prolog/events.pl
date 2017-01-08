@@ -26,39 +26,43 @@ task(11, 'Brandbekämpfung über Drehleiter', [[02, 09, 00]], 10).
 task(12, 'Türöffnung', [[10],[00],[01], 5).
 
 %
-% PRIORITÄT einführen.
+% PRIORITÄT einführen. ?
 %
 
-%eventType(CodeWordId, Name, [TaskIds]) Einsatztypen
+%emergencyType(CodeWordId, Name, [TaskIds]) Einsatztypen
 %Brände
-eventType(00, 'Brennt Mülleimer', [08]).
-eventType(00, 'Brennt Hecke', [08]).
-eventType(01, 'Brennt Baustellenklo', [08]).
-eventType(01, 'Küchenbrand', [08]).
-eventType(01, 'Zimmerbrand', [09]).
-eventType(02, 'Zimmerbrand - P-Vermisst', [09, 04]).
-eventType(02, 'Zimmerbrand - P-Fenster', [09, 03, 01]).
-eventType(02, 'Wohnungsbrand', [09, 09]).
-eventType(02, 'Wohnungsbrand - P-Vermisst', [09, 09, 04]).
-eventType(02, 'Wohnungsbrand - P-Fenster', [09, 09, 01]).
-eventType(02, 'Kellerbrand', [10]).
-eventType(03, 'Kellerbrand - P-Vermisst', [10, 04]).
-eventType(02, 'Kellerbrand - P-Fenster ', [10, 01]).
-eventType(03, 'Dachstuhlbrand', [10, 11]).
-eventType(03, 'Dachstuhlbrand - P-Vermisst', [10, 11, 04]).
-eventType(03, 'Dachstuhlbrand - P-Fenster', [10, 11, 02]).
-eventType(03, 'Lagerhallenbrand', [10, 10, 11, 11]).
-eventType(04, 'Lagerhallenbrand - P-Vermisst', [10, 10, 11, 11, 04]).
-eventType(04, 'Lagerhallenbrand - Ausgedehnt', [10, 10, 10, 11, 11]).
-GasExplosion
-eventType(02, 'BMA', [00]).
+emergencyType(00, 'Brennt Mülleimer', [08]).
+emergencyType(00, 'Brennt Hecke', [08]).
+emergencyType(01, 'Brennt Baustellenklo', [08]).
+emergencyType(01, 'Küchenbrand', [08]).
+emergencyType(01, 'Zimmerbrand', [09]).
+emergencyType(02, 'BMA', [00]).
+emergencyType(02, 'Zimmerbrand - P-Vermisst', [09, 04]).
+emergencyType(02, 'Zimmerbrand - P-Fenster', [09, 03, 01]).
+emergencyType(02, 'Wohnungsbrand', [09, 09]).
+emergencyType(02, 'Wohnungsbrand - P-Vermisst', [09, 09, 04]).
+emergencyType(02, 'Wohnungsbrand - P-Fenster', [09, 09, 01]).
+emergencyType(02, 'Kellerbrand', [10, 00]).
+emergencyType(03, 'Kellerbrand - P-Vermisst', [10, 04, 00]).
+emergencyType(02, 'Kellerbrand - P-Fenster ', [10, 01, 00]).
+emergencyType(03, 'Dachstuhlbrand', [10, 11, 00]).
+emergencyType(03, 'Dachstuhlbrand - P-Vermisst', [10, 11, 04, 00]).
+emergencyType(03, 'Dachstuhlbrand - P-Fenster', [10, 11, 02, 00]).
+emergencyType(03, 'Lagerhallenbrand', [10, 10, 11, 11, 00]).
+emergencyType(04, 'Lagerhallenbrand - P-Vermisst', [10, 10, 11, 11, 04, 00]).
+emergencyType(04, 'Lagerhallenbrand - Ausgedehnt', [10, 10, 10, 11, 11, 00]).
+emergencyType(04, 'GasExplosion', [10, 04, 04, 11, 00]).
 
 %Technische Hilfe
-eventType(05, 'Türöffnung', [12]).
-eventType(05, 'Katze auf Baum', [01]).
-eventType(05, 'Türöffnung', [12]).
-Bauunfall
-Aufzug
-Schachtrettung
+emergencyType(05, 'Türöffnung', [12]).
+emergencyType(05, 'Katze auf Baum', [01]).
+emergencyType(05, 'Türöffnung', [12]).
+emergencyType(05, 'Aufzug', [12]).
+emergencyType(06, 'Bauunfall', [07, 01]).
+emergencyType(06, 'Schachtrettung' , [01]).
+emergencyType(06, 'VU - Klein', [08]).
+emergencyType(07, 'VU - P-klemmt', [06, 08]).
+emergencyType(07, 'VU 2 - P-klemmt', [06, 06, 08]).
+emergencyType(07, 'VU 3 - P-klemmt', [06, 06, 07, 08]).
 
 %aao(CodeWordId, [VehicleTypes])

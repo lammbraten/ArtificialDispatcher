@@ -60,7 +60,7 @@ public class OsmXmlFilerHandler{
 	 */
 	public void addIfUseable(LinkedList<Way> waysForNode, long wid) {
 		Way way = ways.get(wid);
-		if(Common.wayIsUseable(way, Vehicle.CAR))
+		if(Common.wayIsUseable(way, Vehicle.FIRETRUCK))
 			waysForNode.add(way);
 	}
 

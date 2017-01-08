@@ -23,7 +23,7 @@ vehicleType('RW2-K', [01, 04, 07, 03, 10], 0, 50, 40).
 vehicleType('GTLF', [02, 02, 09, 09], 0, 50, 40). 
 vehicleType('DLK-23', [00, 09, 09], 0, 50, 40). 
 
-%vehicle(Id, Typ, Name, Station, Besatzung)
+%vehicle(Id, Typ, Name, Wache, Besatzung)
 vehicle(000, 'ELW', 'ELW-1-1', 01, 2).
 vehicle(001, 'HLF-BF', 'HLF-1-1', 01, 7).
 vehicle(002, 'DLK-23', 'DLK-1-1', 01, 2).
@@ -54,7 +54,7 @@ vehicle(019, 'LF20', 'LF-8-2', 08, 9).
 
 
 
-% station(Nr, Name, Typ, OSM-Node-ID)
+% station(Nr, Name, Typ, OSM-Node-ID) (wache)
 
 station(01, 'Hauptwache', 'BF', 4149803115).
 station(02, 'Feuerwache 2', 'BF', 1607634076).

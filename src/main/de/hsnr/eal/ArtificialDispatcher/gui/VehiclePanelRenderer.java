@@ -17,7 +17,7 @@ import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 
-import de.hsnr.eal.ArtificialDispatcher.events.Event;
+import de.hsnr.eal.ArtificialDispatcher.emergency.Emergency;
 import de.hsnr.eal.ArtificialDispatcher.firedepartment.members.equipment.EquipmentItem;
 import de.hsnr.eal.ArtificialDispatcher.firedepartment.trucks.Status;
 import de.hsnr.eal.ArtificialDispatcher.firedepartment.trucks.Vehicle;

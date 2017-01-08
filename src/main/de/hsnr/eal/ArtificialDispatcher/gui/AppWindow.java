@@ -34,7 +34,7 @@ import org.jxmapviewer.viewer.GeoPosition;
 
 import de.hsnr.eal.ArtificialDispatcher.data.map.MapLoader;
 import de.hsnr.eal.ArtificialDispatcher.data.prolog.PLDatabase;
-import de.hsnr.eal.ArtificialDispatcher.events.Event;
+import de.hsnr.eal.ArtificialDispatcher.emergency.Emergency;
 import de.hsnr.eal.ArtificialDispatcher.firedepartment.stations.Station;
 import de.hsnr.eal.ArtificialDispatcher.firedepartment.trucks.Vehicle;
 import de.hsnr.eal.ArtificialDispatcher.gui.test.TestListCellRenderer.Item;
@@ -84,7 +84,7 @@ public class AppWindow {
 
 	private void loadGraph() {
 		ml = new MapLoader();
-		System.out.println(ml.calcPath(36481934l, 305047455l));
+		System.out.println(ml.calcPath(4149803115l, 1607634076l));
 
 	}
 
@@ -184,13 +184,13 @@ public class AppWindow {
 		mainFrame.getContentPane().add(mapViewer, BorderLayout.CENTER);
 		
 
-        DefaultListModel<Event> eventModel = new DefaultListModel<Event>();
-        eventModel.addElement(new Event("Wohnungsbrand"));
-        eventModel.addElement(new Event("Heckenbrand"));
-        eventModel.addElement(new Event("Mülleimer"));
+        DefaultListModel<Emergency> eventModel = new DefaultListModel<Emergency>();
+        eventModel.addElement(new Emergency("Wohnungsbrand"));
+        eventModel.addElement(new Emergency("Heckenbrand"));
+        eventModel.addElement(new Emergency("Mülleimer"));
         
-        JList<Event> list = new JList<Event>(eventModel);
-        list.setCellRenderer(new EventPanelRenderer());
+        JList<Emergency> list = new JList<Emergency>(eventModel);
+        list.setCellRenderer(new EmergencyPanelRenderer());
         
 
 		JPanel eventPanel = new JPanel();
@@ -210,7 +210,7 @@ public class AppWindow {
 		JToolBar eventSpawnerToolBar = new JToolBar();
 		viewSelectPanel.add(eventSpawnerToolBar);
 		
-		EventSpawnerPanel evsPanel = new EventSpawnerPanel();
+		EmergencySpawnerPanel evsPanel = new EmergencySpawnerPanel();
 		eventSpawnerToolBar.add(evsPanel);
 		
 		JToolBar tickControlToolBar = new JToolBar();

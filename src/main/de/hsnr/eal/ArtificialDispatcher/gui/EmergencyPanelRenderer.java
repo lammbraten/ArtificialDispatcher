@@ -13,12 +13,12 @@ import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 
-import de.hsnr.eal.ArtificialDispatcher.events.Event;
+import de.hsnr.eal.ArtificialDispatcher.emergency.Emergency;
 import de.hsnr.eal.ArtificialDispatcher.gui.test.TestListCellRenderer.Item;
 import java.awt.ScrollPane;
 import javax.swing.AbstractListModel;
 
-public class EventPanelRenderer extends JPanel implements ListCellRenderer<Event>{
+public class EmergencyPanelRenderer extends JPanel implements ListCellRenderer<Emergency>{
 
 	/**
 	 * 
@@ -32,7 +32,7 @@ public class EventPanelRenderer extends JPanel implements ListCellRenderer<Event
 	JScrollPane scrollPane = new JScrollPane(list_1);
 
 	
-	public EventPanelRenderer(){
+	public EmergencyPanelRenderer(){
 		setLayout(null);
 		
 		einsatzName.setBounds(10, 11, 170, 14);
@@ -74,8 +74,8 @@ public class EventPanelRenderer extends JPanel implements ListCellRenderer<Event
 
 
 	@Override
-	public Component getListCellRendererComponent(JList<? extends Event> list,
-			Event value, int index, boolean isSelected, boolean cellHasFocus) {	     
+	public Component getListCellRendererComponent(JList<? extends Emergency> list,
+			Emergency value, int index, boolean isSelected, boolean cellHasFocus) {	     
          Color bg = null;
          Color fg = null;
 

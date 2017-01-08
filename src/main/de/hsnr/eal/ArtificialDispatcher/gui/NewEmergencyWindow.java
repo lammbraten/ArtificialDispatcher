@@ -13,14 +13,14 @@ import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import de.hsnr.eal.ArtificialDispatcher.firedepartment.trucks.VehicleType;
 
-public class NewEventWindow extends JDialog {
+public class NewEmergencyWindow extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();
 
 	/**
 	 * Create the dialog.
 	 */
-	public NewEventWindow() {
+	public NewEmergencyWindow() {
 		setTitle("Neuen Einsatz er\u00F6ffnen");
 		setBounds(100, 100, 300, 134);
 		getContentPane().setLayout(new BorderLayout());

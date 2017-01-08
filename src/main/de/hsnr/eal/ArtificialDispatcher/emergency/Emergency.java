@@ -1,10 +1,10 @@
-package de.hsnr.eal.ArtificialDispatcher.events;
+package de.hsnr.eal.ArtificialDispatcher.emergency;
 
-public class Event {
+public class Emergency {
 	private String name;
 	private int id;
 	
-	public Event(String name){
+	public Emergency(String name){
 		this.name = name;
 	}
 	
