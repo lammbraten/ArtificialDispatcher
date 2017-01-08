@@ -35,6 +35,7 @@ import org.jxmapviewer.viewer.GeoPosition;
 import de.hsnr.eal.ArtificialDispatcher.data.map.MapLoader;
 import de.hsnr.eal.ArtificialDispatcher.data.prolog.PLDatabase;
 import de.hsnr.eal.ArtificialDispatcher.emergency.Emergency;
+import de.hsnr.eal.ArtificialDispatcher.emergency.EmergencyType;
 import de.hsnr.eal.ArtificialDispatcher.firedepartment.stations.Station;
 import de.hsnr.eal.ArtificialDispatcher.firedepartment.trucks.Vehicle;
 import de.hsnr.eal.ArtificialDispatcher.gui.test.TestListCellRenderer.Item;
@@ -56,6 +57,7 @@ public class AppWindow {
 	private MapLoader ml; 
 	private ArrayList<Vehicle> vehicles;
 	private ArrayList<Station> stations;
+	private List<EmergencyType> emergencyTypes;
 
 	/**
 	 * Launch the application.
@@ -84,15 +86,20 @@ public class AppWindow {
 
 	private void loadGraph() {
 		ml = new MapLoader();
-		System.out.println(ml.calcPath(4149803115l, 1607634076l));
+		//System.out.println(ml.calcPath(4149803115l, 1607634076l));
+		
 
 	}
 
 	private void loadDb() {
 		pldb = new PLDatabase(FILE_PATH);
 		stations = pldb.getStationObjects();
-		 vehicles = new ArrayList<Vehicle>();
-		
+		vehicles = new ArrayList<Vehicle>();
+		try {
+			emergencyTypes = pldb.getEmergencyTypeObjects();
+		} catch (Exception e1) {
+			e1.printStackTrace();
+		}
 		try {
 			for(Station station : stations)
 				vehicles.addAll(pldb.getVehiclesObjectsOfStation(station.getId()));
@@ -210,7 +217,7 @@ public class AppWindow {
 		JToolBar eventSpawnerToolBar = new JToolBar();
 		viewSelectPanel.add(eventSpawnerToolBar);
 		
-		EmergencySpawnerPanel evsPanel = new EmergencySpawnerPanel();
+		EmergencySpawnerPanel evsPanel = new EmergencySpawnerPanel(emergencyTypes, ml);
 		eventSpawnerToolBar.add(evsPanel);
 		
 		JToolBar tickControlToolBar = new JToolBar();

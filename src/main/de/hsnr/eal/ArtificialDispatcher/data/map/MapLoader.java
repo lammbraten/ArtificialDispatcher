@@ -1,7 +1,11 @@
 package de.hsnr.eal.ArtificialDispatcher.data.map;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import de.hsnr.eal.ArtificialDispatcher.graph.RouteableVertex;
 import de.hsnr.eal.ArtificialDispatcher.graph.StreetGraph;
@@ -11,21 +15,23 @@ import de.hsnr.eal.ArtificialDispatcher.graph.weights.PythagoreanDistanceWeight;
 import de.hsnr.eal.ArtificialDispatcher.graph.weights.WeightFunction;
 
 public class MapLoader {
-	private static String DEFAULT_MAP_SOURCE = "C:\\Users\\lammbraten\\Dropbox\\Master\\1.Semester\\EAL\\Projekt\\Daten\\Roh\\Krefeld_Streetmap.osm";
+	private static String DEFAULT_MAP_SOURCE = "C:\\Users\\lammbraten\\Dropbox\\Master\\1.Semester\\EAL\\Projekt\\Daten\\Roh\\Krefeld_Streetmap.bin";
 	private static WeightFunction WEIGHTFUNCTION =  new PythagoreanDistanceWeight();
 	
 	private DataProvider dp;
 	private StreetGraph sg;
 	private ShortestPath sp;
+	private static String graphFilePath;
 	
 	public MapLoader(){
 		this(DEFAULT_MAP_SOURCE);
 	}
 	
-	public MapLoader(String osmFilePath){
+	public MapLoader(String graphFilePath){
+		this.graphFilePath = graphFilePath;
 		System.out.println(new Date());
-		dp = new LocalProvider(osmFilePath, WEIGHTFUNCTION);
-		sg = new StreetGraph(dp);
+		dp = new DefaultDataProvider();
+		sg = readSG();
 		sp = new Dijkstra(sg);
 		System.out.println(new Date());
 
@@ -48,12 +54,29 @@ public class MapLoader {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
-		
-
 		
 		return route;
 	}
+
+	public Set<RouteableVertex> getAllVertices() {
+		
+		return sg.getVertices();
+	}
 	
 	//TODO: Umkreissuche 
+	
+	
+	
+	private static StreetGraph readSG() {
+		try {
+			ObjectInputStream ois = new ObjectInputStream(new FileInputStream(graphFilePath));
+			StreetGraph sg  = (StreetGraph) ois.readObject();
+			sg.setDataprovider(new DefaultDataProvider());
+			ois.close();	
+			return sg;
+		} catch (IOException | ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 }

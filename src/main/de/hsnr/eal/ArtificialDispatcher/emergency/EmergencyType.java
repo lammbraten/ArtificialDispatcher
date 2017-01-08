@@ -28,7 +28,7 @@ public class EmergencyType {
 	
 	@Override 
 	public String toString(){
-		return this.name + ", codeword: " + this.codeword + ", tasks: " + tasks;
+		return this.codeword + " -  " + this.name; 
 	}
 
 	

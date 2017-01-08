@@ -1,6 +1,7 @@
 package de.hsnr.eal.ArtificialDispatcher.graph;
 
 import de.westnordost.osmapi.map.data.LatLon;
+import de.westnordost.osmapi.map.data.OsmLatLon;
 
 
 
@@ -11,12 +12,12 @@ public abstract class GraphVertex implements RouteableVertex {
 	private long id;
 	private double distance;
 	private double heuristic;
-	private SerializableLatLon position; //needed for Heuristic
+	private OsmLatLon position; //needed for Heuristic
 	
 	public GraphVertex(long id, LatLon latLon, double distance){
 		this.setId(id);
 		this.setDistance(distance);
-		this.position = new SerializableLatLon(latLon);
+		this.position = new OsmLatLon(latLon.getLatitude(), latLon.getLongitude());
 	}
 	
 	public GraphVertex(long id, LatLon latLon){
@@ -24,7 +25,7 @@ public abstract class GraphVertex implements RouteableVertex {
 		this.setDistance(DISTANCE_INIT_VALUE);
 		this.setHeuristic(DISTANCE_INIT_VALUE);
 		if(latLon != null)
-			this.position = new SerializableLatLon(latLon);
+			this.position = new OsmLatLon(latLon.getLatitude(), latLon.getLongitude());
 	}
 	
 	public long getId() {
@@ -36,12 +37,12 @@ public abstract class GraphVertex implements RouteableVertex {
 	}
 
 	@Override
-	public SerializableLatLon getPosition() {
+	public OsmLatLon getPosition() {
 		return position;
 	}
 
-	public void setPosition(LatLon position) {
-		this.position = new SerializableLatLon(position);
+	public void setPosition(LatLon latLon) {
+		this.position = new OsmLatLon(latLon.getLatitude(), latLon.getLongitude());
 	}
 	
 	@Override
