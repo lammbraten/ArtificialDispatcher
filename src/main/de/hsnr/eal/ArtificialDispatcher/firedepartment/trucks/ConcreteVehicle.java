@@ -105,5 +105,11 @@ public class ConcreteVehicle implements Vehicle {
 	public Status getStatus(){
 		return fmsStatus;
 	}
+
+	@Override
+	public List<EquipmentItem> getUsedEquipment() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 }

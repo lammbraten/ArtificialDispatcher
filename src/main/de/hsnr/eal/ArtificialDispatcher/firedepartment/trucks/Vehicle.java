@@ -17,6 +17,7 @@ public interface Vehicle {
 	public long getLocation();
 	public void setLocation(long location);
 	public List<EquipmentItem> getEquipment();
+	public List<EquipmentItem> getUsedEquipment();
 	public int getId();
 	public VehicleType getType();
 	public String getTypeTerm();
