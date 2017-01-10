@@ -4,12 +4,12 @@ public class Station {
 	private int id;
 	private String name;
 	private StationType type;
-	private long location;
+	private long osmNode;
 	
 	public Station(int id, String name, String type, long node){
 		this.id = id;
 		this.name = name;
-		this.location = node;
+		this.osmNode = node;
 				
 		if(type.equals(StationType.BF.name()))
 			this.type = StationType.BF;
@@ -26,4 +26,29 @@ public class Station {
 	public int getId(){
 		return id;
 	}
+	
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public StationType getType() {
+		return type;
+	}
+
+	public void setType(StationType type) {
+		this.type = type;
+	}
+
+	public long getOsmNode() {
+		return osmNode;
+	}
+
+	public void setOsmNode(long osmNode) {
+		this.osmNode = osmNode;
+	}
+	
 }

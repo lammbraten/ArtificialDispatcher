@@ -2,6 +2,7 @@ package de.hsnr.eal.ArtificialDispatcher.gui;
 
 import java.awt.EventQueue;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import javax.swing.JFrame;
@@ -31,15 +32,23 @@ import org.jxmapviewer.input.PanMouseInputListener;
 import org.jxmapviewer.input.ZoomMouseWheelListenerCursor;
 import org.jxmapviewer.viewer.DefaultTileFactory;
 import org.jxmapviewer.viewer.GeoPosition;
+import org.jxmapviewer.viewer.WaypointPainter;
 
 import de.hsnr.eal.ArtificialDispatcher.data.map.MapLoader;
 import de.hsnr.eal.ArtificialDispatcher.data.prolog.PLDatabase;
 import de.hsnr.eal.ArtificialDispatcher.emergency.Emergency;
 import de.hsnr.eal.ArtificialDispatcher.emergency.EmergencyType;
 import de.hsnr.eal.ArtificialDispatcher.firedepartment.stations.Station;
+import de.hsnr.eal.ArtificialDispatcher.firedepartment.stations.StationType;
 import de.hsnr.eal.ArtificialDispatcher.firedepartment.trucks.Vehicle;
+import de.hsnr.eal.ArtificialDispatcher.graph.RouteableVertex;
 import de.hsnr.eal.ArtificialDispatcher.gui.test.TestListCellRenderer.Item;
 import de.hsnr.eal.ArtificialDispatcher.gui.test.TestListCellRenderer.ItemCellRenderer;
+import de.hsnr.eal.ArtificialDispatcher.mapmarker.AbstractMapMarker;
+import de.hsnr.eal.ArtificialDispatcher.mapmarker.MapMarkerPainter;
+import de.hsnr.eal.ArtificialDispatcher.mapmarker.StationMapMarker;
+import de.westnordost.osmapi.map.data.LatLon;
+
 import javax.swing.JButton;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
@@ -118,6 +127,11 @@ public class AppWindow {
 		mainFrame.setBounds(100, 100, 1920, 950);
 		mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
+		
+		
+
+		
+		
         DefaultListModel<Vehicle> vehicleModel = new DefaultListModel<Vehicle>();
         for(Vehicle vehicle : vehicles)
         	vehicleModel.addElement(vehicle);
@@ -189,6 +203,31 @@ public class AppWindow {
 		mapViewer.addMouseWheelListener(new ZoomMouseWheelListenerCursor(mapViewer));
 			
 		mainFrame.getContentPane().add(mapViewer, BorderLayout.CENTER);
+		
+		
+		
+		//MapMarker------------------------------
+		HashSet<StationMapMarker> waypoints = new HashSet<StationMapMarker>();
+
+		
+		for(Station station : stations){
+			LatLon position = ml.getPositionOf(station.getOsmNode());
+			waypoints.add(new StationMapMarker(station, new GeoPosition(position.getLatitude(), position.getLongitude())));
+		}
+
+        // Set the overlay painter
+        WaypointPainter<AbstractMapMarker> swingWaypointPainter = new MapMarkerPainter();
+        swingWaypointPainter.setWaypoints(waypoints);
+        mapViewer.setOverlayPainter(swingWaypointPainter);
+        
+        // Add the JButtons to the map viewer
+        for (StationMapMarker w : waypoints) {
+            mapViewer.add(w.getPanel());
+        }
+
+		//MapMarker--------------------------------Ende
+		
+		
 		
 
         DefaultListModel<Emergency> eventModel = new DefaultListModel<Emergency>();

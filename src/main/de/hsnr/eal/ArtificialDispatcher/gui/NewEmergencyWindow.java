@@ -3,6 +3,7 @@ package de.hsnr.eal.ArtificialDispatcher.gui;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -22,6 +23,7 @@ import de.hsnr.eal.ArtificialDispatcher.emergency.EmergencyType;
 import de.hsnr.eal.ArtificialDispatcher.firedepartment.trucks.VehicleType;
 import de.hsnr.eal.ArtificialDispatcher.graph.RouteableVertex;
 import de.hsnr.eal.ArtificialDispatcher.graph.StreetEdge;
+import de.hsnr.eal.ArtificialDispatcher.graph.pattern.GeoLocationComparator;
 
 public class NewEmergencyWindow extends JDialog {
 
@@ -30,6 +32,7 @@ public class NewEmergencyWindow extends JDialog {
 	private final JPanel contentPanel = new JPanel();
 	private MapLoader ml;
 	Set<RouteableVertex> vertices;
+	private List<GeoLocation> geolocations;
 
 	/**
 	 * Create the dialog.
@@ -66,8 +69,13 @@ public class NewEmergencyWindow extends JDialog {
 		contentPanel.add(eventPlaceLbl);
 
 		
-		JComboBox eventPlaceComboBox = new JComboBox();
-		eventPlaceComboBox.setModel(new DefaultComboBoxModel(new String[] {"Reinarztstra\u00DFe", "K\u00F6lner Stra\u00DFe"}));
+		DefaultComboBoxModel<GeoLocation> geolocationsModel = new DefaultComboBoxModel<GeoLocation>();
+		
+		for(GeoLocation geol : geolocations)
+			geolocationsModel.addElement(geol);
+		
+		JComboBox<GeoLocation> eventPlaceComboBox = new JComboBox<GeoLocation>();
+		eventPlaceComboBox.setModel(geolocationsModel);
 		eventPlaceComboBox.setBounds(112, 35, 312, 20);
 		contentPanel.add(eventPlaceComboBox);
 		{
@@ -90,12 +98,9 @@ public class NewEmergencyWindow extends JDialog {
 
 	private void loadAllGeolocations() {
 		this.vertices = ml.getAllVertices();
-		List<GeoLocation> geolocations = buildGeolocations();
-		for(GeoLocation geol : geolocations)
-			System.out.println(geol);
-		
-		
-		//System.out.println(vertices);
+		this.geolocations = buildGeolocations();
+		geolocations.sort(new GeoLocationComparator());
+
 	}
 
 	private List<GeoLocation> buildGeolocations() {

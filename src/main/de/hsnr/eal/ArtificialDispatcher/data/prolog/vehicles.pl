@@ -63,7 +63,7 @@ station(04, 'LG Traar', 'FF', 259433027).
 station(05, 'LG Gellep-Stratum', 'FF', 2494720511).
 station(06, 'LG Oppum', 'FF', 1476442386).
 station(07, 'LZ Fischeln', 'FF', 1580072714).
-station(08, 'LZ Uerdingen', 'FF', 1600010189).
+station(08, 'LZ Uerdingen', 'FF', 1600010301).
 
 %codeWord(Id, Name) Stichwort
 codeWord(00, 'B-Klein').

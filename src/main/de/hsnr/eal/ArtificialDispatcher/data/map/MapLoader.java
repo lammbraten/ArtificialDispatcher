@@ -15,6 +15,7 @@ import de.hsnr.eal.ArtificialDispatcher.graph.algorithm.Dijkstra;
 import de.hsnr.eal.ArtificialDispatcher.graph.algorithm.ShortestPath;
 import de.hsnr.eal.ArtificialDispatcher.graph.weights.PythagoreanDistanceWeight;
 import de.hsnr.eal.ArtificialDispatcher.graph.weights.WeightFunction;
+import de.westnordost.osmapi.map.data.LatLon;
 
 public class MapLoader {
 	private static String DEFAULT_MAP_SOURCE = "C:\\Users\\lammbraten\\Dropbox\\Master\\1.Semester\\EAL\\Projekt\\Daten\\Roh\\Krefeld_Streetmap.bin";
@@ -98,5 +99,9 @@ public class MapLoader {
 		}
 		
 		return streetname;
+	}
+
+	public LatLon getPositionOf(long osmNodeId) {
+		return sg.getVertex(osmNodeId).getPosition();
 	}
 }
