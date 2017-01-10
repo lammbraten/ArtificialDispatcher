@@ -6,8 +6,10 @@ import java.io.ObjectInputStream;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
+import java.util.TreeSet;
 
 import de.hsnr.eal.ArtificialDispatcher.graph.RouteableVertex;
+import de.hsnr.eal.ArtificialDispatcher.graph.StreetEdge;
 import de.hsnr.eal.ArtificialDispatcher.graph.StreetGraph;
 import de.hsnr.eal.ArtificialDispatcher.graph.algorithm.Dijkstra;
 import de.hsnr.eal.ArtificialDispatcher.graph.algorithm.ShortestPath;
@@ -78,5 +80,23 @@ public class MapLoader {
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	public String getStreetnameForVertex(RouteableVertex vertex) {
+		TreeSet<String> streetnames = new TreeSet<String>();
+		String streetname = "";
+		for(StreetEdge edge : sg.edgesOf(vertex))
+			if(edge.hasStreetname())
+				streetnames.add(edge.getStreetname());
+		
+		for(String streetnamepart : streetnames){
+			if(streetname == null || streetname.equals(""))
+				streetname += streetnamepart;
+			else
+				streetname += " Ecke " + streetnamepart;
+			
+		}
+		
+		return streetname;
 	}
 }

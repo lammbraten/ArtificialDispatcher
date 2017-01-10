@@ -144,13 +144,13 @@ abstract class AbstractProvider implements DataProvider, OsmDataHandler {
 		return true;
 	}
 
-	private StreetEdge shapeNewOutgoingEdgeUpTheRoad(Way way, RouteableVertex startingNode, List<Node> nodes, Node node) throws Exception {
+	private StreetEdge shapeNewOutgoingEdgeUpTheRoad(Way way, RouteableVertex sj, List<Node> nodes, Node node) throws Exception {
 		LinkedList<Node> shapingNodes = new LinkedList<Node>();	
 		shapingNodes.add(node);
 		for(int i = nodes.indexOf(node)+1; i < nodes.size(); i++){
 			shapingNodes.add(nodes.get(i));
 			if(canBeRouteableVertex(nodes.get(i))){
-				return new StreetEdge(startingNode, new StreetVertex((OsmNode) nodes.get(i)), calcCost(way, shapingNodes));
+				return new StreetEdge(sj, new StreetVertex((OsmNode) nodes.get(i)), calcCost(way, shapingNodes), getStreetname(way));
 			}
 		}
 		throw new Exception("No junction found");
@@ -162,7 +162,7 @@ abstract class AbstractProvider implements DataProvider, OsmDataHandler {
 		for(int i = nodes.indexOf(node)-1; i >= 0; i--){
 			shapingNodes.add(nodes.get(i));
 			if(canBeRouteableVertex(nodes.get(i))){
-				return new StreetEdge(sj, new StreetVertex((OsmNode) nodes.get(i)), calcCost(way, shapingNodes));
+				return new StreetEdge(sj, new StreetVertex((OsmNode) nodes.get(i)), calcCost(way, shapingNodes), getStreetname(way));
 			}
 		}
 		throw new Exception("No junction found");
@@ -174,7 +174,7 @@ abstract class AbstractProvider implements DataProvider, OsmDataHandler {
 		for(int i = nodes.indexOf(node)-1; i >= 0; i--){
 			shapingNodes.add(nodes.get(i));
 			if(canBeRouteableVertex(nodes.get(i))){
-				return new StreetEdge(new StreetVertex((OsmNode) nodes.get(i)), endingNode, calcCost(way, shapingNodes));
+				return new StreetEdge(new StreetVertex((OsmNode) nodes.get(i)), endingNode, calcCost(way, shapingNodes), getStreetname(way));
 			}
 		}
 		throw new Exception("No junction found");
@@ -186,9 +186,13 @@ abstract class AbstractProvider implements DataProvider, OsmDataHandler {
 		for(int i = nodes.indexOf(node)+1; i < nodes.size(); i++){
 			shapingNodes.add(nodes.get(i));
 			if(canBeRouteableVertex(nodes.get(i))){
-				return new StreetEdge(new StreetVertex((OsmNode) nodes.get(i)), endingNode, calcCost(way, shapingNodes));
+				return new StreetEdge(new StreetVertex((OsmNode) nodes.get(i)), endingNode, calcCost(way, shapingNodes), getStreetname(way));
 			}
 		}
 		throw new Exception("No junction found");
+	}
+	
+	private String getStreetname(Way way) {
+		return 	way.getTags().get("name");
 	}
 }

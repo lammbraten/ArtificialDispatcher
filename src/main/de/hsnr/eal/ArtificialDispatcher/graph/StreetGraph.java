@@ -45,6 +45,11 @@ public class StreetGraph extends SimpleDirectedWeightedGraph<RouteableVertex, St
 		
 		return loadVertexFromDataProvider(id);
 	}
+	
+	@Override
+	public Set<StreetEdge> edgesOf(RouteableVertex startVertex) {
+		return edgesOf(startVertex, DEFAULT_DIRECTION);
+	}
 
 	public Set<StreetEdge> edgesOf(RouteableVertex startVertex, int direction) {
 		if(startVertex.isEdgesLoaded())
@@ -62,6 +67,7 @@ public class StreetGraph extends SimpleDirectedWeightedGraph<RouteableVertex, St
 			return checkLoadedEdgesForId(vertex, direction);
 	}
 	
+	/*
 	@Override
 	public Set<StreetEdge> edgesOf(RouteableVertex v){
 		try {
@@ -71,12 +77,14 @@ public class StreetGraph extends SimpleDirectedWeightedGraph<RouteableVertex, St
 		}
 		return null;
 	}
-
+*/
 	public void addEdge(StreetEdge e, RouteableVertex sv) {
 		super.addVertex(e.getOtherVertexThan(sv));
 		StreetEdge se = addEdge(e.getStart(), e.getEnd());
-		if(se != null)
+		if(se != null){
 			se.setWeight(e.getWeight());
+			se.setStreetname(e.getStreetname());
+		}
 	}
 
 	public DataProvider getDataprovider() {

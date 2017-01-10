@@ -2,6 +2,7 @@ package de.hsnr.eal.ArtificialDispatcher.gui;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -14,10 +15,13 @@ import javax.swing.SwingConstants;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 
+import de.hsnr.eal.ArtificialDispatcher.data.map.ConcreteGeoLocation;
+import de.hsnr.eal.ArtificialDispatcher.data.map.GeoLocation;
 import de.hsnr.eal.ArtificialDispatcher.data.map.MapLoader;
 import de.hsnr.eal.ArtificialDispatcher.emergency.EmergencyType;
 import de.hsnr.eal.ArtificialDispatcher.firedepartment.trucks.VehicleType;
 import de.hsnr.eal.ArtificialDispatcher.graph.RouteableVertex;
+import de.hsnr.eal.ArtificialDispatcher.graph.StreetEdge;
 
 public class NewEmergencyWindow extends JDialog {
 
@@ -34,7 +38,7 @@ public class NewEmergencyWindow extends JDialog {
 	 */
 	public NewEmergencyWindow(List<EmergencyType> emergencyTypes, MapLoader ml) {
 		this.ml = ml;
-		loadAllVertices();
+		loadAllGeolocations();
 		
 		setTitle("Neuen Einsatz er\u00F6ffnen");
 		setBounds(100, 100, 450, 134);
@@ -84,11 +88,28 @@ public class NewEmergencyWindow extends JDialog {
 		}
 	}
 
-	private void loadAllVertices() {
+	private void loadAllGeolocations() {
 		this.vertices = ml.getAllVertices();
+		List<GeoLocation> geolocations = buildGeolocations();
+		for(GeoLocation geol : geolocations)
+			System.out.println(geol);
 		
-		System.out.println(vertices);
+		
+		//System.out.println(vertices);
 	}
+
+	private List<GeoLocation> buildGeolocations() {
+		ArrayList<GeoLocation> geolocations = new ArrayList<GeoLocation>();
+		for(RouteableVertex vertex : vertices){
+			String streetname = ml.getStreetnameForVertex(vertex);
+			geolocations.add(new ConcreteGeoLocation(vertex.getId(), streetname));
+		}
+		return geolocations;
+	}
+	
+	
+	
+	
 	
 	
 }
