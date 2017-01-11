@@ -62,66 +62,37 @@ import javax.swing.JToolBar;
 
 public class AppWindow {
 
-	private static final String FILE_PATH = "C:\\Users\\lammbraten\\Dropbox\\Master\\1.Semester\\EAL\\Projekt\\Implementierung\\ArtificialDispatcher\\src\\main\\de\\hsnr\\eal\\ArtificialDispatcher\\data\\prolog\\vehicles.pl";
 	private JFrame mainFrame;
-	private PLDatabase pldb;
-	private MapLoader ml; 
-	private ArrayList<Vehicle> vehicles;
-	private ArrayList<Station> stations;
-	private List<EmergencyType> emergencyTypes;
+
+	private MapLoader ml;
+
+
 	private MapMarkerPainter mapMarkerPainter;
 	private HashSet<AbstractMapMarker> fireDepartmentComponents;
 	private JXMapViewer mapViewer;
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					AppWindow window = new AppWindow();
-					window.mainFrame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+	
+	
+	private ArrayList<Vehicle> vehicles;
+	private ArrayList<Station> stations;
+	private List<EmergencyType> emergencyTypes;
+
 
 	/**
 	 * Create the application.
+	 * @param ml 
 	 */
-	public AppWindow() {
-		loadGraph();
-		loadDb();
-		initialize();
-	}
-
-	private void loadGraph() {
-		ml = new MapLoader();
-		//System.out.println(ml.calcPath(4149803115l, 1607634076l));
+	public AppWindow(MapLoader ml, ArrayList<Vehicle> vehicles, ArrayList<Station> stations, List<EmergencyType> emergencyTypes) {
+		this.ml = ml;
+		this.vehicles = vehicles;
+		this.stations = stations;
+		this.emergencyTypes = emergencyTypes;
 		
+		initialize();
+		mainFrame.setVisible(true);
 
 	}
 
-	private void loadDb() {
-		pldb = new PLDatabase(FILE_PATH);
-		stations = pldb.getStationObjects();
-		vehicles = new ArrayList<Vehicle>();
-		try {
-			emergencyTypes = pldb.getEmergencyTypeObjects();
-		} catch (Exception e1) {
-			e1.printStackTrace();
-		}
-		try {
-			for(Station station : stations)
-				vehicles.addAll(pldb.getVehiclesObjectsOfStation(station.getId()));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-	}
 
 	/**
 	 * Initialize the contents of the frame.
