@@ -12,6 +12,7 @@ import javax.swing.JScrollBar;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Container;
 import java.awt.Dimension;
 
 import javax.swing.JScrollPane;
@@ -42,11 +43,12 @@ import de.hsnr.eal.ArtificialDispatcher.firedepartment.stations.Station;
 import de.hsnr.eal.ArtificialDispatcher.firedepartment.stations.StationType;
 import de.hsnr.eal.ArtificialDispatcher.firedepartment.trucks.Vehicle;
 import de.hsnr.eal.ArtificialDispatcher.graph.RouteableVertex;
+import de.hsnr.eal.ArtificialDispatcher.gui.mapmarker.AbstractMapMarker;
+import de.hsnr.eal.ArtificialDispatcher.gui.mapmarker.MapMarkerPainter;
+import de.hsnr.eal.ArtificialDispatcher.gui.mapmarker.StationMapMarker;
+import de.hsnr.eal.ArtificialDispatcher.gui.mapmarker.VehicleMapMarker;
 import de.hsnr.eal.ArtificialDispatcher.gui.test.TestListCellRenderer.Item;
 import de.hsnr.eal.ArtificialDispatcher.gui.test.TestListCellRenderer.ItemCellRenderer;
-import de.hsnr.eal.ArtificialDispatcher.mapmarker.AbstractMapMarker;
-import de.hsnr.eal.ArtificialDispatcher.mapmarker.MapMarkerPainter;
-import de.hsnr.eal.ArtificialDispatcher.mapmarker.StationMapMarker;
 import de.westnordost.osmapi.map.data.LatLon;
 
 import javax.swing.JButton;
@@ -67,6 +69,9 @@ public class AppWindow {
 	private ArrayList<Vehicle> vehicles;
 	private ArrayList<Station> stations;
 	private List<EmergencyType> emergencyTypes;
+	private MapMarkerPainter mapMarkerPainter;
+	private HashSet<AbstractMapMarker> fireDepartmentComponents;
+	private JXMapViewer mapViewer;
 
 	/**
 	 * Launch the application.
@@ -128,7 +133,9 @@ public class AppWindow {
 		mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		
-		
+		// Setup JXMapViewer
+		mapViewer = new JXMapViewer();
+		mapViewer.setTileFactory(new DefaultTileFactory(new OSMTileFactoryInfo()));
 
 		
 		
@@ -185,9 +192,7 @@ public class AppWindow {
 		
 		mainFrame.getContentPane().add(vehicleSplitPane, BorderLayout.EAST);
 		
-		// Setup JXMapViewer
-		final JXMapViewer mapViewer = new JXMapViewer();
-		mapViewer.setTileFactory(new DefaultTileFactory(new OSMTileFactoryInfo()));
+
 
 		GeoPosition krefeld = new GeoPosition(51.33, 6.58);
 
@@ -207,26 +212,34 @@ public class AppWindow {
 		
 		
 		//MapMarker------------------------------
-		HashSet<StationMapMarker> waypoints = new HashSet<StationMapMarker>();
+		HashSet<AbstractMapMarker> stationMarker = new HashSet<AbstractMapMarker>();
 
-		
 		for(Station station : stations){
 			LatLon position = ml.getPositionOf(station.getOsmNode());
-			waypoints.add(new StationMapMarker(station, new GeoPosition(position.getLatitude(), position.getLongitude())));
+			stationMarker.add(new StationMapMarker(station, new GeoPosition(position.getLatitude(), position.getLongitude())));
 		}
 
+		HashSet<AbstractMapMarker> vehicleMarker = new HashSet<AbstractMapMarker>();
+
+		for(Vehicle vehicle : vehicles){
+			LatLon position = ml.getPositionOf(vehicle.getLocation());
+			vehicleMarker.add(new VehicleMapMarker(vehicle, new GeoPosition(position.getLatitude(), position.getLongitude())));
+		}
+
+
         // Set the overlay painter
-        WaypointPainter<AbstractMapMarker> swingWaypointPainter = new MapMarkerPainter();
-        swingWaypointPainter.setWaypoints(waypoints);
-        mapViewer.setOverlayPainter(swingWaypointPainter);
+		mapMarkerPainter = new MapMarkerPainter();
+		fireDepartmentComponents = new HashSet<AbstractMapMarker>();
         
-        // Add the JButtons to the map viewer
-        for (StationMapMarker w : waypoints) {
-            mapViewer.add(w.getPanel());
-        }
+        addMapMarkerToMap(vehicleMarker);
+        addMapMarkerToMap(stationMarker);
+		
+        mapMarkerPainter.setWaypoints(fireDepartmentComponents);
+        mapViewer.setOverlayPainter(mapMarkerPainter);
+        
+
 
 		//MapMarker--------------------------------Ende
-		
 		
 		
 
@@ -267,6 +280,13 @@ public class AppWindow {
 
 		
 
+	}
+
+	private void addMapMarkerToMap(HashSet<AbstractMapMarker> marker) {
+        fireDepartmentComponents.addAll(marker);
+		for (AbstractMapMarker m : marker) {
+            mapViewer.add(m.getPanel());
+        }
 	}
 	
 

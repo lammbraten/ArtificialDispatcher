@@ -47,18 +47,38 @@ public class PLDatabase {
 	public ArrayList<Station> getStationObjects(){
 		Map<String, Term>[] stations = getStations();
 		ArrayList<Station> stationObjects = new ArrayList<Station>();
-
-        for(int i = 0; i < stations.length; i++){
-    		int number =  Integer.parseInt(stations[i].get("Number").toString());
-    		String name = stations[i].get("Name").toString().replace("'", "");
-    		String type = stations[i].get("Type").toString().replace("'", "");
-    		long node = stations[i].get("Node").longValue();
-    		stationObjects.add(new Station(number, name, type, node));
-        }
-        	
-        return stationObjects;
+	
+	    for(int i = 0; i < stations.length; i++){
+			int number =  Integer.parseInt(stations[i].get("Number").toString());
+			String name = stations[i].get("Name").toString().replace("'", "");
+			String type = stations[i].get("Type").toString().replace("'", "");
+			long node = stations[i].get("Node").longValue();
+			stationObjects.add(new Station(number, name, type, node));
+	    }
+	    	
+	    return stationObjects;
 	}
 	
+	private Map<String, Term> getStation(int stationId){
+		String tStations = "station("+ stationId + ", Name, Type, Node)";
+        Query qStations = new Query(tStations);
+        
+        Map<String, Term> station = qStations.oneSolution();
+       	
+        return station;
+	}
+	
+	public Station getStationObject(int stationId) {
+		Map<String, Term> station = getStation(stationId);
+		
+		int number =  stationId;
+		String name = station.get("Name").toString().replace("'", "");
+		String type = station.get("Type").toString().replace("'", "");
+		long node = station.get("Node").longValue();
+		
+		return new Station(number, name, type, node);
+	}
+
 	private Map<String, Term>[] getVehiclesOfStation(int stationId){
 		String tVehicles = "vehicle(Number, Type, Name, "+ stationId +", CrewStrength)";
         Query qVehicles = new Query(tVehicles);
@@ -113,7 +133,7 @@ public class PLDatabase {
 		String name = vehicleMap.get("Name").toString().replace("'", "");
 		String typeTerm = vehicleMap.get("Type").toString();
 		String type = vehicleMap.get("Type").toString().replace("'", "");
-		int station = stationId;
+		Station station = getStationObject(stationId);
 		int crewStrength = vehicleMap.get("CrewStrength").intValue();
 		
 		Map<String, Term> vehicleType = getVehicleType(typeTerm);

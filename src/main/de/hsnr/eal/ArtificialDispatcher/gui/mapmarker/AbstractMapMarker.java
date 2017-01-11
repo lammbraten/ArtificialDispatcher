@@ -1,4 +1,4 @@
-package de.hsnr.eal.ArtificialDispatcher.mapmarker;
+package de.hsnr.eal.ArtificialDispatcher.gui.mapmarker;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
