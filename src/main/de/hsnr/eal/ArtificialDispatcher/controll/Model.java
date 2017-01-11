@@ -2,6 +2,8 @@ package de.hsnr.eal.ArtificialDispatcher.controll;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 
 import de.hsnr.eal.ArtificialDispatcher.data.map.MapLoader;
 import de.hsnr.eal.ArtificialDispatcher.data.prolog.PLDatabase;
@@ -9,7 +11,7 @@ import de.hsnr.eal.ArtificialDispatcher.emergency.EmergencyType;
 import de.hsnr.eal.ArtificialDispatcher.firedepartment.stations.Station;
 import de.hsnr.eal.ArtificialDispatcher.firedepartment.trucks.Vehicle;
 
-public class Model {
+public class Model extends Observable implements Observer{
 	
 	private static final String FILE_PATH = "C:\\Users\\lammbraten\\Dropbox\\Master\\1.Semester\\EAL\\Projekt\\Implementierung\\ArtificialDispatcher\\src\\main\\de\\hsnr\\eal\\ArtificialDispatcher\\data\\prolog\\vehicles.pl";
 	MapLoader ml; 
@@ -25,6 +27,8 @@ public class Model {
 		loadDb();
 		
 		vh = new VehicleHandler(this.vehicles);
+		vh.addObserver(this);
+		
 	}
 
 	private void loadGraph() {
@@ -48,5 +52,20 @@ public class Model {
 			e.printStackTrace();
 		}
 
+	}
+
+	@Override
+	public void update(Observable arg0, Object arg1) {
+		if(arg0 instanceof VehicleHandler)
+			updateViewWithVehicle(arg1);
+	}
+
+	private void updateViewWithVehicle(Object arg1) {
+		//TODO: Vielleicht unnötigt das Object in ein Vehicle zu casten, wenn es danach wieder an eine Mtehode übergeben wird, welche ein object erwartet.
+		Vehicle v = null;
+		if(arg1 instanceof Vehicle)
+			v = (Vehicle) arg1;
+		this.notifyObservers(v);
+		
 	}
 }

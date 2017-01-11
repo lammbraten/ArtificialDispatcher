@@ -3,6 +3,7 @@ package de.hsnr.eal.ArtificialDispatcher.firedepartment.trucks;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.hsnr.eal.ArtificialDispatcher.emergency.Emergency;
 import de.hsnr.eal.ArtificialDispatcher.firedepartment.members.equipment.EquipmentItem;
 import de.hsnr.eal.ArtificialDispatcher.firedepartment.stations.Station;
 import de.hsnr.eal.ArtificialDispatcher.graph.Route;
@@ -19,6 +20,9 @@ public class ConcreteVehicle implements Vehicle {
 	private long location;
 	private Route route;
 	private Status fmsStatus;
+	private Emergency emergency;
+	
+	private double remainingMeter;
 	
 	public ConcreteVehicle(int id, String typeTerm, String name, Station homeStation, int crewStrength,
 			List<EquipmentItem> equipmentTerm, int emergencySpeed, int normSpeed, int tankVolume){
@@ -31,6 +35,10 @@ public class ConcreteVehicle implements Vehicle {
 		this.fmsStatus = Status.ZWEI;
 		
 		this.location = homeStation.getOsmNode();
+		this.emergency = null;
+		
+		//Meter die beim letzten tick nicht gefahren werden konnten.
+		this.remainingMeter = 0.0;
 				
 	}
 	
@@ -80,8 +88,9 @@ public class ConcreteVehicle implements Vehicle {
 	
 	@Override
 	public int getSpeed() {
-		// TODO Auto-generated method stub
-		return 0;
+		if(emergency != null)
+			return emergencySpeed;
+		return normSpeed;
 	}
 
 	@Override
@@ -105,6 +114,13 @@ public class ConcreteVehicle implements Vehicle {
 	}
 	
 	@Override
+	public boolean hasRoute(){
+		if(this.route != null)
+			return true;
+		return false;
+	}
+
+	@Override
 	public Status getStatus(){
 		return fmsStatus;
 	}
@@ -114,5 +130,47 @@ public class ConcreteVehicle implements Vehicle {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	public void setStatus(Status status) {
+		this.fmsStatus = status;
+	}
+
+	@Override
+	public Emergency getEmergency() {
+		return this.emergency;
+	}
+
+	@Override
+	public void setEmergency(Emergency e) {
+		this.emergency = e;
+	}
 	
+	@Override
+	public boolean hasEmergency() {
+		if(this.emergency != null)
+			return true;
+		return false;
+	}
+
+
+	@Override
+	public double getRemainingMeter() {
+		return remainingMeter;
+	}
+	
+	@Override
+	public void setRemainingMeter(double remainingMeter) {
+		this.remainingMeter = remainingMeter;
+	}
+
+	@Override
+	public boolean isAtTarget() {
+		if(!hasRoute())
+			return false; //Ist nicht unterwegs
+		if(route.getTargetNodeId() == location)
+			return true;
+		
+		return false;
+	}
 }

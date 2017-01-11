@@ -1,9 +1,12 @@
 package de.hsnr.eal.ArtificialDispatcher.controll;
 
 import java.awt.EventQueue;
+import java.util.Observable;
+import java.util.Observer;
+
 import de.hsnr.eal.ArtificialDispatcher.gui.AppWindow;
 
-public class Controller {
+public class Controller implements Observer{
 	
 	private AppWindow view;
 	private Model model;
@@ -26,6 +29,7 @@ public class Controller {
 
 	private void initModel() {
 		model = new Model();
+		model.addObserver(this);
 	}
 
 	private void initView() {
@@ -34,6 +38,11 @@ public class Controller {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	@Override
+	public void update(Observable o, Object arg) {
+
 	}
 	
 

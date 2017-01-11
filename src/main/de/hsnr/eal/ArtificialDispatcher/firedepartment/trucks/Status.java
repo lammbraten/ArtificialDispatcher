@@ -40,4 +40,10 @@ public enum Status {
 		return color;
 	}
 	
+	public static boolean isAvailable(Status s){
+		if(s == Status.EINS || s == Status.ZWEI)
+			return true;
+		return false;
+	}
+	
 }

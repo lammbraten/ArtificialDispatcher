@@ -60,7 +60,7 @@ import java.awt.CardLayout;
 import net.miginfocom.swing.MigLayout;
 import javax.swing.JToolBar;
 
-public class AppWindow {
+public class AppWindow{
 
 	private JFrame mainFrame;
 
@@ -92,6 +92,24 @@ public class AppWindow {
 		mainFrame.setVisible(true);
 
 	}
+	
+	public void renderVehicleList(){
+		//TODO: 
+	}
+	
+	public void renderEmergencyList(){
+		//TODO:
+	}
+	
+	public void renderMap(){
+		//TODO:
+	}
+	
+	public void renderRadioMessages(){
+		//TODO:
+	}
+	
+	
 
 
 	/**
