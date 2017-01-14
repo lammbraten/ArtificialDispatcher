@@ -2,6 +2,7 @@ package de.hsnr.eal.ArtificialDispatcher.gui;
 
 import javax.swing.JPanel;
 
+import de.hsnr.eal.ArtificialDispatcher.controll.EmergencyHandler;
 import de.hsnr.eal.ArtificialDispatcher.data.map.MapLoader;
 import de.hsnr.eal.ArtificialDispatcher.emergency.EmergencyType;
 
@@ -19,13 +20,13 @@ public class EmergencySpawnerPanel extends JPanel {
 	 * Create the panel.
 	 * @param ml 
 	 */
-	public EmergencySpawnerPanel(List<EmergencyType> emergencyTypes, MapLoader ml) {
+	public EmergencySpawnerPanel(List<EmergencyType> emergencyTypes, MapLoader ml, EmergencyHandler eh) {
 		setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
 		JButton generateNewEventBtn = new JButton("Neuen Einsatz er\u00F6ffnen");
 		generateNewEventBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				NewEmergencyWindow dialog = new NewEmergencyWindow(emergencyTypes, ml);
+				NewEmergencyWindow dialog = new NewEmergencyWindow(emergencyTypes, ml, eh);
 				dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 				dialog.setVisible(true);
 			}

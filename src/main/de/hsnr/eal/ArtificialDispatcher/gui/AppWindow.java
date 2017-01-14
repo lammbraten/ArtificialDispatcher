@@ -4,6 +4,10 @@ import java.awt.EventQueue;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
+import java.util.Set;
+import java.util.TreeSet;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -35,6 +39,9 @@ import org.jxmapviewer.viewer.DefaultTileFactory;
 import org.jxmapviewer.viewer.GeoPosition;
 import org.jxmapviewer.viewer.WaypointPainter;
 
+import de.hsnr.eal.ArtificialDispatcher.controll.EmergencyHandler;
+import de.hsnr.eal.ArtificialDispatcher.data.map.ConcreteGeoLocation;
+import de.hsnr.eal.ArtificialDispatcher.data.map.GeoLocation;
 import de.hsnr.eal.ArtificialDispatcher.data.map.MapLoader;
 import de.hsnr.eal.ArtificialDispatcher.data.prolog.PLDatabase;
 import de.hsnr.eal.ArtificialDispatcher.emergency.Emergency;
@@ -54,13 +61,15 @@ import de.westnordost.osmapi.map.data.LatLon;
 import javax.swing.JButton;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
+import java.awt.Toolkit;
+
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import java.awt.CardLayout;
 import net.miginfocom.swing.MigLayout;
 import javax.swing.JToolBar;
 
-public class AppWindow{
+public class AppWindow extends Observable implements Observer{
 
 	private JFrame mainFrame;
 
@@ -71,10 +80,9 @@ public class AppWindow{
 	private HashSet<AbstractMapMarker> fireDepartmentComponents;
 	private JXMapViewer mapViewer;
 
-	
-	
 	private ArrayList<Vehicle> vehicles;
 	private ArrayList<Station> stations;
+	private Set<Emergency> emergencies;
 	private List<EmergencyType> emergencyTypes;
 
 	private JPanel vehicleListPanel;
@@ -82,18 +90,28 @@ public class AppWindow{
 
 	private JPanel radioListPanel;
 
-	private JList<Emergency> emergencyList;
+	//private JList<Emergency> emergencyList;
+
+	private EmergencyHandler eh;
+
+	private Container eventPanel;
+
+	private Toolkit t;
+
 
 
 	/**
 	 * Create the application.
 	 * @param ml 
 	 */
-	public AppWindow(MapLoader ml, ArrayList<Vehicle> vehicles, ArrayList<Station> stations, List<EmergencyType> emergencyTypes) {
+	public AppWindow(MapLoader ml, EmergencyHandler eh, ArrayList<Vehicle> vehicles, ArrayList<Station> stations, List<EmergencyType> emergencyTypes) {
 		this.ml = ml;
+		this.eh = eh;
 		this.vehicles = vehicles;
 		this.stations = stations;
 		this.emergencyTypes = emergencyTypes;
+		this.emergencies = new TreeSet<Emergency>();
+		
 		
 		initialize();
 	}
@@ -120,13 +138,47 @@ public class AppWindow{
 	}
 	
 	public void renderEmergencyList(){
+		//mainFrame.getContentPane().remove(eventPanel);
 		DefaultListModel<Emergency> emergencyModel = new DefaultListModel<Emergency>();
-        emergencyModel.addElement(new Emergency("Wohnungsbrand"));
-        emergencyModel.addElement(new Emergency("Heckenbrand"));
-        emergencyModel.addElement(new Emergency("Mülleimer"));
         
-        emergencyList = new JList<Emergency>(emergencyModel);
+		this.emergencies = eh.getEmergencies();
+		
+		if(emergencies != null){
+			for(Emergency e : emergencies)
+				emergencyModel.addElement(e);
+		}
+		
+
+	//	this.emergencies.add(new Emergency(new EmergencyType("HI","LOL", null), new ConcreteGeoLocation(1l,"1")));
+	//	this.emergencies.add(new Emergency(new EmergencyType("HsI","L234OL", null), new ConcreteGeoLocation(1l,"1")));
+	//	this.emergencies.add(new Emergency(new EmergencyType("H32eI","LO32L", null), new ConcreteGeoLocation(1l,"1")));
+
+		JList<Emergency> emergencyList = new JList<Emergency>(emergencyModel);
         emergencyList.setCellRenderer(new EmergencyPanelRenderer());
+
+        emergencyList.updateUI();
+        
+        emergencyList.validate();
+        emergencyList.repaint();
+
+        eventPanel.remove(emergencyList);
+		eventPanel.add(emergencyList);
+		
+		eventPanel.validate();
+		eventPanel.repaint();
+		
+
+
+		mainFrame.getContentPane().add(eventPanel, BorderLayout.WEST);
+		//mainFrame.getContentPane().validate();
+		//mainFrame.getContentPane().repaint();
+
+		mainFrame.validate();
+		mainFrame.repaint();
+		
+
+		
+
 	}
 	
 	public void renderMap() {
@@ -143,7 +195,6 @@ public class AppWindow{
 			LatLon position = ml.getPositionOf(vehicle.getLocation());
 			vehicleMarker.add(new VehicleMapMarker(vehicle, new GeoPosition(position.getLatitude(), position.getLongitude())));
 		}
-
 
         // Set the overlay painter
 		mapMarkerPainter = new MapMarkerPainter();
@@ -180,17 +231,18 @@ public class AppWindow{
 		Dimension minimumSize = new Dimension(200, 250);
 		radioListScrollPane.setMinimumSize(minimumSize);	
 	}
-	
-	
-
 
 	/**
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
+		t = Toolkit.getDefaultToolkit();
+		
+		Dimension d = t.getScreenSize();
+		
 		mainFrame = new JFrame();
 		mainFrame.setTitle("Artificial Dispatcher / K\u00FCnstliche Leitstelle\r\n");
-		mainFrame.setBounds(100, 100, 1920, 950);
+		mainFrame.setBounds(0, 0, (int) d.getWidth(), (int)(d.getHeight()-10));
 		mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		mainFrame.getContentPane().setLayout(new BorderLayout(5, 5));	
 		
@@ -212,7 +264,7 @@ public class AppWindow{
 		JToolBar emergencySpawnerToolBar = new JToolBar();
 		viewSelectPanel.add(emergencySpawnerToolBar);
 		
-		EmergencySpawnerPanel evsPanel = new EmergencySpawnerPanel(emergencyTypes, ml);
+		EmergencySpawnerPanel evsPanel = new EmergencySpawnerPanel(emergencyTypes, ml, eh);
 		emergencySpawnerToolBar.add(evsPanel);
 		
 		JToolBar tickControlToolBar = new JToolBar();
@@ -223,15 +275,16 @@ public class AppWindow{
 	}
 
 	private void initEmergencyPanel() {
+		eventPanel = new JPanel();		
+		mainFrame.getContentPane().add(eventPanel, BorderLayout.WEST);
+
 		renderEmergencyList();
 		
-		JPanel eventPanel = new JPanel();
+
 		eventPanel.setLayout(new BorderLayout(0, 0));
-		eventPanel.add(emergencyList);
 		JLabel eventLabel = new JLabel("Aktuelle Eins\u00E4tze");
 		eventPanel.add(eventLabel, BorderLayout.NORTH);
 		
-		mainFrame.getContentPane().add(eventPanel, BorderLayout.WEST);
 	}
 
 	private void initSplitPane() {
@@ -276,6 +329,12 @@ public class AppWindow{
 		for (AbstractMapMarker m : marker) {
             mapViewer.add(m.getPanel());
         }
+	}
+
+	@Override
+	public void update(Observable arg0, Object arg1) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 

@@ -26,6 +26,7 @@ public class VehicleHandler extends Observable {
 	}
 	
 	private void moveVehicle(Vehicle v) {
+		this.setChanged();
 		if(v.hasRoute())
 			calcAndSetPosition(v);
 		if(v.isAtTarget()){
@@ -78,6 +79,7 @@ public class VehicleHandler extends Observable {
 		if(r == null)
 			throw new IllegalArgumentException("No Route found!\n");
 		else{
+			this.setChanged();
 			v.setRoute(r);
 			v.setStatus(Status.DREI);
 			v.setEmergency(e);

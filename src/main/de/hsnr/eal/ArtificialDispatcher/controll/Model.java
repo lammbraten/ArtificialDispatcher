@@ -29,6 +29,10 @@ public class Model extends Observable implements Observer{
 		vh = new VehicleHandler(this.vehicles);
 		vh.addObserver(this);
 		
+		eh = new EmergencyHandler(vh);
+		eh.addObserver(this);
+
+		
 	}
 
 	private void loadGraph() {
@@ -56,9 +60,19 @@ public class Model extends Observable implements Observer{
 
 	@Override
 	public void update(Observable arg0, Object arg1) {
+		System.out.println("update Model");
+		
+		this.setChanged();
+		
 		if(arg0 instanceof VehicleHandler)
 			updateViewWithVehicle(arg1);
+		if(arg0 instanceof EmergencyHandler)
+			notifyObservers(arg1);
+		
 	}
+	
+	
+
 
 	private void updateViewWithVehicle(Object arg1) {
 		//TODO: Vielleicht unnötigt das Object in ein Vehicle zu casten, wenn es danach wieder an eine Mtehode übergeben wird, welche ein object erwartet.
@@ -67,5 +81,9 @@ public class Model extends Observable implements Observer{
 			v = (Vehicle) arg1;
 		this.notifyObservers(v);
 		
+	}
+
+	public EmergencyHandler getEmergencyHandler() {
+		return eh;
 	}
 }

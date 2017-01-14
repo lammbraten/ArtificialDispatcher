@@ -4,6 +4,7 @@ import java.awt.EventQueue;
 import java.util.Observable;
 import java.util.Observer;
 
+import de.hsnr.eal.ArtificialDispatcher.emergency.Emergency;
 import de.hsnr.eal.ArtificialDispatcher.gui.AppWindow;
 
 public class Controller implements Observer{
@@ -30,11 +31,12 @@ public class Controller implements Observer{
 	private void initModel() {
 		model = new Model();
 		model.addObserver(this);
+		
 	}
 
 	private void initView() {
 		try {
-			view = new AppWindow(model.ml, model.vehicles, model.stations, model.emergencyTypes);
+			view = new AppWindow(model.ml, model.getEmergencyHandler(), model.vehicles, model.stations, model.emergencyTypes);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -42,7 +44,10 @@ public class Controller implements Observer{
 
 	@Override
 	public void update(Observable o, Object arg) {
-
+		System.out.println("update Controller");
+		if(o instanceof Model)
+			if(arg instanceof Emergency)
+				view.renderEmergencyList();
 	}
 	
 

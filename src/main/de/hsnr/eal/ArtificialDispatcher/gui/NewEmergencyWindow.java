@@ -16,14 +16,18 @@ import javax.swing.SwingConstants;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 
+import de.hsnr.eal.ArtificialDispatcher.controll.EmergencyHandler;
 import de.hsnr.eal.ArtificialDispatcher.data.map.ConcreteGeoLocation;
 import de.hsnr.eal.ArtificialDispatcher.data.map.GeoLocation;
 import de.hsnr.eal.ArtificialDispatcher.data.map.MapLoader;
+import de.hsnr.eal.ArtificialDispatcher.emergency.Emergency;
 import de.hsnr.eal.ArtificialDispatcher.emergency.EmergencyType;
 import de.hsnr.eal.ArtificialDispatcher.firedepartment.trucks.VehicleType;
 import de.hsnr.eal.ArtificialDispatcher.graph.RouteableVertex;
 import de.hsnr.eal.ArtificialDispatcher.graph.StreetEdge;
 import de.hsnr.eal.ArtificialDispatcher.graph.pattern.GeoLocationComparator;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class NewEmergencyWindow extends JDialog {
 
@@ -31,6 +35,7 @@ public class NewEmergencyWindow extends JDialog {
 	private static final long serialVersionUID = -3023598463523579982L;
 	private final JPanel contentPanel = new JPanel();
 	private MapLoader ml;
+	private EmergencyHandler eh;
 	Set<RouteableVertex> vertices;
 	private List<GeoLocation> geolocations;
 
@@ -39,8 +44,9 @@ public class NewEmergencyWindow extends JDialog {
 	 * @param emergencyTypes 
 	 * @param ml 
 	 */
-	public NewEmergencyWindow(List<EmergencyType> emergencyTypes, MapLoader ml) {
+	public NewEmergencyWindow(List<EmergencyType> emergencyTypes, MapLoader ml, EmergencyHandler eh) {
 		this.ml = ml;
+		this.eh = eh;
 		loadAllGeolocations();
 		
 		setTitle("Neuen Einsatz er\u00F6ffnen");
@@ -84,6 +90,13 @@ public class NewEmergencyWindow extends JDialog {
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
 				JButton okButton = new JButton("OK");
+				okButton.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent arg0) {
+						EmergencyType et  = (EmergencyType) emergencyTypeModel.getSelectedItem();
+						GeoLocation gl = (GeoLocation) geolocationsModel.getSelectedItem();
+						eh.addEmergency(new Emergency(et, gl));
+					}
+				});
 				okButton.setActionCommand("OK");
 				buttonPane.add(okButton);
 				getRootPane().setDefaultButton(okButton);
