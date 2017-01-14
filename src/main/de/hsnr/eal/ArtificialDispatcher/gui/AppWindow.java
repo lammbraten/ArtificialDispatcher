@@ -51,6 +51,7 @@ import de.hsnr.eal.ArtificialDispatcher.firedepartment.stations.StationType;
 import de.hsnr.eal.ArtificialDispatcher.firedepartment.trucks.Vehicle;
 import de.hsnr.eal.ArtificialDispatcher.graph.RouteableVertex;
 import de.hsnr.eal.ArtificialDispatcher.gui.mapmarker.AbstractMapMarker;
+import de.hsnr.eal.ArtificialDispatcher.gui.mapmarker.EmergencyMapMarker;
 import de.hsnr.eal.ArtificialDispatcher.gui.mapmarker.MapMarkerPainter;
 import de.hsnr.eal.ArtificialDispatcher.gui.mapmarker.StationMapMarker;
 import de.hsnr.eal.ArtificialDispatcher.gui.mapmarker.VehicleMapMarker;
@@ -138,7 +139,6 @@ public class AppWindow extends Observable implements Observer{
 	}
 	
 	public void renderEmergencyList(){
-		//mainFrame.getContentPane().remove(eventPanel);
 		DefaultListModel<Emergency> emergencyModel = new DefaultListModel<Emergency>();
         
 		this.emergencies = eh.getEmergencies();
@@ -147,64 +147,53 @@ public class AppWindow extends Observable implements Observer{
 			for(Emergency e : emergencies)
 				emergencyModel.addElement(e);
 		}
-		
-
-	//	this.emergencies.add(new Emergency(new EmergencyType("HI","LOL", null), new ConcreteGeoLocation(1l,"1")));
-	//	this.emergencies.add(new Emergency(new EmergencyType("HsI","L234OL", null), new ConcreteGeoLocation(1l,"1")));
-	//	this.emergencies.add(new Emergency(new EmergencyType("H32eI","LO32L", null), new ConcreteGeoLocation(1l,"1")));
 
 		JList<Emergency> emergencyList = new JList<Emergency>(emergencyModel);
         emergencyList.setCellRenderer(new EmergencyPanelRenderer());
 
-        emergencyList.updateUI();
-        
-        emergencyList.validate();
-        emergencyList.repaint();
-
-        eventPanel.remove(emergencyList);
+        eventPanel.removeAll();;
 		eventPanel.add(emergencyList);
 		
-		eventPanel.validate();
-		eventPanel.repaint();
-		
-
-
 		mainFrame.getContentPane().add(eventPanel, BorderLayout.WEST);
-		//mainFrame.getContentPane().validate();
-		//mainFrame.getContentPane().repaint();
-
 		mainFrame.validate();
 		mainFrame.repaint();
-		
-
-		
-
 	}
 	
 	public void renderMap() {
 		HashSet<AbstractMapMarker> stationMarker = new HashSet<AbstractMapMarker>();
-
 		for(Station station : stations){
 			LatLon position = ml.getPositionOf(station.getOsmNode());
 			stationMarker.add(new StationMapMarker(station, new GeoPosition(position.getLatitude(), position.getLongitude())));
 		}
 
 		HashSet<AbstractMapMarker> vehicleMarker = new HashSet<AbstractMapMarker>();
-
 		for(Vehicle vehicle : vehicles){
 			LatLon position = ml.getPositionOf(vehicle.getLocation());
 			vehicleMarker.add(new VehicleMapMarker(vehicle, new GeoPosition(position.getLatitude(), position.getLongitude())));
+		}
+		
+		HashSet<AbstractMapMarker> emergencyMarker = new HashSet<AbstractMapMarker>();
+			for(Emergency emergency : emergencies){
+			LatLon position = ml.getPositionOf(emergency.getGeoLocation().getOsmNodeId());
+			emergencyMarker.add(new EmergencyMapMarker(emergency, new GeoPosition(position.getLatitude(), position.getLongitude())));
 		}
 
         // Set the overlay painter
 		mapMarkerPainter = new MapMarkerPainter();
 		fireDepartmentComponents = new HashSet<AbstractMapMarker>();
+		
+        mapViewer.removeAll();
         
         addMapMarkerToMap(vehicleMarker);
         addMapMarkerToMap(stationMarker);
+        addMapMarkerToMap(emergencyMarker);
+
 		
         mapMarkerPainter.setWaypoints(fireDepartmentComponents);
         mapViewer.setOverlayPainter(mapMarkerPainter);
+        
+		mainFrame.validate();
+		mainFrame.repaint();
 	}
 
 	public void renderRadioMessages(){
@@ -325,7 +314,7 @@ public class AppWindow extends Observable implements Observer{
 	}
 
 	private void addMapMarkerToMap(HashSet<AbstractMapMarker> marker) {
-        fireDepartmentComponents.addAll(marker);
+		fireDepartmentComponents.addAll(marker);
 		for (AbstractMapMarker m : marker) {
             mapViewer.add(m.getPanel());
         }

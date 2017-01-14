@@ -6,8 +6,9 @@ public class Emergency implements Comparable {
     private static int counter = 0;
 	private int nr;
 	private EmergencyType et;
-	private int id;
 	private GeoLocation gl;
+	private int id;
+
 	
 	public Emergency(EmergencyType et, GeoLocation gl) {
         counter++;
@@ -24,6 +25,8 @@ public class Emergency implements Comparable {
 	public int getNr() {
 		return nr;
 	}
+	
+	
 
 	@Override
 	public int compareTo(Object arg0) {
@@ -32,5 +35,18 @@ public class Emergency implements Comparable {
 			return this.getNr() - otherEmergency.getNr();
 		}	
 		return 0;
+	}
+	
+	@Override 
+	public String toString(){
+		return this.getName() + ": " + et.getTasks();
+	}
+
+	public GeoLocation getGeoLocation() {
+		return gl;
+	}
+
+	public EmergencyType getEmergencyType() {
+		return et;
 	}
 }

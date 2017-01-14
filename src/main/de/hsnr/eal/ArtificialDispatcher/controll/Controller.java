@@ -46,8 +46,10 @@ public class Controller implements Observer{
 	public void update(Observable o, Object arg) {
 		System.out.println("update Controller");
 		if(o instanceof Model)
-			if(arg instanceof Emergency)
+			if(arg instanceof Emergency){
 				view.renderEmergencyList();
+				view.renderMap();
+			}
 	}
 	
 
