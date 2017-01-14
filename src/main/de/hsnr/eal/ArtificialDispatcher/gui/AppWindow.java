@@ -77,6 +77,13 @@ public class AppWindow{
 	private ArrayList<Station> stations;
 	private List<EmergencyType> emergencyTypes;
 
+	private JPanel vehicleListPanel;
+	private JSplitPane vehicleSplitPane;
+
+	private JPanel radioListPanel;
+
+	private JList<Emergency> emergencyList;
+
 
 	/**
 	 * Create the application.
@@ -89,45 +96,9 @@ public class AppWindow{
 		this.emergencyTypes = emergencyTypes;
 		
 		initialize();
-		mainFrame.setVisible(true);
-
 	}
 	
 	public void renderVehicleList(){
-		//TODO: 
-	}
-	
-	public void renderEmergencyList(){
-		//TODO:
-	}
-	
-	public void renderMap(){
-		//TODO:
-	}
-	
-	public void renderRadioMessages(){
-		//TODO:
-	}
-	
-	
-
-
-	/**
-	 * Initialize the contents of the frame.
-	 */
-	private void initialize() {
-		mainFrame = new JFrame();
-		mainFrame.setTitle("Artificial Dispatcher / K\u00FCnstliche Leitstelle\r\n");
-		mainFrame.setBounds(100, 100, 1920, 950);
-		mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
-		
-		// Setup JXMapViewer
-		mapViewer = new JXMapViewer();
-		mapViewer.setTileFactory(new DefaultTileFactory(new OSMTileFactoryInfo()));
-
-		
-		
         DefaultListModel<Vehicle> vehicleModel = new DefaultListModel<Vehicle>();
         for(Vehicle vehicle : vehicles)
         	vehicleModel.addElement(vehicle);
@@ -135,72 +106,30 @@ public class AppWindow{
         JList<Vehicle> vehicleList = new JList<Vehicle>(vehicleModel);
         vehicleList.setCellRenderer(new VehiclePanelRenderer());
         
-		JList radioList = new JList();
-		radioList.setModel(new AbstractListModel() {
-			String[] values = new String[] {"Kommen ", "H\u00F6rt", "Verstande", "Moin Uwe"};
-			public int getSize() {
-				return values.length;
-			}
-			public Object getElementAt(int index) {
-				return values[index];
-			}
-		});
-		
 		JScrollPane vehicleListScrollPane = new JScrollPane(vehicleList);
 		vehicleListScrollPane.setToolTipText("Hallo\r\n");
-		JScrollPane radioListScrollPane = new JScrollPane(radioList);	
 		
-		
-		JPanel vehicleListPanel = new JPanel();
+		vehicleListPanel = new JPanel();
 		vehicleListPanel.setLayout(new BorderLayout(0, 0));
 		JLabel vehicleListLabel = new JLabel("Fahrzeuge");
 		vehicleListPanel.add(vehicleListLabel, BorderLayout.NORTH);
 		vehicleListPanel.add(vehicleListScrollPane, BorderLayout.CENTER);
 		
-		
-		JPanel radioListPanel = new JPanel();
-		radioListPanel.setLayout(new BorderLayout(0, 0));
-		JLabel radioListLabel = new JLabel("Funk");
-		radioListPanel.add(radioListLabel, BorderLayout.NORTH);		
-		radioListPanel.add(radioListScrollPane, BorderLayout.CENTER);
-		
-		JSplitPane vehicleSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, vehicleListPanel, radioListPanel);
-		
-		
-		vehicleSplitPane.setOneTouchExpandable(true);
-		vehicleSplitPane.setDividerLocation(450);
-		vehicleSplitPane.setDividerSize(10);
-		vehicleSplitPane.setPreferredSize(new Dimension(270, 500));
-
-		//Provide minimum sizes for the two components in the split pane
 		Dimension minimumSize = new Dimension(200, 250);
 		vehicleListScrollPane.setMinimumSize(minimumSize);
-		radioListScrollPane.setMinimumSize(minimumSize);
-		mainFrame.getContentPane().setLayout(new BorderLayout(5, 5));
-		
-		
-		mainFrame.getContentPane().add(vehicleSplitPane, BorderLayout.EAST);
-		
-
-
-		GeoPosition krefeld = new GeoPosition(51.33, 6.58);
-
-		// Set the focus
-		mapViewer.setZoom(7);
-		mapViewer.setAddressLocation(krefeld);
-
-		// Add interactions
-		MouseInputListener mia = new PanMouseInputListener(mapViewer);
-		mapViewer.addMouseListener(mia);
-		mapViewer.addMouseMotionListener(mia);
-
-		mapViewer.addMouseWheelListener(new ZoomMouseWheelListenerCursor(mapViewer));
-			
-		mainFrame.getContentPane().add(mapViewer, BorderLayout.CENTER);
-		
-		
-		
-		//MapMarker------------------------------
+	}
+	
+	public void renderEmergencyList(){
+		DefaultListModel<Emergency> emergencyModel = new DefaultListModel<Emergency>();
+        emergencyModel.addElement(new Emergency("Wohnungsbrand"));
+        emergencyModel.addElement(new Emergency("Heckenbrand"));
+        emergencyModel.addElement(new Emergency("Mülleimer"));
+        
+        emergencyList = new JList<Emergency>(emergencyModel);
+        emergencyList.setCellRenderer(new EmergencyPanelRenderer());
+	}
+	
+	public void renderMap() {
 		HashSet<AbstractMapMarker> stationMarker = new HashSet<AbstractMapMarker>();
 
 		for(Station station : stations){
@@ -225,50 +154,121 @@ public class AppWindow{
 		
         mapMarkerPainter.setWaypoints(fireDepartmentComponents);
         mapViewer.setOverlayPainter(mapMarkerPainter);
-        
+	}
 
-
-		//MapMarker--------------------------------Ende
+	public void renderRadioMessages(){
+		JList radioList = new JList();
+		radioList.setModel(new AbstractListModel() {
+			String[] values = new String[] {"Kommen ", "H\u00F6rt", "Verstande", "Moin Uwe"};
+			public int getSize() {
+				return values.length;
+			}
+			public Object getElementAt(int index) {
+				return values[index];
+			}
+		});
 		
-		
+		JScrollPane radioListScrollPane = new JScrollPane(radioList);	
 
-        DefaultListModel<Emergency> eventModel = new DefaultListModel<Emergency>();
-        eventModel.addElement(new Emergency("Wohnungsbrand"));
-        eventModel.addElement(new Emergency("Heckenbrand"));
-        eventModel.addElement(new Emergency("Mülleimer"));
-        
-        JList<Emergency> list = new JList<Emergency>(eventModel);
-        list.setCellRenderer(new EmergencyPanelRenderer());
-        
-
-		JPanel eventPanel = new JPanel();
-		eventPanel.setLayout(new BorderLayout(0, 0));
-		eventPanel.add(list);
-		JLabel eventLabel = new JLabel("Aktuelle Eins\u00E4tze");
-		eventPanel.add(eventLabel, BorderLayout.NORTH);
+		radioListPanel = new JPanel();
+		radioListPanel.setLayout(new BorderLayout(0, 0));
+		JLabel radioListLabel = new JLabel("Funk");
+		radioListPanel.add(radioListLabel, BorderLayout.NORTH);		
+		radioListPanel.add(radioListScrollPane, BorderLayout.CENTER);
 		
-		mainFrame.getContentPane().add(eventPanel, BorderLayout.WEST);
+		//Provide minimum sizes for the two components in the split pane
+		Dimension minimumSize = new Dimension(200, 250);
+		radioListScrollPane.setMinimumSize(minimumSize);	
+	}
+	
+	
 
+
+	/**
+	 * Initialize the contents of the frame.
+	 */
+	private void initialize() {
+		mainFrame = new JFrame();
+		mainFrame.setTitle("Artificial Dispatcher / K\u00FCnstliche Leitstelle\r\n");
+		mainFrame.setBounds(100, 100, 1920, 950);
+		mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		mainFrame.getContentPane().setLayout(new BorderLayout(5, 5));	
 		
+		initMap();
+		initSplitPane();
+        initEmergencyPanel();
+		initToolbar();
+
+		mainFrame.setVisible(true);
+
+	}
+
+	private void initToolbar() {
 		JPanel viewSelectPanel = new JPanel();
 		mainFrame.getContentPane().add(viewSelectPanel, BorderLayout.NORTH);
 		viewSelectPanel.setMinimumSize(new Dimension(1900, 100));
 		viewSelectPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
-		JToolBar eventSpawnerToolBar = new JToolBar();
-		viewSelectPanel.add(eventSpawnerToolBar);
+		JToolBar emergencySpawnerToolBar = new JToolBar();
+		viewSelectPanel.add(emergencySpawnerToolBar);
 		
 		EmergencySpawnerPanel evsPanel = new EmergencySpawnerPanel(emergencyTypes, ml);
-		eventSpawnerToolBar.add(evsPanel);
+		emergencySpawnerToolBar.add(evsPanel);
 		
 		JToolBar tickControlToolBar = new JToolBar();
 		viewSelectPanel.add(tickControlToolBar);
 		
 		TickControllPanel tcPanel = new TickControllPanel();
 		tickControlToolBar.add(tcPanel);
+	}
 
+	private void initEmergencyPanel() {
+		renderEmergencyList();
 		
+		JPanel eventPanel = new JPanel();
+		eventPanel.setLayout(new BorderLayout(0, 0));
+		eventPanel.add(emergencyList);
+		JLabel eventLabel = new JLabel("Aktuelle Eins\u00E4tze");
+		eventPanel.add(eventLabel, BorderLayout.NORTH);
+		
+		mainFrame.getContentPane().add(eventPanel, BorderLayout.WEST);
+	}
 
+	private void initSplitPane() {
+		renderVehicleList();
+		renderRadioMessages();
+		
+		vehicleSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, vehicleListPanel, radioListPanel);
+		vehicleSplitPane.setOneTouchExpandable(true);
+		vehicleSplitPane.setDividerLocation(450);
+		vehicleSplitPane.setDividerSize(10);
+		vehicleSplitPane.setPreferredSize(new Dimension(270, 500));
+
+		mainFrame.getContentPane().add(vehicleSplitPane, BorderLayout.EAST);
+	}
+
+	private void initMap(){
+		// Setup JXMapViewer
+		mapViewer = new JXMapViewer();
+		mapViewer.setTileFactory(new DefaultTileFactory(new OSMTileFactoryInfo()));
+		
+	
+		GeoPosition krefeld = new GeoPosition(51.33, 6.58);
+	
+		// Set the focus
+		mapViewer.setZoom(7);
+		mapViewer.setAddressLocation(krefeld);
+	
+		// Add interactions
+		MouseInputListener mia = new PanMouseInputListener(mapViewer);
+		mapViewer.addMouseListener(mia);
+		mapViewer.addMouseMotionListener(mia);
+	
+		mapViewer.addMouseWheelListener(new ZoomMouseWheelListenerCursor(mapViewer));
+			
+		mainFrame.getContentPane().add(mapViewer, BorderLayout.CENTER);
+		
+		renderMap();
 	}
 
 	private void addMapMarkerToMap(HashSet<AbstractMapMarker> marker) {
