@@ -78,19 +78,34 @@ codeWord(07, 'TH2').
 codeWord(08, 'TH3').
 
 %task(Id, Name, [[EquipmentIds],[AlternativeEquipmentIds]], EstimatedTime) Aufgabe
-task(00, 'Erkunden', [[06],[]], 1). 
-task(01, 'Personenrettung über Leiter', [[01],[00]], 2). 
-task(02, 'Personenrettung über Drehleiter', [[00]], 1). 
-task(03, 'Personenrettung über Treppenhaus', [[02, 09, 09]], 2). 
-task(04, 'Personenrettung P-Vermisst', [[02, 09, 09]], 6). 
-task(05, 'Atemschutznotfall', [[02, 08, 09, 09], [02, 09, 09, 09, 09]], 6). 
-task(06, 'P-klemmt im Fahrzeug', [[03]], 7).
-task(07, 'P-klemmt unter Fahrzeug/Objekt', [[03],[07]], 3).
-task(08, 'Klein-Brandbekämpfung', [[02, 09]], 6).
-task(09, 'Brandbekämpfung', [[02, 09, 09]], 9).
-task(10, 'Groß-Brandbekämpfung', [[02, 09, 09]], 20).
-task(11, 'Brandbekämpfung über Drehleiter', [[02, 09, 00]], 10).
-task(12, 'Türöffnung', [[10],[00]], 5).
+%task(00, 'Erkunden', [[06],[]], 1). 
+%task(01, 'Personenrettung über Leiter', [[01],[00]], 2). 
+%task(02, 'Personenrettung über Drehleiter', [[00]], 1). 
+%task(03, 'Personenrettung über Treppenhaus', [[02, 09, 09]], 2). 
+%task(04, 'Personenrettung P-Vermisst', [[02, 09, 09]], 6). 
+%task(05, 'Atemschutznotfall', [[02, 08, 09, 09], [02, 09, 09, 09, 09]], 6). 
+%task(06, 'P-klemmt im Fahrzeug', [[03]], 7).
+%task(07, 'P-klemmt unter Fahrzeug/Objekt', [[03],[07]], 3).
+%task(08, 'Klein-Brandbekämpfung', [[02, 09]], 6).
+%task(09, 'Brandbekämpfung', [[02, 09, 09]], 9).
+%task(10, 'Groß-Brandbekämpfung', [[02, 09, 09]], 20).
+%task(11, 'Brandbekämpfung über Drehleiter', [[02, 09, 00]], 10).
+%task(12, 'Türöffnung', [[10],[00]], 5).
+
+
+task(00, 'Erkunden', [06], 1). 
+task(01, 'Personenrettung über Leiter', [01], 2). 
+task(02, 'Personenrettung über Drehleiter', [00], 1). 
+task(03, 'Personenrettung über Treppenhaus', [02, 09, 09], 2). 
+task(04, 'Personenrettung P-Vermisst', [02, 09, 09], 6). 
+task(05, 'Atemschutznotfall', [02, 08, 09, 09], 6). 
+task(06, 'P-klemmt im Fahrzeug', [03], 7).
+task(07, 'P-klemmt unter Fahrzeug/Objekt', [03], 3).
+task(08, 'Klein-Brandbekämpfung', [02, 09], 6).
+task(09, 'Brandbekämpfung', [02, 09, 09], 9).
+task(10, 'Groß-Brandbekämpfung', [02, 09, 09], 20).
+task(11, 'Brandbekämpfung über Drehleiter', [02, 09, 00], 10).
+task(12, 'Türöffnung', [10], 5).
 
 %
 % PRIORITÄT einführen. ?
@@ -136,17 +151,20 @@ emergencyType(07, 'VU 3 - P-klemmt', [06, 06, 07, 08]).
 
 
 
-lastElem([X], X).
-lastElem([X|L], Y):-
-	lastElem(L, Y).
+%lastElem([X], X).
+%lastElem([X|L], Y):-
+%	lastElem(L, Y).
+
+tasksOfEmergency(Emergency, TaskItem):-
+ emergencyType(_,Emergency,TaskList), 
+ member(TaskItem, TaskList).
 	
 vehicleForEmergency(Emergency, Vehicle, EquipmentItem, TaskName):-
- emergencyType(_,Emergency,TaskList), 
- lastElem(TaskList, TaskItem), 
- task(TaskItem, TaskName, EquipmentListList, _), 
- lastElem(EquipmentListList, EquipmentList),
+ tasksOfEmergency(Emergency, TaskItem);
+ task(TaskItem, TaskName, EquipmentList, _), 
+ %member(EquipmentList, EquipmentListList),
  %lastElem(EquipmentList, EquipmentItem),
- forall(member(EquipmentItem, EquipmentList), EquipmentItem),
+ member(EquipmentItem, EquipmentList),
  itemOnVehicle(EquipmentItem, Vehicle).
 
 
@@ -154,4 +172,4 @@ vehicleForEmergency(Emergency, Vehicle, EquipmentItem, TaskName):-
 % liefert eine Liste an Vehiclen in welchen dieser Gegegenstand verlastet ist. 
 itemOnVehicle(Item, Vehicle):-
  member(Item, Load),
- vehicleType(Vehicle, Load, X, Y, Z).
+ vehicleType(Vehicle, Load, _, _, _).
