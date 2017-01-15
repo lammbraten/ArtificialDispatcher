@@ -13,7 +13,7 @@ import de.hsnr.eal.ArtificialDispatcher.firedepartment.trucks.Vehicle;
 
 public class Model extends Observable implements Observer{
 	
-	private static final String FILE_PATH = "C:\\Users\\lammbraten\\Dropbox\\Master\\1.Semester\\EAL\\Projekt\\Implementierung\\ArtificialDispatcher\\src\\main\\de\\hsnr\\eal\\ArtificialDispatcher\\data\\prolog\\vehicles.pl";
+	private static final String FILE_PATH = "C:\\Users\\lammbraten\\Dropbox\\Master\\1.Semester\\EAL\\Projekt\\Implementierung\\ArtificialDispatcher\\src\\main\\de\\hsnr\\eal\\ArtificialDispatcher\\data\\prolog\\KnowledgeBase.pl";
 	MapLoader ml; 
 	private VehicleHandler vh;
 	private EmergencyHandler eh;

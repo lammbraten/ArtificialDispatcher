@@ -14,7 +14,7 @@ equipment(10, 'Zieh Fix', 01, 1).
 
 %vehicleType(Typ, [Ausrüstung], Wassertank, speed(Einsatz), speed (normal)
 vehicleType('HLF-BF', [01, 01, 02, 03, 04, 09, 09, 09, 09, 10], 2000, 60, 50).
-vehicleType('HLF', [01, 01, 01, 02, 03, 09, 09, 09, 09], 2000, 60, 50).
+vehicleType('HLF', [01, 01, 02, 03, 09, 09, 09, 09], 2000, 60, 50).
 vehicleType('HLF-A', [01, 01, 02, 03, 08, 09, 09, 09, 09, 09, 09, 10], 2000, 60, 50). 
 vehicleType('LF8', [01, 02, 09, 09, 09, 09], 600, 60, 50). 
 vehicleType('LF20', [01, 01, 02, 02, 09, 09, 09, 09], 1600, 60, 50). 
@@ -78,7 +78,7 @@ codeWord(07, 'TH2').
 codeWord(08, 'TH3').
 
 %task(Id, Name, [[EquipmentIds],[AlternativeEquipmentIds]], EstimatedTime) Aufgabe
-task(00, 'Erkunden', [[01],[]], 1). 
+task(00, 'Erkunden', [[06],[]], 1). 
 task(01, 'Personenrettung über Leiter', [[01],[00]], 2). 
 task(02, 'Personenrettung über Drehleiter', [[00]], 1). 
 task(03, 'Personenrettung über Treppenhaus', [[02, 09, 09]], 2). 
@@ -133,3 +133,25 @@ emergencyType(07, 'VU 2 - P-klemmt', [06, 06, 08]).
 emergencyType(07, 'VU 3 - P-klemmt', [06, 06, 07, 08]).
 
 %aao(CodeWordId, [VehicleTypes])
+
+
+
+lastElem([X], X).
+lastElem([X|L], Y):-
+	lastElem(L, Y).
+	
+vehicleForEmergency(Emergency, Vehicle, EquipmentItem, TaskName):-
+ emergencyType(_,Emergency,TaskList), 
+ lastElem(TaskList, TaskItem), 
+ task(TaskItem, TaskName, EquipmentListList, _), 
+ lastElem(EquipmentListList, EquipmentList),
+ %lastElem(EquipmentList, EquipmentItem),
+ forall(member(EquipmentItem, EquipmentList), EquipmentItem),
+ itemOnVehicle(EquipmentItem, Vehicle).
+
+
+ 
+% liefert eine Liste an Vehiclen in welchen dieser Gegegenstand verlastet ist. 
+itemOnVehicle(Item, Vehicle):-
+ member(Item, Load),
+ vehicleType(Vehicle, Load, X, Y, Z).

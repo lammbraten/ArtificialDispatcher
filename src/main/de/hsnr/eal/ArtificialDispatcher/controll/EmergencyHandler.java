@@ -19,10 +19,34 @@ public class EmergencyHandler extends Observable{
 
 	public void addEmergency(Emergency emergency) {
 		this.setChanged();
-		emergencies.add(emergency);		
+		handleEmergency(emergency);
 		this.notifyObservers(emergency);
 	}
 	
+	public void handleEmergency(Emergency emergency) {
+		emergencies.add(emergency);		
+
+		// TODO Auto-generated method stub
+		
+		//get Gesammtübersicht (Aufgabe, Eingesetzte Fahrzeuge, Dauer)
+		//get Einsatzfähige Fahrzeuge
+		
+		//if Emergency unbehandelt
+		//handelEmergency
+			//Umkreissuche
+			//if Fahrzeug found
+			//Prüfe Fahrzeugstatus
+			//if frei
+				//alarmieren
+			//else
+				//prüfen ob und wann frei oder ob anderes Fahrzeug schneller.
+					//1. Nicht Frei / zu lange -> verwerfen
+					//2. eher fertig bevor anderes Fahrzeug anrücken kann -> warten
+		
+		
+		
+	}
+
 	public Set<Emergency> getEmergencies(){
 		return emergencies;
 	}

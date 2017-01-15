@@ -14,6 +14,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 
 import de.hsnr.eal.ArtificialDispatcher.firedepartment.stations.StationType;
+import de.hsnr.eal.ArtificialDispatcher.firedepartment.trucks.Status;
 import de.hsnr.eal.ArtificialDispatcher.firedepartment.trucks.Vehicle;
 import de.hsnr.eal.ArtificialDispatcher.firedepartment.trucks.VehicleType;
 
@@ -29,6 +30,7 @@ public class VehiclePanelMapMarker extends AbstractJPanel {
 	
 	private String name;
 	private VehicleType type;
+	private Vehicle vehicle;
 	
 	
 	
@@ -36,7 +38,14 @@ public class VehiclePanelMapMarker extends AbstractJPanel {
 		
 		this.name = vehicle.getName();
 		this.type = vehicle.getType();
+		this.vehicle = vehicle;
 		
+		if (this.vehicle.getStatus() == Status.ZWEI)
+			this.setVisible(false);
+		else
+			this.setVisible(true);
+
+
 		
 		try {
 			BufferedImage myPicture;
@@ -64,7 +73,7 @@ public class VehiclePanelMapMarker extends AbstractJPanel {
 			lblNewLabel.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 13));
 			add(lblNewLabel, BorderLayout.NORTH);
 			
-
+			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
