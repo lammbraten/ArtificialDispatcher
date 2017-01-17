@@ -137,7 +137,7 @@ public class PLDatabase {
 		int crewStrength = vehicleMap.get("CrewStrength").intValue();
 		
 		Map<String, Term> vehicleType = getVehicleType(typeTerm);
-		List<EquipmentItem> equipmentItems = loadEquipment(vehicleType.get("Equipment").toTermArray());
+		List<EquipmentItem> equipmentItems = loadEquipment(parsePLListToIntArray(vehicleType.get("Equipment").toTermArray()));
 		int emergencySpeed = vehicleType.get("EmergencySpeed").intValue();
 		int normSpeed = vehicleType.get("NormSpeed").intValue();
 		int tankVolume = vehicleType.get("TankVolume").intValue();
@@ -145,9 +145,8 @@ public class PLDatabase {
 		return new ConcreteVehicle(id, type, name, station, crewStrength, equipmentItems, emergencySpeed, normSpeed, tankVolume);
 	}
 
-	private List<EquipmentItem> loadEquipment(Term equipmentTerm[]) throws Exception {
+	private List<EquipmentItem> loadEquipment(int[] equipmentIds) throws Exception {
 		ArrayList<EquipmentItem> items = new ArrayList<EquipmentItem>();
-		int[] equipmentIds = parsePLListToIntArray(equipmentTerm);
 		
 		for(int i = 0; i < equipmentIds.length; i++)
 			items.add(getEquipmentObject(equipmentIds[i]));
@@ -210,15 +209,13 @@ public class PLDatabase {
 	private EmergencyTask getTaskObject(int id) throws Exception {
 		Map<String, Term> task = getTask(id);
 		String name = task.get("Name").toString().replace("'", "");
-		List<Term[]> equipmentTerms = parsePLListToListIntArray(task.get("EquipmentTerms").toTermArray());
-		List<EquipmentItem> neededEquipment = loadEquipment(equipmentTerms.get(0));
+		int[] equipmentTerms = parsePLListToIntArray(task.get("EquipmentTerms").toTermArray());
+		List<EquipmentItem> neededEquipment = loadEquipment(equipmentTerms);
 		List<EquipmentItem> altEquipment = null;
-		if(equipmentTerms.size() > 1)
-			altEquipment = loadEquipment(equipmentTerms.get(1));
 
 		int estimatedTime = task.get("EstimatedTime").intValue();
 		
-		return new EmergencyTask(id, name, neededEquipment, altEquipment, estimatedTime);
+		return new EmergencyTask(id, name, neededEquipment, estimatedTime);
 	}
 
 	private Map<String, Term> getTask(int id) {

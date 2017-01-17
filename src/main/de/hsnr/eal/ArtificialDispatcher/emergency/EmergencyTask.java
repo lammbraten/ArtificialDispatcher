@@ -8,7 +8,6 @@ public class EmergencyTask {
 	private int id;
 	private String name;
 	private List<EquipmentItem> neededEquipment;
-	private List<EquipmentItem> altNeededEquipment;
 	private List<EquipmentItem> assignedEquipment;
 	private int estimatedTime;
 	private int startTimestamp;
@@ -16,12 +15,11 @@ public class EmergencyTask {
 	private boolean finished;	
 	
 	public EmergencyTask(int id, String name, List<EquipmentItem> neededEquipment,
-			List<EquipmentItem> altNeededEquipment, int estimatedTime) {
+			int estimatedTime) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.neededEquipment = neededEquipment;
-		this.altNeededEquipment = altNeededEquipment;
 		this.estimatedTime = estimatedTime;
 		this.startTimestamp = -1;
 		this.finished = false;
@@ -62,10 +60,6 @@ public class EmergencyTask {
 	
 	public List<EquipmentItem> getNeededEquipment() {
 		return neededEquipment;
-	}
-	
-	public List<EquipmentItem> getAltNeededEquipment() {
-		return altNeededEquipment;
 	}
 	
 	public int getEstimatedTime() {

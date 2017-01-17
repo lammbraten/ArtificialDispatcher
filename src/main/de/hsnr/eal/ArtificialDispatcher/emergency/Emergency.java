@@ -1,6 +1,9 @@
 package de.hsnr.eal.ArtificialDispatcher.emergency;
 
+import java.util.List;
+
 import de.hsnr.eal.ArtificialDispatcher.data.map.GeoLocation;
+import de.hsnr.eal.ArtificialDispatcher.firedepartment.trucks.Vehicle;
 
 public class Emergency implements Comparable {
     private static int counter = 0;
@@ -8,13 +11,15 @@ public class Emergency implements Comparable {
 	private EmergencyType et;
 	private GeoLocation gl;
 	private int id;
-
+	private List<EmergencyTask> toDoTasks;
+	private List<Vehicle> assignedVehicles;
 	
 	public Emergency(EmergencyType et, GeoLocation gl) {
         counter++;
         nr = counter;
 		this.et = et;
 		this.gl = gl;
+		this.toDoTasks = et.getTasks();
 	}
 
 	public String getName(){
@@ -49,4 +54,24 @@ public class Emergency implements Comparable {
 	public EmergencyType getEmergencyType() {
 		return et;
 	}
+
+	public List<Vehicle> getAssignedVehicles() {
+		return assignedVehicles;
+	}
+
+	public void setAssignedVehicles(List<Vehicle> assignedVehicles) {
+		this.assignedVehicles = assignedVehicles;
+	}
+	
+	public void addAssignedVehicle(Vehicle v) {
+		assignedVehicles.add(v);
+	}
+	
+	
+	public boolean isHelpful(Vehicle v){
+		return false;
+	}
+
+
+	
 }

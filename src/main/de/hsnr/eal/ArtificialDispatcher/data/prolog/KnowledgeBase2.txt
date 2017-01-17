@@ -1,18 +1,18 @@
-%equipment (Id, Name, Rüstzeit, Personal)
-%atna = Atemschutznotfallausrüstung
+%equipment (Id, Name, RÃ¼stzeit, Personal)
+%atna = AtemschutznotfallausrÃ¼stung
 equipment(00, 'Drehleiterpark', 02, 2).
 equipment(01, 'tragbare Leiter', 03, 3).
-equipment(02, 'Ausrüstung zur Brandbekämpfung', 03, 2).
+equipment(02, 'AusrÃ¼stung zur BrandbekÃ¤mpfung', 03, 2).
 equipment(03, 'Rettungssatz', 02, 3).
 equipment(04, 'Hebekissen', 02, 3).
 equipment(05, 'Funkplatz', 01, 1).
 equipment(06, 'Laufkarten', 01, 1).
 equipment(07, 'Kran', 02, 2).
-equipment(08, 'Atemschutznotfallausrüstung', 01, 2).
-equipment(09, 'Atemschutzgerät', 01, 0).
+equipment(08, 'AtemschutznotfallausrÃ¼stung', 01, 2).
+equipment(09, 'AtemschutzgerÃ¤t', 01, 0).
 equipment(10, 'Zieh Fix', 01, 1).
 
-%vehicleType(Typ, [Ausrüstung], Wassertank, speed(Einsatz), speed (normal)
+%vehicleType(Typ, [AusrÃ¼stung], Wassertank, speed(Einsatz), speed (normal)
 vehicleType('HLF-BF', [01, 01, 02, 03, 04, 09, 09, 09, 09, 10], 2000, 60, 50).
 vehicleType('HLF', [01, 01, 02, 03, 09, 09, 09, 09], 2000, 60, 50).
 vehicleType('HLF-A', [01, 01, 02, 03, 08, 09, 09, 09, 09, 09, 09, 10], 2000, 60, 50). 
@@ -58,7 +58,7 @@ vehicle(019, 'LF20', 'LF-8-2', 08, 9).
 
 station(01, 'Hauptwache', 'BF', 4149803115).
 station(02, 'Feuerwache 2', 'BF', 1607634076).
-station(03, 'LZ Hüls', 'FF', 2939317437).
+station(03, 'LZ HÃ¼ls', 'FF', 2939317437).
 station(04, 'LG Traar', 'FF', 259433027).
 station(05, 'LG Gellep-Stratum', 'FF', 2494720511).
 station(06, 'LG Oppum', 'FF', 1476442386).
@@ -79,44 +79,44 @@ codeWord(08, 'TH3').
 
 %task(Id, Name, [[EquipmentIds],[AlternativeEquipmentIds]], EstimatedTime) Aufgabe
 %task(00, 'Erkunden', [[06],[]], 1). 
-%task(01, 'Personenrettung über Leiter', [[01],[00]], 2). 
-%task(02, 'Personenrettung über Drehleiter', [[00]], 1). 
-%task(03, 'Personenrettung über Treppenhaus', [[02, 09, 09]], 2). 
+%task(01, 'Personenrettung Ã¼ber Leiter', [[01],[00]], 2). 
+%task(02, 'Personenrettung Ã¼ber Drehleiter', [[00]], 1). 
+%task(03, 'Personenrettung Ã¼ber Treppenhaus', [[02, 09, 09]], 2). 
 %task(04, 'Personenrettung P-Vermisst', [[02, 09, 09]], 6). 
 %task(05, 'Atemschutznotfall', [[02, 08, 09, 09], [02, 09, 09, 09, 09]], 6). 
 %task(06, 'P-klemmt im Fahrzeug', [[03]], 7).
 %task(07, 'P-klemmt unter Fahrzeug/Objekt', [[03],[07]], 3).
-%task(08, 'Klein-Brandbekämpfung', [[02, 09]], 6).
-%task(09, 'Brandbekämpfung', [[02, 09, 09]], 9).
-%task(10, 'Groß-Brandbekämpfung', [[02, 09, 09]], 20).
-%task(11, 'Brandbekämpfung über Drehleiter', [[02, 09, 00]], 10).
-%task(12, 'Türöffnung', [[10],[00]], 5).
+%task(08, 'Klein-BrandbekÃ¤mpfung', [[02, 09]], 6).
+%task(09, 'BrandbekÃ¤mpfung', [[02, 09, 09]], 9).
+%task(10, 'GroÃŸ-BrandbekÃ¤mpfung', [[02, 09, 09]], 20).
+%task(11, 'BrandbekÃ¤mpfung Ã¼ber Drehleiter', [[02, 09, 00]], 10).
+%task(12, 'TÃ¼rÃ¶ffnung', [[10],[00]], 5).
 
 
 task(00, 'Erkunden', [06], 1). 
-task(01, 'Personenrettung über Leiter', [01], 2). 
-task(02, 'Personenrettung über Drehleiter', [00], 1). 
-task(03, 'Personenrettung über Treppenhaus', [02, 09, 09], 2). 
+task(01, 'Personenrettung Ã¼ber Leiter', [01], 2). 
+task(02, 'Personenrettung Ã¼ber Drehleiter', [00], 1). 
+task(03, 'Personenrettung Ã¼ber Treppenhaus', [02, 09, 09], 2). 
 task(04, 'Personenrettung P-Vermisst', [02, 09, 09], 6). 
 task(05, 'Atemschutznotfall', [02, 08, 09, 09], 6). 
 task(06, 'P-klemmt im Fahrzeug', [03], 7).
 task(07, 'P-klemmt unter Fahrzeug/Objekt', [03], 3).
-task(08, 'Klein-Brandbekämpfung', [02, 09], 6).
-task(09, 'Brandbekämpfung', [02, 09, 09], 9).
-task(10, 'Groß-Brandbekämpfung', [02, 09, 09], 20).
-task(11, 'Brandbekämpfung über Drehleiter', [02, 09, 00], 10).
-task(12, 'Türöffnung', [10], 5).
+task(08, 'Klein-BrandbekÃ¤mpfung', [02, 09], 6).
+task(09, 'BrandbekÃ¤mpfung', [02, 09, 09], 9).
+task(10, 'GroÃŸ-BrandbekÃ¤mpfung', [02, 09, 09], 20).
+task(11, 'BrandbekÃ¤mpfung Ã¼ber Drehleiter', [02, 09, 00], 10).
+task(12, 'TÃ¼rÃ¶ffnung', [10], 5).
 
 %
-% PRIORITÄT einführen. ?
+% PRIORITÃ„T einfÃ¼hren. ?
 %
 
 %emergencyType(CodeWordId, Name, [TaskIds]) Einsatztypen
-%Brände
-emergencyType(00, 'Brennt Mülleimer', [08]).
+%BrÃ¤nde
+emergencyType(00, 'Brennt MÃ¼lleimer', [08]).
 emergencyType(00, 'Brennt Hecke', [08]).
 emergencyType(01, 'Brennt Baustellenklo', [08]).
-emergencyType(01, 'Küchenbrand', [08]).
+emergencyType(01, 'KÃ¼chenbrand', [08]).
 emergencyType(01, 'Zimmerbrand', [09]).
 emergencyType(02, 'BMA', [00]).
 emergencyType(02, 'Zimmerbrand - P-Vermisst', [09, 04]).
@@ -136,9 +136,9 @@ emergencyType(04, 'Lagerhallenbrand - Ausgedehnt', [10, 10, 10, 11, 11, 00]).
 emergencyType(04, 'GasExplosion', [10, 04, 04, 11, 00]).
 
 %Technische Hilfe
-emergencyType(05, 'Türöffnung', [12]).
+emergencyType(05, 'TÃ¼rÃ¶ffnung', [12]).
 emergencyType(05, 'Katze auf Baum', [01]).
-emergencyType(05, 'Türöffnung', [12]).
+emergencyType(05, 'TÃ¼rÃ¶ffnung', [12]).
 emergencyType(05, 'Aufzug', [12]).
 emergencyType(06, 'Bauunfall', [07, 01]).
 emergencyType(06, 'Schachtrettung' , [01]).
@@ -149,3 +149,28 @@ emergencyType(07, 'VU 3 - P-klemmt', [06, 06, 07, 08]).
 
 %aao(CodeWordId, [VehicleTypes])
 
+
+tasksOfEmergency([], V).
+tasksOfEmergency(Emergency, [], V).
+tasksOfEmergency([TaskItem|TaskList], V):-
+itemOnVehicle(TaskItem, V),
+tasksOfEmergency(TaskList, V).
+tasksOfEmergency(Emergency, V):-
+ emergencyType(_,Emergency, TaskList),
+ tasksOfEmergency(TaskList, V).
+	
+process(H):-
+	write(H).	
+	
+vehicleForEmergency(Emergency, Vehicle, EquipmentItem, TaskName):-
+ tasksOfEmergency(Emergency, TaskItem),
+ task(TaskItem, TaskName, EquipmentList, _), 
+ member(EquipmentItem, EquipmentList),
+ itemOnVehicle(EquipmentItem, Vehicle).
+
+
+ 
+% liefert eine Liste an Vehiclen in welchen dieser Gegegenstand verlastet ist. 
+itemOnVehicle(Item, Vehicle):-
+ member(Item, Load),
+ vehicleType(Vehicle, Load, _, _, _).

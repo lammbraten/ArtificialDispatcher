@@ -3,6 +3,7 @@ package de.hsnr.eal.ArtificialDispatcher.firedepartment.trucks;
 import java.util.List;
 
 import de.hsnr.eal.ArtificialDispatcher.emergency.Emergency;
+import de.hsnr.eal.ArtificialDispatcher.emergency.EmergencyTask;
 import de.hsnr.eal.ArtificialDispatcher.firedepartment.members.FireFighter;
 import de.hsnr.eal.ArtificialDispatcher.firedepartment.members.Squad;
 import de.hsnr.eal.ArtificialDispatcher.firedepartment.members.equipment.EquipmentItem;
@@ -35,6 +36,8 @@ public interface Vehicle {
 	void setRemainingMeter(double remainingMeter);
 	public boolean isAtTarget();
 	boolean hasEmergency();
+	boolean canDoTask(EmergencyTask task);
+	public void alert();
 
 
 	

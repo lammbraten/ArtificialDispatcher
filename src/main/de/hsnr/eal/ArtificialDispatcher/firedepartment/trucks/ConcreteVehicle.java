@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.hsnr.eal.ArtificialDispatcher.emergency.Emergency;
+import de.hsnr.eal.ArtificialDispatcher.emergency.EmergencyTask;
 import de.hsnr.eal.ArtificialDispatcher.firedepartment.members.equipment.EquipmentItem;
 import de.hsnr.eal.ArtificialDispatcher.firedepartment.stations.Station;
 import de.hsnr.eal.ArtificialDispatcher.graph.Route;
@@ -172,5 +173,17 @@ public class ConcreteVehicle implements Vehicle {
 			return true;
 		
 		return false;
+	}
+
+	@Override
+	public boolean canDoTask(EmergencyTask task) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public void alert() {
+		//TODO (Route? Status? Geschwindigkeit? Wann ausrücken?)
+		
 	}
 }
