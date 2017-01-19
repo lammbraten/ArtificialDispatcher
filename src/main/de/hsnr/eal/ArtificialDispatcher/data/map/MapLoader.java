@@ -3,28 +3,33 @@ package de.hsnr.eal.ArtificialDispatcher.data.map;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
+import de.hsnr.eal.ArtificialDispatcher.firedepartment.trucks.Vehicle;
+import de.hsnr.eal.ArtificialDispatcher.graph.Route;
 import de.hsnr.eal.ArtificialDispatcher.graph.RouteableVertex;
 import de.hsnr.eal.ArtificialDispatcher.graph.StreetEdge;
 import de.hsnr.eal.ArtificialDispatcher.graph.StreetGraph;
 import de.hsnr.eal.ArtificialDispatcher.graph.algorithm.Dijkstra;
 import de.hsnr.eal.ArtificialDispatcher.graph.algorithm.ShortestPath;
 import de.hsnr.eal.ArtificialDispatcher.graph.weights.PythagoreanDistanceWeight;
+import de.hsnr.eal.ArtificialDispatcher.graph.weights.PythagoreanTimeWeight;
 import de.hsnr.eal.ArtificialDispatcher.graph.weights.WeightFunction;
 import de.westnordost.osmapi.map.data.LatLon;
 
 public class MapLoader {
 	private static String DEFAULT_MAP_SOURCE = "C:\\Users\\lammbraten\\Dropbox\\Master\\1.Semester\\EAL\\Projekt\\Daten\\Roh\\Krefeld_Streetmap.bin";
-	private static WeightFunction WEIGHTFUNCTION =  new PythagoreanDistanceWeight();
+	private static WeightFunction WEIGHTFUNCTION =  new PythagoreanTimeWeight();
 	
 	private DataProvider dp;
 	private StreetGraph sg;
-	private ShortestPath sp;
 	private static String graphFilePath;
+	private Dijkstra dijkstra;
 	
 	public MapLoader(){
 		this(DEFAULT_MAP_SOURCE);
@@ -35,7 +40,7 @@ public class MapLoader {
 		System.out.println(new Date());
 		dp = new DefaultDataProvider();
 		sg = readSG();
-		sp = new Dijkstra(sg);
+		dijkstra = new Dijkstra(sg);
 		System.out.println(new Date());
 
 	}
@@ -44,14 +49,14 @@ public class MapLoader {
 		return dp;
 	}
 	
-	//TODO: Calc Path from to
+
 	public String calcPath(long startId, long endId){
 		RouteableVertex startVertex = sg.getVertex(startId);
 		RouteableVertex endVertex = sg.getVertex(endId);
 		List<RouteableVertex> rvlist;
 		String route = "";		
 		try {
-			rvlist = sp.getShortestPath(startVertex, endVertex);
+			rvlist = dijkstra.getShortestPath(startVertex, endVertex);
 			for(RouteableVertex rv : rvlist)
 				route += rv.toString() + "\n";			
 		} catch (Exception e) {
@@ -60,14 +65,13 @@ public class MapLoader {
 		
 		return route;
 	}
+	
+	
 
 	public Set<RouteableVertex> getAllVertices() {
 		
 		return sg.getVertices();
 	}
-	
-	//TODO: Umkreissuche 
-	
 	
 	
 	private static StreetGraph readSG() {
@@ -103,5 +107,20 @@ public class MapLoader {
 
 	public LatLon getPositionOf(long osmNodeId) {
 		return sg.getVertex(osmNodeId).getPosition();
+	}
+
+	public List<Route> calcRadiusSearch(long emergencyNodeId, ArrayList<Vehicle> vehicles) {
+		HashSet<RouteableVertex> toFindVehicles = new HashSet<RouteableVertex>();
+		RouteableVertex start = sg.getVertex(emergencyNodeId);
+		for(Vehicle v : vehicles)
+			toFindVehicles.add(sg.getVertex(v.getLocation()));
+		
+		try {
+			return dijkstra.radiusSearch(start, toFindVehicles, 1000000);//TODO: Radius anpassen
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null; 
+		
 	}
 }

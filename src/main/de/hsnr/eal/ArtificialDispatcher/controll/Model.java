@@ -29,7 +29,7 @@ public class Model extends Observable implements Observer{
 		vh = new VehicleHandler(this.vehicles);
 		vh.addObserver(this);
 		
-		eh = new EmergencyHandler(vh);
+		eh = new EmergencyHandler(vh, ml);
 		eh.addObserver(this);
 
 		

@@ -19,7 +19,17 @@ public class Route {
 			nodeIds.add(rv.getId());
 		return nodeIds;
 	}
+	
+	public double getRouteDistance(){
+		return vertices.getLast().getDistance();
+	}
 
+	/**
+	 * Zum fahren
+	 * @param distance
+	 * @param iNode
+	 * @return
+	 */
 	public Tuple<Long, Double> findNearestNodeFor(double distance, int iNode) {
 		double actDistance = vertices.get(iNode).getDistance();
 		double maxDistance = actDistance + distance;

@@ -5,17 +5,21 @@ import java.util.Observable;
 import java.util.Set;
 import java.util.TreeSet;
 
+import de.hsnr.eal.ArtificialDispatcher.data.map.MapLoader;
 import de.hsnr.eal.ArtificialDispatcher.emergency.Emergency;
 import de.hsnr.eal.ArtificialDispatcher.emergency.EmergencyTask;
 import de.hsnr.eal.ArtificialDispatcher.firedepartment.trucks.Vehicle;
+import de.hsnr.eal.ArtificialDispatcher.graph.Route;
+import de.hsnr.eal.ArtificialDispatcher.graph.algorithm.Dijkstra;
 
 public class EmergencyHandler extends Observable{
 	private Set<Emergency> emergencies;
 	private VehicleHandler vh;
+	private MapLoader ml;
 
-	public EmergencyHandler(VehicleHandler vh){
+	public EmergencyHandler(VehicleHandler vh, MapLoader ml){
 		this.vh = vh;
-		
+		this.ml = ml;		
 		this.emergencies = new TreeSet<Emergency>();
 		
 	}
@@ -35,6 +39,8 @@ public class EmergencyHandler extends Observable{
 		//get Gesammtübersicht (Aufgabe, Eingesetzte Fahrzeuge, Dauer)
 		//get Einsatzfähige Fahrzeuge
 		
+		
+		List<Route> routes = ml.calcRadiusSearch(emergency.getGeoLocation().getOsmNodeId(), vh.vehicles);
 		//if Emergency unbehandelt
 		//handelEmergency
 			//Umkreissuche
@@ -56,16 +62,7 @@ public class EmergencyHandler extends Observable{
 
 	public Set<Emergency> getEmergencies(){
 		return emergencies;
-	}
-	
-
-	
-	private void assign(Vehicle v, Emergency e){
-		e.addAssignedVehicle(v);
-		v.setEmergency(e);
-
-	}
-	
+	}	
 	
 	
 	

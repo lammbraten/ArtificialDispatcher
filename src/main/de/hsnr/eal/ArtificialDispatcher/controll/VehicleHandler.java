@@ -83,6 +83,7 @@ public class VehicleHandler extends Observable {
 			v.setRoute(r);
 			v.setStatus(Status.DREI);
 			v.setEmergency(e);
+			e.addAssignedVehicle(v);
 			this.notifyObservers(v);
 		}	
 	}

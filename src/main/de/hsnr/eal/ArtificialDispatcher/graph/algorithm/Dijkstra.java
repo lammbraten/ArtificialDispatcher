@@ -7,11 +7,13 @@ import java.util.List;
 import java.util.PriorityQueue;
 import java.util.TreeMap;
 
+import de.hsnr.eal.ArtificialDispatcher.graph.Route;
 import de.hsnr.eal.ArtificialDispatcher.graph.RouteableVertex;
 import de.hsnr.eal.ArtificialDispatcher.graph.StreetEdge;
 import de.hsnr.eal.ArtificialDispatcher.graph.StreetGraph;
 import de.hsnr.eal.ArtificialDispatcher.graph.pattern.DistanceComparator;
 import de.hsnr.eal.ArtificialDispatcher.graph.pattern.IdComparator;
+import de.hsnr.eal.ArtificialDispatcher.graph.pattern.RouteDistanceComparator;
 
 public class Dijkstra extends ObservableShortestPath {
 	private static final long serialVersionUID = 8742913011912127748L;
@@ -22,7 +24,10 @@ public class Dijkstra extends ObservableShortestPath {
 	protected RouteableVertex endVertex;
 	protected int direction;
 	private TreeMap<RouteableVertex, RouteableVertex> shortestPathMap;
-	private LinkedList<RouteableVertex> calculatetdPath;	
+	private LinkedList<RouteableVertex> calculatetdPath;
+	private int radius;	
+	private HashSet<RouteableVertex> toFind;
+	
 	
 	public Dijkstra(StreetGraph streetgraph) {
 		this(streetgraph, StreetGraph.DEFAULT_DIRECTION);
@@ -48,6 +53,41 @@ public class Dijkstra extends ObservableShortestPath {
 		init(start);
 
 		return iterateThrougGraph();
+	}
+	
+	public List<Route> radiusSearch(RouteableVertex start, HashSet<RouteableVertex> toFind, int radius) throws Exception{
+		this.toFind = toFind;
+		this.radius = radius;
+		init(start);
+		
+		return searchRadius();
+	}
+	
+	
+	private List<Route> searchRadius() throws Exception{
+		List<Route> foundRoutes = new ArrayList<Route>();
+		RouteableVertex actVertex = null;
+		double actRadius = 0;
+		
+		while(!toVisitVertices.isEmpty() ){
+			if(actRadius > radius || toFind.isEmpty()){
+				foundRoutes.sort(new RouteDistanceComparator());
+				return foundRoutes;
+			}
+			actVertex = checkNextVertex();
+			actRadius = actVertex.getDistance();
+			if(toFind.contains(actVertex)){
+				foundRoutes.add(buildNewRoute(actVertex));
+				toFind.remove(actVertex);
+			}
+		}
+		throw new Exception("No Radius found! ");
+	}
+	
+
+
+	private Route buildNewRoute(RouteableVertex actVertex) {
+		return new Route(buildShortestPathTo(actVertex));
 	}
 
 	/**
@@ -108,7 +148,7 @@ public class Dijkstra extends ObservableShortestPath {
 
 
 
-	List<RouteableVertex> buildShortestPathTo(RouteableVertex endVertex2) {
+	LinkedList<RouteableVertex> buildShortestPathTo(RouteableVertex endVertex2) {
 		//writeToLogFile(shortestPathMap.descendingMap());
 		RouteableVertex v = shortestPathMap.get(endVertex2);
 		LinkedList<RouteableVertex> returnValue = new LinkedList<RouteableVertex>();	
