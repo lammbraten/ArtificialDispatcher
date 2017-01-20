@@ -168,7 +168,7 @@ public class AppWindow extends Observable implements Observer{
 
 		HashSet<AbstractMapMarker> vehicleMarker = new HashSet<AbstractMapMarker>();
 		for(Vehicle vehicle : vehicles){
-			LatLon position = ml.getPositionOf(vehicle.getLocation());
+			LatLon position = ml.getPositionOf(vehicle.getPosition());
 			vehicleMarker.add(new VehicleMapMarker(vehicle, new GeoPosition(position.getLatitude(), position.getLongitude())));
 		}
 		

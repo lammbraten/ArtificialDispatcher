@@ -16,10 +16,11 @@ public interface Vehicle {
 	//public Squad getCrew();
 	//public void setCrew(Squad ff);
 	public Station getHomeStation();
-	public long getLocation();
+	public long getPosition();
 	public void setLocation(long location);
 	public List<EquipmentItem> getEquipment();
-	public List<EquipmentItem> getUsedEquipment();
+	public List<EquipmentItem> getUanassignedEquipment();
+	public List<EquipmentItem> getAssignendEquipment();
 	public int getId();
 	public VehicleType getType();
 	public String getTypeTerm();
@@ -30,12 +31,17 @@ public interface Vehicle {
 	public boolean hasRoute();
 	public Emergency getEmergency();
 	public void setEmergency(Emergency e);
+	public boolean isAtTarget();	
+	
 	double getRemainingMeter();
 	void setRemainingMeter(double remainingMeter);
-	public boolean isAtTarget();
 	boolean hasEmergency();
-	boolean canDoTask(EmergencyTask task);
 	public void alert();
+	public int getRespondTime();
+	public boolean canDo(EmergencyTask t);
+	public void assignTo(EmergencyTask t);
+	public List<EmergencyTask> getAssignedTasks();
+
 
 
 	

@@ -55,7 +55,16 @@ public class Dijkstra extends ObservableShortestPath {
 		return iterateThrougGraph();
 	}
 	
-	public List<Route> radiusSearch(RouteableVertex start, HashSet<RouteableVertex> toFind, int radius) throws Exception{
+	/**
+	 * finds routes for given RoutableVertices in a defined radius.
+	 * Dijkstra-variant.
+	 * @param start Vertex to start with
+	 * @param toFind Vertices to find routes for
+	 * @param radius distance to search in
+	 * @return An arraylist of found routes matchen to the given vertices.
+	 * @throws Exception when there is no route to calc
+	 */
+	public ArrayList<Route> radiusSearch(RouteableVertex start, HashSet<RouteableVertex> toFind, int radius) throws Exception{
 		this.toFind = toFind;
 		this.radius = radius;
 		init(start);
@@ -64,8 +73,8 @@ public class Dijkstra extends ObservableShortestPath {
 	}
 	
 	
-	private List<Route> searchRadius() throws Exception{
-		List<Route> foundRoutes = new ArrayList<Route>();
+	private ArrayList<Route> searchRadius() throws Exception{
+		ArrayList<Route> foundRoutes = new ArrayList<Route>();
 		RouteableVertex actVertex = null;
 		double actRadius = 0;
 		

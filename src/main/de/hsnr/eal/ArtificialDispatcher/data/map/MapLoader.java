@@ -6,6 +6,7 @@ import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
@@ -109,11 +110,11 @@ public class MapLoader {
 		return sg.getVertex(osmNodeId).getPosition();
 	}
 
-	public List<Route> calcRadiusSearch(long emergencyNodeId, ArrayList<Vehicle> vehicles) {
+	public ArrayList<Route> calcRadiusSearch(long emergencyNodeId, ArrayList<Vehicle> vehicles) {
 		HashSet<RouteableVertex> toFindVehicles = new HashSet<RouteableVertex>();
 		RouteableVertex start = sg.getVertex(emergencyNodeId);
 		for(Vehicle v : vehicles)
-			toFindVehicles.add(sg.getVertex(v.getLocation()));
+			toFindVehicles.add(sg.getVertex(v.getPosition()));
 		
 		try {
 			return dijkstra.radiusSearch(start, toFindVehicles, 1000000);//TODO: Radius anpassen

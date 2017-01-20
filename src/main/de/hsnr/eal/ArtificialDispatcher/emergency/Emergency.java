@@ -11,7 +11,8 @@ public class Emergency implements Comparable {
 	private EmergencyType et;
 	private GeoLocation gl;
 	private int id;
-	private List<EmergencyTask> toDoTasks;
+	private List<EmergencyTask> unassignedTasks;
+	private List<EmergencyTask> assignedTasks;
 	private List<Vehicle> assignedVehicles;
 	
 	public Emergency(EmergencyType et, GeoLocation gl) {
@@ -19,7 +20,7 @@ public class Emergency implements Comparable {
         nr = counter;
 		this.et = et;
 		this.gl = gl;
-		this.toDoTasks = et.getTasks();
+		this.setUnassingnedTasks(et.getTasks());
 	}
 
 	public String getName(){
@@ -70,6 +71,22 @@ public class Emergency implements Comparable {
 	
 	public boolean isHelpful(Vehicle v){
 		return false;
+	}
+
+	public List<EmergencyTask> getUnassingnedTasks() {
+		return unassignedTasks;
+	}
+
+	public void setUnassingnedTasks(List<EmergencyTask> toDoTasks) {
+		this.unassignedTasks = toDoTasks;
+	}
+
+	public List<EmergencyTask> getAssignedTasks() {
+		return assignedTasks;
+	}
+
+	public void setAssignedTasks(List<EmergencyTask> assignedTasks) {
+		this.assignedTasks = assignedTasks;
 	}
 
 

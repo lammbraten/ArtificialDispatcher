@@ -1,8 +1,12 @@
 package de.hsnr.eal.ArtificialDispatcher.controll;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Observable;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.TreeSet;
 
 import de.hsnr.eal.ArtificialDispatcher.data.map.MapLoader;
@@ -40,7 +44,24 @@ public class EmergencyHandler extends Observable{
 		//get Einsatzfähige Fahrzeuge
 		
 		
-		List<Route> routes = ml.calcRadiusSearch(emergency.getGeoLocation().getOsmNodeId(), vh.vehicles);
+		ArrayList<Route> routes = ml.calcRadiusSearch(emergency.getGeoLocation().getOsmNodeId(), vh.vehicles);
+		
+		//Map<Vehicle, double> vehicleArrivalTime can be at emergency in "double" minutes
+		TreeMap<Vehicle, Double> arrival = new TreeMap<Vehicle, Double>();
+		//for each vehicle
+			//Find route in routes. (Abhängig vom Standort)
+			//vehicleArrivalTime.
+		//arrival.p		
+		for(Route r : routes){
+			for(Vehicle v : vh.getVehiclesOnPosition(r.getSartNodeId()))
+				if(canHelp(v, emergency))
+					break;
+		}
+
+		
+
+		
+		
 		//if Emergency unbehandelt
 		//handelEmergency
 			//Umkreissuche
@@ -50,6 +71,8 @@ public class EmergencyHandler extends Observable{
 					//Prüfe Fahrzeugstatus
 					//if frei
 						//alarmieren (assign())
+						//if emergency.canbedone()
+							//break
 					//else
 						//prüfen ob und wann frei oder ob anderes Fahrzeug schneller.
 							//1. Nicht Frei / zu lange -> verwerfen
@@ -58,6 +81,11 @@ public class EmergencyHandler extends Observable{
 		for(Vehicle v : emergency.getAssignedVehicles())
 			v.alert();
 		
+	}
+
+	private boolean canHelp(Vehicle v, Emergency emergency) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 	public Set<Emergency> getEmergencies(){

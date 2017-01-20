@@ -13,11 +13,11 @@ import de.hsnr.eal.ArtificialDispatcher.graph.Route;
 import de.hsnr.eal.ArtificialDispatcher.graph.Tuple;
 
 public class VehicleHandler extends Observable {
-
 	ArrayList<Vehicle> vehicles;
 	
 	public VehicleHandler(ArrayList<Vehicle> vehicles) {
 		this.vehicles = vehicles;
+	
 	}
 	
 	public void moveVehicles(){
@@ -40,7 +40,7 @@ public class VehicleHandler extends Observable {
 	}
 
 	private void calcAndSetPosition(Vehicle v) {
-		int iNode = v.getRoute().getNodeIds().indexOf(v.getLocation());
+		int iNode = v.getRoute().getNodeIds().indexOf(v.getPosition());
 		double distance = calcDrivableDistance(v.getSpeed(), v.getRemainingMeter());
 				
 		Tuple<Long, Double> t = v.getRoute().findNearestNodeFor(distance, iNode);
@@ -88,5 +88,13 @@ public class VehicleHandler extends Observable {
 		}	
 	}
 	
-	
+	public Set<Vehicle> getVehiclesOnPosition(long osmNodeId){
+		HashSet<Vehicle> vehiclesOnPosition = new HashSet<Vehicle>();
+		
+		for(Vehicle v : vehicles)
+			if(v.getPosition() == osmNodeId)
+				vehiclesOnPosition.add(v);
+		return vehiclesOnPosition;
+	}
+
 }

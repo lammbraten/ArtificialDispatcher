@@ -7,6 +7,7 @@ import de.hsnr.eal.ArtificialDispatcher.emergency.Emergency;
 import de.hsnr.eal.ArtificialDispatcher.emergency.EmergencyTask;
 import de.hsnr.eal.ArtificialDispatcher.firedepartment.members.equipment.EquipmentItem;
 import de.hsnr.eal.ArtificialDispatcher.firedepartment.stations.Station;
+import de.hsnr.eal.ArtificialDispatcher.firedepartment.stations.StationType;
 import de.hsnr.eal.ArtificialDispatcher.graph.Route;
 
 public class ConcreteVehicle implements Vehicle {
@@ -15,7 +16,14 @@ public class ConcreteVehicle implements Vehicle {
 	private String name; //Funkrufname
 	private Station homeStation;
 	private int crewStrength;
-	private List<EquipmentItem> equipment; 	
+	/**
+	 * General equipment of the vehicle, like hoses, nozzle or ladders.
+	 */
+	private List<EquipmentItem> unassignedEquipment; 	
+	/**
+	 * Equipment which is used to handle an emergency.
+	 */
+	private List<EquipmentItem> assignedEquipment;
 	private int normSpeed, emergencySpeed;
 	private int tankVolume;
 	private long location;
@@ -26,13 +34,14 @@ public class ConcreteVehicle implements Vehicle {
 	private double remainingMeter;
 	
 	public ConcreteVehicle(int id, String typeTerm, String name, Station homeStation, int crewStrength,
-			List<EquipmentItem> equipmentTerm, int emergencySpeed, int normSpeed, int tankVolume){
+			List<EquipmentItem> equipment, int emergencySpeed, int normSpeed, int tankVolume){
 		this.id = id;
 		this.type = VehicleType.parseType(typeTerm);
 		this.name = name;
 		this.homeStation = homeStation;
 		this.crewStrength = crewStrength;
-		this.equipment = equipmentTerm;
+		this.unassignedEquipment = equipment;
+		this.assignedEquipment = new ArrayList<EquipmentItem>();
 		this.fmsStatus = Status.ZWEI;
 		
 		this.location = homeStation.getOsmNode();
@@ -78,11 +87,6 @@ public class ConcreteVehicle implements Vehicle {
 		return crewStrength;
 	}
 	
-	@Override
-	public List<EquipmentItem> getEquipment() {
-		return equipment;
-	}
-	
 	public int getTankVolume() {
 		return tankVolume;
 	}
@@ -95,7 +99,7 @@ public class ConcreteVehicle implements Vehicle {
 	}
 
 	@Override
-	public long getLocation() {
+	public long getPosition() {
 		return location;
 	}
 
@@ -124,12 +128,6 @@ public class ConcreteVehicle implements Vehicle {
 	@Override
 	public Status getStatus(){
 		return fmsStatus;
-	}
-
-	@Override
-	public List<EquipmentItem> getUsedEquipment() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override
@@ -176,14 +174,67 @@ public class ConcreteVehicle implements Vehicle {
 	}
 
 	@Override
-	public boolean canDoTask(EmergencyTask task) {
+	public void alert() {
+		//TODO (Route? Status? Geschwindigkeit? Wann ausrücken?)
+		
+	}
+
+	@Override
+	public int getRespondTime() {
+		if(this.fmsStatus.equals(Status.EINS) || this.fmsStatus.equals(Status.DREI))
+			return 0; //Kann direkt zum Einsatz fahren;
+		if(this.fmsStatus.equals(Status.ZWEI))
+			return this.homeStation.getType().getResponseTime();
+		if(this.fmsStatus.equals(Status.VIER)) 
+			return calcRemainingTimeAtEmergency();
+		return 0;
+	}
+
+	private int calcRemainingTimeAtEmergency() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public boolean canDo(EmergencyTask t) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
-	public void alert() {
-		//TODO (Route? Status? Geschwindigkeit? Wann ausrücken?)
+	public void assignTo(EmergencyTask t) {
+		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public List<EmergencyTask> getAssignedTasks() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public List<EquipmentItem> getEquipment() {
+		List<EquipmentItem> equipment = new ArrayList<EquipmentItem>();
+		equipment.addAll(unassignedEquipment);
+		equipment.addAll(assignedEquipment);
+		
+		return equipment;
+	}
+	
+	@Override
+	public List<EquipmentItem> getAssignendEquipment() {
+		return assignedEquipment;
+	}
+
+	
+	void setAssignendEquipment(List<EquipmentItem> assignendEquipment) {
+		this.assignedEquipment = assignendEquipment;
+	}
+
+	@Override
+	public List<EquipmentItem> getUanassignedEquipment() {
+		return unassignedEquipment;
 	}
 }

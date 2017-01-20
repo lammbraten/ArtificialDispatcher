@@ -7,10 +7,12 @@ public class Route {
 
 	LinkedList<RouteableVertex> vertices;
 	private long targetNodeId;
+	private long startNodeId;
 	
 	public Route(LinkedList<RouteableVertex> vertices){
 		this.vertices = vertices;		
 		this.targetNodeId = vertices.getLast().getId();
+		this.startNodeId = vertices.getFirst().getId();
 	}
 	
 	public List<Long> getNodeIds() {
@@ -20,7 +22,7 @@ public class Route {
 		return nodeIds;
 	}
 	
-	public double getRouteDistance(){
+	public double getRouteTimeDistance(){
 		return vertices.getLast().getDistance();
 	}
 
@@ -50,6 +52,14 @@ public class Route {
 
 	public void setTargetNodeId(long targetNodeId) {
 		this.targetNodeId = targetNodeId;
+	}
+	
+	public long getSartNodeId() {
+		return startNodeId;
+	}
+
+	public void setStartNodeId(long startNodeId) {
+		this.startNodeId = startNodeId;
 	}
 
 }
