@@ -152,7 +152,7 @@ public class Dijkstra extends ObservableShortestPath {
 		//writeToLogFile(shortestPathMap.descendingMap());
 		RouteableVertex v = shortestPathMap.get(endVertex2);
 		LinkedList<RouteableVertex> returnValue = new LinkedList<RouteableVertex>();	
-		
+		returnValue.add(endVertex2);
 		returnValue.add(v);
 		while(v.getId() != startVertex.getId()){
 			v = shortestPathMap.get(v);

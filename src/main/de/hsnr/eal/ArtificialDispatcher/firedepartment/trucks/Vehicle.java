@@ -4,8 +4,6 @@ import java.util.List;
 
 import de.hsnr.eal.ArtificialDispatcher.emergency.Emergency;
 import de.hsnr.eal.ArtificialDispatcher.emergency.EmergencyTask;
-import de.hsnr.eal.ArtificialDispatcher.firedepartment.members.FireFighter;
-import de.hsnr.eal.ArtificialDispatcher.firedepartment.members.Squad;
 import de.hsnr.eal.ArtificialDispatcher.firedepartment.members.equipment.EquipmentItem;
 import de.hsnr.eal.ArtificialDispatcher.firedepartment.stations.Station;
 import de.hsnr.eal.ArtificialDispatcher.graph.Route;
