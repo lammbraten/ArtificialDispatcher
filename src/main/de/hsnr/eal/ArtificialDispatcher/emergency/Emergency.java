@@ -45,7 +45,7 @@ public class Emergency implements Comparable {
 	
 	@Override 
 	public String toString(){
-		return this.getName() + ": " + et.getTasks();
+		return this.getName() + ": " + et.getTasks() + "\n\n" +assignedVehicles;
 	}
 
 	public GeoLocation getGeoLocation() {

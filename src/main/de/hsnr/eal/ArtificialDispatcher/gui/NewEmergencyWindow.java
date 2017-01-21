@@ -94,7 +94,7 @@ public class NewEmergencyWindow extends JDialog {
 					public void actionPerformed(ActionEvent arg0) {
 						EmergencyType et  = (EmergencyType) emergencyTypeModel.getSelectedItem();
 						GeoLocation gl = (GeoLocation) geolocationsModel.getSelectedItem();
-						eh.addEmergency(new Emergency(et, gl));
+						eh.addEmergency(new Emergency(new EmergencyType(et), gl));
 					}
 				});
 				okButton.setActionCommand("OK");

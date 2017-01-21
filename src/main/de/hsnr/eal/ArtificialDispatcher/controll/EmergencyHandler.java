@@ -17,14 +17,14 @@ import de.hsnr.eal.ArtificialDispatcher.graph.Route;
 import de.hsnr.eal.ArtificialDispatcher.graph.algorithm.Dijkstra;
 
 public class EmergencyHandler extends Observable{
-	private Set<Emergency> emergencies;
+	private ArrayList<Emergency> emergencies;
 	private VehicleHandler vh;
 	private MapLoader ml;
 
 	public EmergencyHandler(VehicleHandler vh, MapLoader ml){
 		this.vh = vh;
 		this.ml = ml;		
-		this.emergencies = new TreeSet<Emergency>();
+		this.emergencies = new ArrayList<Emergency>();
 		
 	}
 
@@ -53,9 +53,11 @@ public class EmergencyHandler extends Observable{
 		Routes:
 		for(Route r : routes){
 			for(Vehicle v : vh.getVehiclesOnPosition(r.getSartNodeId())){
-				alertVehicleIfHelpful(emergency, v, r);	
-				if(!emergency.hasUnassignedTasks()) //All Tasks assigned -> emergency can be done.
-					break Routes;	//Quick and dirty break;
+				if(v.isAvailable()){
+					alertVehicleIfHelpful(emergency, v, r);	
+					if(!emergency.hasUnassignedTasks()) //All Tasks assigned -> emergency can be done.
+						break Routes;	//Quick and dirty break;
+				}
 			}
 		}
 
@@ -98,7 +100,7 @@ public class EmergencyHandler extends Observable{
 		return null;
 	}
 
-	public Set<Emergency> getEmergencies(){
+	public List<Emergency> getEmergencies(){
 		return emergencies;
 	}	
 	

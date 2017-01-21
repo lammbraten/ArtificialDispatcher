@@ -83,7 +83,7 @@ public class AppWindow extends Observable implements Observer{
 
 	private ArrayList<Vehicle> vehicles;
 	private ArrayList<Station> stations;
-	private Set<Emergency> emergencies;
+	private List<Emergency> emergencies;
 	private List<EmergencyType> emergencyTypes;
 
 	private JPanel vehicleListPanel;
@@ -111,7 +111,7 @@ public class AppWindow extends Observable implements Observer{
 		this.vehicles = vehicles;
 		this.stations = stations;
 		this.emergencyTypes = emergencyTypes;
-		this.emergencies = new TreeSet<Emergency>();
+		this.emergencies = new ArrayList<Emergency>();
 		
 		
 		initialize();

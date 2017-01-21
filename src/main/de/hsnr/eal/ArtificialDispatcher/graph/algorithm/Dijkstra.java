@@ -181,10 +181,9 @@ public class Dijkstra extends ObservableShortestPath {
 	}
 	
 	private void reset() {
-		for(RouteableVertex v : getVisitedVertices())
-			v.reset();
-		for(RouteableVertex v : getBorderVertices())
-			v.reset();
+		visitedVertices = new HashSet<RouteableVertex>();
+		toVisitVertices = new PriorityQueue<RouteableVertex>(new DistanceComparator());	
+		
 		this.shortestPathMap = new TreeMap<RouteableVertex, RouteableVertex>(new IdComparator());
 
 	}

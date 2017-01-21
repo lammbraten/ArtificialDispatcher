@@ -73,7 +73,7 @@ public class VehicleHandler extends Observable {
 	}
 	
 	public void alertVehicle(Vehicle v, Emergency e, EmergencyTask t, Route r){
-		if(!Status.isAvailable(v.getStatus()))
+		if(!v.isAvailable())
 			throw new IllegalArgumentException("Vehicle not available!\n");
 		if(e == null)
 			throw new IllegalArgumentException("Emergency not found!\n");
@@ -83,7 +83,7 @@ public class VehicleHandler extends Observable {
 			this.setChanged();
 			v.assignTo(e, t);
 			v.setRoute(r);
-			v.setStatus(Status.DREI);
+			v.setStatus(Status.C);
 			//v.setEmergency(e);
 			//e.addAssignedVehicle(v, t);
 			this.notifyObservers(v);

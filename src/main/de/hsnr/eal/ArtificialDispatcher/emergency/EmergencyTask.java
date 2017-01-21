@@ -1,5 +1,6 @@
 package de.hsnr.eal.ArtificialDispatcher.emergency;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import de.hsnr.eal.ArtificialDispatcher.firedepartment.members.equipment.EquipmentItem;
@@ -28,6 +29,23 @@ public class EmergencyTask {
 		this.setAssigned(false);
 	}
 	
+	public EmergencyTask(EmergencyTask t) {
+		super();
+		this.id = t.id;
+		this.name = t.name;
+		
+		this.neededEquipment = new ArrayList<EquipmentItem>();
+		for(EquipmentItem e : t.neededEquipment)
+			this.neededEquipment.add(new EquipmentItem(e.getTypeId(), e.getName(), e.getSetupTime(), e.getNeededPeople()));
+		
+		
+		this.estimatedTime = t.estimatedTime;
+		this.startTimestamp = -1;
+		this.finished = false;
+		this.started = false;
+		this.setAssigned(false);
+	}
+
 	public void assignEquipment(EquipmentItem item){
 		item.inUse(true);
 	}
@@ -49,7 +67,7 @@ public class EmergencyTask {
 	
 	@Override
 	public String toString(){
-		return this.name + ", Equipment: " + neededEquipment;
+		return this.name + ", Equipment: " + neededEquipment + "\n"; 
 	}
 	
 	public int getId() {

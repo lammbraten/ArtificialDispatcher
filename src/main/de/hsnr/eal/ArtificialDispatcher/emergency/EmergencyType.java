@@ -1,5 +1,6 @@
 package de.hsnr.eal.ArtificialDispatcher.emergency;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class EmergencyType {
@@ -14,6 +15,16 @@ public class EmergencyType {
 		this.tasks = tasks;
 	}
 	
+	public EmergencyType(EmergencyType et) {
+		super();
+		this.codeword = et.codeword;
+		this.name = et.name;
+		
+		this.tasks = new ArrayList<EmergencyTask>();
+		for(EmergencyTask t : et.tasks)
+			this.tasks.add(new EmergencyTask(t));
+	}
+
 	public String getCodeword() {
 		return codeword;
 	}

@@ -51,7 +51,7 @@ public class ConcreteVehicle implements Vehicle {
 	
 	@Override
 	public String toString(){
-		return name + ": Besatzung: " + crewStrength + " Status: " + fmsStatus; //+ " Beladung: " + equipment;
+		return name + ": Besatzung: " + crewStrength + " Status: " + fmsStatus + "\n"; //+ " Beladung: " + equipment;
 	}
 	
 	@Override
@@ -253,5 +253,12 @@ public class ConcreteVehicle implements Vehicle {
 			if(!et.isInUse())
 				unassignedEquipment.add(et);
 		return unassignedEquipment;
+	}
+
+	@Override
+	public boolean isAvailable() {
+		if(Status.isAvailable(fmsStatus))
+			return true;
+		return false;
 	}
 }

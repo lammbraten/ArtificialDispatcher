@@ -36,7 +36,7 @@ public class EquipmentItem {
 	 * People needed to use this Equipment
 	 * @return number of People needed;
 	 */
-	int getNeededPeople(){
+	public int getNeededPeople(){
 		return neededPeople;
 	}
 	

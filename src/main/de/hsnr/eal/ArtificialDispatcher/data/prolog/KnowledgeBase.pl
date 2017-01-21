@@ -21,7 +21,7 @@ vehicleType('LF20', [01, 01, 02, 02, 09, 09, 09, 09], 1600, 60, 50).
 vehicleType('ELW', [05, 06], 0, 70, 50). 
 vehicleType('RW2-K', [01, 04, 07, 03, 10], 0, 50, 40). 
 vehicleType('GTLF', [02, 02, 09, 09], 0, 50, 40). 
-vehicleType('DLK-23', [00, 02, 09, 09], 0, 50, 40). 
+vehicleType('DLK-23', [00, 02, 09], 0, 50, 40). 
 
 %vehicle(Id, Typ, Name, Wache, Besatzung)
 vehicle(000, 'ELW', 'ELW-1-1', 01, 2).
