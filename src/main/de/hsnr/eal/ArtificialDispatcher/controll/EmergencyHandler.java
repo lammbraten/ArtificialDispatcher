@@ -37,8 +37,6 @@ public class EmergencyHandler extends Observable{
 	public void handleEmergency(Emergency emergency) {
 		emergencies.add(emergency);		
 
-		// TODO Auto-generated method stub
-		
 		List<EmergencyTask> todoTasks = emergency.getEmergencyType().getTasks();
 		//get Gesammtübersicht (Aufgabe, Eingesetzte Fahrzeuge, Dauer)
 		//get Einsatzfähige Fahrzeuge
@@ -52,15 +50,18 @@ public class EmergencyHandler extends Observable{
 			//Find route in routes. (Abhängig vom Standort)
 			//vehicleArrivalTime.
 		//arrival.p		
+		Routes:
 		for(Route r : routes){
-			for(Vehicle v : vh.getVehiclesOnPosition(r.getSartNodeId()))
-				if(canHelp(v, emergency))
-					break;
+			for(Vehicle v : vh.getVehiclesOnPosition(r.getSartNodeId())){
+				alertVehicleIfHelpful(emergency, v, r);	
+				if(!emergency.hasUnassignedTasks()) //All Tasks assigned -> emergency can be done.
+					break Routes;	//Quick and dirty break;
+			}
 		}
 
 		
 
-		
+		System.out.println(emergency);
 		
 		//if Emergency unbehandelt
 		//handelEmergency
@@ -77,15 +78,24 @@ public class EmergencyHandler extends Observable{
 						//prüfen ob und wann frei oder ob anderes Fahrzeug schneller.
 							//1. Nicht Frei / zu lange -> verwerfen
 							//2. eher fertig bevor anderes Fahrzeug anrücken kann -> warten
-		
-		for(Vehicle v : emergency.getAssignedVehicles())
-			v.alert();
+
+
 		
 	}
 
-	private boolean canHelp(Vehicle v, Emergency emergency) {
-		// TODO Auto-generated method stub
-		return false;
+	private void alertVehicleIfHelpful(Emergency emergency, Vehicle v, Route route) {
+		EmergencyTask task = canDo(v, emergency);
+		if(task != null){
+			//v.assignTo(emergency, task);
+			vh.alertVehicle(v, emergency, task, route);
+		}
+	}
+
+	private EmergencyTask canDo(Vehicle v, Emergency emergency) {
+		for(EmergencyTask t : emergency.getUnassingnedTasks())
+			if(v.canDo(t))
+				return t;
+		return null;
 	}
 
 	public Set<Emergency> getEmergencies(){

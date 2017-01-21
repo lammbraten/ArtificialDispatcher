@@ -1,5 +1,6 @@
 package de.hsnr.eal.ArtificialDispatcher.emergency;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import de.hsnr.eal.ArtificialDispatcher.data.map.GeoLocation;
@@ -10,9 +11,7 @@ public class Emergency implements Comparable {
 	private int nr;
 	private EmergencyType et;
 	private GeoLocation gl;
-	private int id;
-	private List<EmergencyTask> unassignedTasks;
-	private List<EmergencyTask> assignedTasks;
+	private List<EmergencyTask> tasks;
 	private List<Vehicle> assignedVehicles;
 	
 	public Emergency(EmergencyType et, GeoLocation gl) {
@@ -20,7 +19,8 @@ public class Emergency implements Comparable {
         nr = counter;
 		this.et = et;
 		this.gl = gl;
-		this.setUnassingnedTasks(et.getTasks());
+		this.setTasks(et.getTasks());
+		this.assignedVehicles = new ArrayList<Vehicle>();
 	}
 
 	public String getName(){
@@ -64,8 +64,9 @@ public class Emergency implements Comparable {
 		this.assignedVehicles = assignedVehicles;
 	}
 	
-	public void addAssignedVehicle(Vehicle v) {
+	public void addAssignedVehicle(Vehicle v, EmergencyTask t) {
 		assignedVehicles.add(v);
+		t.setAssigned(true);
 	}
 	
 	
@@ -73,22 +74,38 @@ public class Emergency implements Comparable {
 		return false;
 	}
 
+	public List<EmergencyTask> getTasks() {
+		return tasks;
+	}
+
+	public void setTasks(List<EmergencyTask> tasks) {
+		this.tasks = tasks;
+	}
+	
 	public List<EmergencyTask> getUnassingnedTasks() {
+		List<EmergencyTask> unassignedTasks = new ArrayList<EmergencyTask>();
+		
+		for(EmergencyTask et : tasks)
+			if(!et.isAssigned())
+				unassignedTasks.add(et);
+		
 		return unassignedTasks;
 	}
 
-	public void setUnassingnedTasks(List<EmergencyTask> toDoTasks) {
-		this.unassignedTasks = toDoTasks;
-	}
 
 	public List<EmergencyTask> getAssignedTasks() {
+		List<EmergencyTask> assignedTasks = new ArrayList<EmergencyTask>();
+		
+		for(EmergencyTask et : tasks)
+			if(!et.isAssigned())
+				assignedTasks.add(et);
+		
 		return assignedTasks;
 	}
 
-	public void setAssignedTasks(List<EmergencyTask> assignedTasks) {
-		this.assignedTasks = assignedTasks;
+	public boolean hasUnassignedTasks() {
+		if(this.getUnassingnedTasks().isEmpty())
+			return false;
+		return true;
 	}
-
-
-	
 }

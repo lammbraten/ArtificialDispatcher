@@ -30,7 +30,7 @@ public interface Vehicle {
 	public void setRoute(Route route);
 	public boolean hasRoute();
 	public Emergency getEmergency();
-	public void setEmergency(Emergency e);
+	void setEmergency(Emergency e);
 	public boolean isAtTarget();	
 	
 	double getRemainingMeter();
@@ -39,7 +39,7 @@ public interface Vehicle {
 	public void alert();
 	public int getRespondTime();
 	public boolean canDo(EmergencyTask t);
-	public void assignTo(EmergencyTask t);
+	public void assignTo(Emergency e, EmergencyTask t);
 	public List<EmergencyTask> getAssignedTasks();
 
 

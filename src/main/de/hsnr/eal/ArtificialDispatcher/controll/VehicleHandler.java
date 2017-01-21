@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Set;
 import de.hsnr.eal.ArtificialDispatcher.emergency.Emergency;
+import de.hsnr.eal.ArtificialDispatcher.emergency.EmergencyTask;
 import de.hsnr.eal.ArtificialDispatcher.firedepartment.trucks.Status;
 import de.hsnr.eal.ArtificialDispatcher.firedepartment.trucks.Vehicle;
 import de.hsnr.eal.ArtificialDispatcher.firedepartment.trucks.VehicleType;
@@ -71,7 +72,7 @@ public class VehicleHandler extends Observable {
 		return vehicles;
 	}
 	
-	public void alertVehicle(Vehicle v, Emergency e, Route r){
+	public void alertVehicle(Vehicle v, Emergency e, EmergencyTask t, Route r){
 		if(!Status.isAvailable(v.getStatus()))
 			throw new IllegalArgumentException("Vehicle not available!\n");
 		if(e == null)
@@ -80,10 +81,11 @@ public class VehicleHandler extends Observable {
 			throw new IllegalArgumentException("No Route found!\n");
 		else{
 			this.setChanged();
+			v.assignTo(e, t);
 			v.setRoute(r);
 			v.setStatus(Status.DREI);
-			v.setEmergency(e);
-			e.addAssignedVehicle(v);
+			//v.setEmergency(e);
+			//e.addAssignedVehicle(v, t);
 			this.notifyObservers(v);
 		}	
 	}

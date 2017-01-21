@@ -11,6 +11,7 @@ public class EmergencyTask {
 	private List<EquipmentItem> assignedEquipment;
 	private int estimatedTime;
 	private int startTimestamp;
+	private boolean assigned;
 	private boolean started;
 	private boolean finished;	
 	
@@ -24,6 +25,7 @@ public class EmergencyTask {
 		this.startTimestamp = -1;
 		this.finished = false;
 		this.started = false;
+		this.setAssigned(false);
 	}
 	
 	public void assignEquipment(EquipmentItem item){
@@ -84,6 +86,14 @@ public class EmergencyTask {
 		if(startTimestamp == -1)
 			throw new IllegalStateException("Task hasn't yet.");
 		return estimatedTime - (actTimestamp - startTimestamp);
+	}
+
+	public boolean isAssigned() {
+		return assigned;
+	}
+
+	public void setAssigned(boolean assigned) {
+		this.assigned = assigned;
 	}
 
 	

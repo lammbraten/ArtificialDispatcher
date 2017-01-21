@@ -14,9 +14,11 @@ import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 
 import de.hsnr.eal.ArtificialDispatcher.emergency.Emergency;
+import de.hsnr.eal.ArtificialDispatcher.firedepartment.trucks.Vehicle;
 import de.hsnr.eal.ArtificialDispatcher.gui.test.TestListCellRenderer.Item;
 import java.awt.ScrollPane;
 import javax.swing.AbstractListModel;
+import javax.swing.DefaultListModel;
 
 public class EmergencyPanelRenderer extends JPanel implements ListCellRenderer<Emergency>{
 
@@ -28,8 +30,9 @@ public class EmergencyPanelRenderer extends JPanel implements ListCellRenderer<E
 	JLabel vehicleLabel = new JLabel("Zugeordnete Fahrzeuge:");	
 	JLabel enrLabel = new JLabel("Nr.");	
 	JLabel enr = new JLabel("..");
-	JList list_1 = new JList();	
-	JScrollPane scrollPane = new JScrollPane(list_1);
+	JList<String> vehicleList = new JList<String>();	
+	DefaultListModel<String> vehicleListModel = new DefaultListModel<String>();
+	JScrollPane scrollPane = new JScrollPane(vehicleList);
 
 	
 	public EmergencyPanelRenderer(){
@@ -49,16 +52,8 @@ public class EmergencyPanelRenderer extends JPanel implements ListCellRenderer<E
 		scrollPane.setBounds(10, 51, 202, 88);
 		
 		add(scrollPane);
-		list_1.setModel(new AbstractListModel() {
-			String[] values = new String[] {"HLF 1-1", "HLF 1-2", "DLK 1-1"};
-			public int getSize() {
-				return values.length;
-			}
-			public Object getElementAt(int index) {
-				return values[index];
-			}
-		});
-		list_1.setBounds(86, 69, 59, 60);
+		vehicleList.setModel(vehicleListModel);
+		vehicleList.setBounds(86, 69, 59, 60);
 
 	}
 	
@@ -102,7 +97,10 @@ public class EmergencyPanelRenderer extends JPanel implements ListCellRenderer<E
          setEnabled(list.isEnabled());
          einsatzName.setText(value.getName());
          enr.setText(value.getNr()+"");
-
+         
+         vehicleListModel.clear();
+         for(Vehicle v : value.getAssignedVehicles())
+        	 vehicleListModel.addElement(v.getName());
 
          Border border = null;
          if (cellHasFocus) {

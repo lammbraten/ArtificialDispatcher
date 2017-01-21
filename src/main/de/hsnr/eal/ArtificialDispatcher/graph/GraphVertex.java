@@ -103,4 +103,9 @@ public abstract class GraphVertex implements RouteableVertex {
 			return -1;
 		return 0;
 	}
+	
+	public void reset(){
+		this.setDistance(DISTANCE_INIT_VALUE);
+		this.setHeuristic(DISTANCE_INIT_VALUE);
+	}
 }

@@ -67,11 +67,11 @@ public class Dijkstra extends ObservableShortestPath {
 	public ArrayList<Route> radiusSearch(RouteableVertex start, HashSet<RouteableVertex> toFind, int radius) throws Exception{
 		this.toFind = toFind;
 		this.radius = radius;
+		reset();
 		init(start);
 		
 		return searchRadius();
 	}
-	
 	
 	private ArrayList<Route> searchRadius() throws Exception{
 		ArrayList<Route> foundRoutes = new ArrayList<Route>();
@@ -178,6 +178,15 @@ public class Dijkstra extends ObservableShortestPath {
 		startVertex.setDistance(0);
 		graph.edgesOf(startVertex, direction);
 		toVisitVertices.add(graph.getVertex(startVertex.getId()));
+	}
+	
+	private void reset() {
+		for(RouteableVertex v : getVisitedVertices())
+			v.reset();
+		for(RouteableVertex v : getBorderVertices())
+			v.reset();
+		this.shortestPathMap = new TreeMap<RouteableVertex, RouteableVertex>(new IdComparator());
+
 	}
 
 	@Override

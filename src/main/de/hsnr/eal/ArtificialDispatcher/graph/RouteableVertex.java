@@ -15,4 +15,5 @@ public interface RouteableVertex extends Comparable<RouteableVertex>, Serializab
 	public void setEdgesLoaded(boolean b);
 	boolean hasSameId(RouteableVertex n);
 	public boolean equals(Object other);
+	public void reset();
 }

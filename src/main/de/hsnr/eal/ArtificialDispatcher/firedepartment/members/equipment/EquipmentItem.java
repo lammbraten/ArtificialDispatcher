@@ -48,6 +48,18 @@ public class EquipmentItem {
 		return this.inUse;
 	}
 	
+	 @Override
+	public boolean equals(Object o){
+		if(o == null)
+			return false;
+		if(o instanceof EquipmentItem){
+			EquipmentItem et = (EquipmentItem) o;
+			if(et.getTypeId() == this.getTypeId())
+				return true;
+		}
+		return false;
+	}
+	
 	@Override
 	public String toString(){
 		//return name + " needs " + setupTime+ " mins and " + neededPeople + " FireFighters to setup";

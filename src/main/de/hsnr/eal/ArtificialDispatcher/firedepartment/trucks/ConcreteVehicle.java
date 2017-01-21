@@ -7,7 +7,6 @@ import de.hsnr.eal.ArtificialDispatcher.emergency.Emergency;
 import de.hsnr.eal.ArtificialDispatcher.emergency.EmergencyTask;
 import de.hsnr.eal.ArtificialDispatcher.firedepartment.members.equipment.EquipmentItem;
 import de.hsnr.eal.ArtificialDispatcher.firedepartment.stations.Station;
-import de.hsnr.eal.ArtificialDispatcher.firedepartment.stations.StationType;
 import de.hsnr.eal.ArtificialDispatcher.graph.Route;
 
 public class ConcreteVehicle implements Vehicle {
@@ -19,19 +18,17 @@ public class ConcreteVehicle implements Vehicle {
 	/**
 	 * General equipment of the vehicle, like hoses, nozzle or ladders.
 	 */
-	private List<EquipmentItem> unassignedEquipment; 	
-	/**
-	 * Equipment which is used to handle an emergency.
-	 */
-	private List<EquipmentItem> assignedEquipment;
+	private List<EquipmentItem> equipment; 	
 	private int normSpeed, emergencySpeed;
 	private int tankVolume;
 	private long location;
 	private Route route;
 	private Status fmsStatus;
 	private Emergency emergency;
+	private List<EmergencyTask> assignedTasks;	
 	
 	private double remainingMeter;
+
 	
 	public ConcreteVehicle(int id, String typeTerm, String name, Station homeStation, int crewStrength,
 			List<EquipmentItem> equipment, int emergencySpeed, int normSpeed, int tankVolume){
@@ -40,12 +37,12 @@ public class ConcreteVehicle implements Vehicle {
 		this.name = name;
 		this.homeStation = homeStation;
 		this.crewStrength = crewStrength;
-		this.unassignedEquipment = equipment;
-		this.assignedEquipment = new ArrayList<EquipmentItem>();
+		this.equipment = equipment;
 		this.fmsStatus = Status.ZWEI;
 		
 		this.location = homeStation.getOsmNode();
 		this.emergency = null;
+		this.assignedTasks = new ArrayList<EmergencyTask>();
 		
 		//Meter die beim letzten tick nicht gefahren werden konnten.
 		this.remainingMeter = 0.0;
@@ -197,44 +194,64 @@ public class ConcreteVehicle implements Vehicle {
 
 	@Override
 	public boolean canDo(EmergencyTask t) {
-		// TODO Auto-generated method stub
-		return false;
+		List<EquipmentItem> freeEquipment = equipment;
+				
+		for(EquipmentItem ei : t.getNeededEquipment()){
+			if(freeEquipment.contains(ei)){
+				freeEquipment.remove(ei);
+			} else {
+				return false;
+			}
+		}
+		return true;
 	}
 
+	
 	@Override
-	public void assignTo(EmergencyTask t) {
-		// TODO Auto-generated method stub
+	public void assignTo(Emergency e, EmergencyTask t) {
+		if(emergency == null)
+			this.setEmergency(e);
 		
+		if(emergency.equals(e)){
+			for(EquipmentItem  ei : t.getNeededEquipment())
+				for(EquipmentItem ei2 : getUanassignedEquipment())
+					if(ei2.equals(ei)){
+						ei2.inUse(true);
+						break;
+					}
+			assignedTasks.add(t);
+			emergency.addAssignedVehicle(this, t);
+		} else {
+			throw new IllegalArgumentException("Already assigned to an Emergency");
+		}
 	}
 
 	@Override
 	public List<EmergencyTask> getAssignedTasks() {
-		// TODO Auto-generated method stub
-		return null;
+		return assignedTasks;
 	}
 
 
 	@Override
 	public List<EquipmentItem> getEquipment() {
-		List<EquipmentItem> equipment = new ArrayList<EquipmentItem>();
-		equipment.addAll(unassignedEquipment);
-		equipment.addAll(assignedEquipment);
-		
 		return equipment;
 	}
 	
 	@Override
 	public List<EquipmentItem> getAssignendEquipment() {
+		List<EquipmentItem> assignedEquipment = new ArrayList<EquipmentItem>();
+		for(EquipmentItem et : equipment)
+			if(et.isInUse())
+				assignedEquipment.add(et);
 		return assignedEquipment;
-	}
-
-	
-	void setAssignendEquipment(List<EquipmentItem> assignendEquipment) {
-		this.assignedEquipment = assignendEquipment;
 	}
 
 	@Override
 	public List<EquipmentItem> getUanassignedEquipment() {
+		List<EquipmentItem> unassignedEquipment = new ArrayList<EquipmentItem>();
+		for(EquipmentItem et : equipment)
+			if(!et.isInUse())
+				unassignedEquipment.add(et);
 		return unassignedEquipment;
 	}
 }
