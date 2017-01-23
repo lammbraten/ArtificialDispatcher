@@ -12,6 +12,7 @@ import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
@@ -94,7 +95,12 @@ public class NewEmergencyWindow extends JDialog {
 					public void actionPerformed(ActionEvent arg0) {
 						EmergencyType et  = (EmergencyType) emergencyTypeModel.getSelectedItem();
 						GeoLocation gl = (GeoLocation) geolocationsModel.getSelectedItem();
-						eh.addEmergency(new Emergency(new EmergencyType(et), gl));
+						try {
+							eh.addEmergency(new Emergency(new EmergencyType(et), gl));
+						} catch (Exception e) {
+							JOptionPane.showMessageDialog(null, e.getMessage(), "Fehler!", JOptionPane.ERROR_MESSAGE);
+							e.printStackTrace();
+						}
 					}
 				});
 				okButton.setActionCommand("OK");

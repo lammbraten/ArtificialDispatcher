@@ -40,6 +40,7 @@ import org.jxmapviewer.viewer.GeoPosition;
 import org.jxmapviewer.viewer.WaypointPainter;
 
 import de.hsnr.eal.ArtificialDispatcher.controll.EmergencyHandler;
+import de.hsnr.eal.ArtificialDispatcher.controll.TickEngine;
 import de.hsnr.eal.ArtificialDispatcher.data.map.ConcreteGeoLocation;
 import de.hsnr.eal.ArtificialDispatcher.data.map.GeoLocation;
 import de.hsnr.eal.ArtificialDispatcher.data.map.MapLoader;
@@ -99,20 +100,24 @@ public class AppWindow extends Observable implements Observer{
 
 	private Toolkit t;
 
+	private TickEngine te;
+
+	private TickControllPanel tcPanel;
+
 
 
 	/**
 	 * Create the application.
 	 * @param ml 
 	 */
-	public AppWindow(MapLoader ml, EmergencyHandler eh, ArrayList<Vehicle> vehicles, ArrayList<Station> stations, List<EmergencyType> emergencyTypes) {
+	public AppWindow(MapLoader ml, EmergencyHandler eh, TickEngine te, ArrayList<Vehicle> vehicles, ArrayList<Station> stations, List<EmergencyType> emergencyTypes) {
 		this.ml = ml;
 		this.eh = eh;
 		this.vehicles = vehicles;
 		this.stations = stations;
 		this.emergencyTypes = emergencyTypes;
 		this.emergencies = new ArrayList<Emergency>();
-		
+		this.te = te;
 		
 		initialize();
 	}
@@ -196,6 +201,12 @@ public class AppWindow extends Observable implements Observer{
 		mainFrame.repaint();
 	}
 
+	public void renderTick() {
+		this.tcPanel.updateTime();
+		mainFrame.validate();
+		mainFrame.repaint();
+	}
+
 	public void renderRadioMessages(){
 		JList radioList = new JList();
 		radioList.setModel(new AbstractListModel() {
@@ -259,7 +270,7 @@ public class AppWindow extends Observable implements Observer{
 		JToolBar tickControlToolBar = new JToolBar();
 		viewSelectPanel.add(tickControlToolBar);
 		
-		TickControllPanel tcPanel = new TickControllPanel();
+		tcPanel = new TickControllPanel(te);
 		tickControlToolBar.add(tcPanel);
 	}
 

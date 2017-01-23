@@ -21,6 +21,7 @@ public class Model extends Observable implements Observer{
 	ArrayList<Vehicle> vehicles;
 	ArrayList<Station> stations;
 	List<EmergencyType> emergencyTypes;
+	public TickEngine te;
 	
 	public Model(){
 		loadGraph();
@@ -31,6 +32,9 @@ public class Model extends Observable implements Observer{
 		
 		eh = new EmergencyHandler(vh, ml);
 		eh.addObserver(this);
+		
+		te = new TickEngine();
+		te.addObserver(this);
 
 		
 	}
@@ -68,7 +72,8 @@ public class Model extends Observable implements Observer{
 			updateViewWithVehicle(arg1);
 		if(arg0 instanceof EmergencyHandler)
 			notifyObservers(arg1);
-		
+		if(arg0 instanceof TickEngine)
+			notifyObservers(arg1);
 	}
 	
 	
