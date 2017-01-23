@@ -51,17 +51,14 @@ public class Controller implements Observer{
 				view.renderVehicleList();
 				view.renderRadioMessages();
 				view.renderMap();
-			}
-			if(arg instanceof Emergency){
+			}else if(arg instanceof Emergency){
 				view.renderEmergencyList();
 				view.renderMap();
-			}
-			if(arg instanceof TickEngine){
+			}else if(arg instanceof TickEngine){
 				view.renderTick();
 				view.renderEmergencyList();
 				view.renderMap();
 			}
-
 		}
 	}
 	

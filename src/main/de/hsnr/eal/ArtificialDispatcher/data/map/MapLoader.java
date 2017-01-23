@@ -41,7 +41,7 @@ public class MapLoader {
 		System.out.println(new Date());
 		dp = new DefaultDataProvider();
 		sg = readSG();
-		dijkstra = new Dijkstra(sg);
+		dijkstra = new Dijkstra(sg, -1);
 		System.out.println(new Date());
 
 	}

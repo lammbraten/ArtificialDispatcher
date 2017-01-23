@@ -15,26 +15,31 @@ public class Model extends Observable implements Observer{
 	
 	private static final String FILE_PATH = "C:\\Users\\lammbraten\\Dropbox\\Master\\1.Semester\\EAL\\Projekt\\Implementierung\\ArtificialDispatcher\\src\\main\\de\\hsnr\\eal\\ArtificialDispatcher\\data\\prolog\\KnowledgeBase.pl";
 	MapLoader ml; 
-	private VehicleHandler vh;
-	private EmergencyHandler eh;
-	private PLDatabase pldb;
 	ArrayList<Vehicle> vehicles;
 	ArrayList<Station> stations;
 	List<EmergencyType> emergencyTypes;
-	public TickEngine te;
+	TickEngine te;	
+	
+	
+	private VehicleHandler vh;
+	private EmergencyHandler eh;
+	private PLDatabase pldb;
+
 	
 	public Model(){
 		loadGraph();
 		loadDb();
 		
-		vh = new VehicleHandler(this.vehicles);
-		vh.addObserver(this);
-		
-		eh = new EmergencyHandler(vh, ml);
-		eh.addObserver(this);
-		
 		te = new TickEngine();
 		te.addObserver(this);
+		
+		vh = new VehicleHandler(this.vehicles, this.te);
+		vh.addObserver(this);
+		
+		eh = new EmergencyHandler(vh, ml, te);
+		eh.addObserver(this);
+		
+
 
 		
 	}
@@ -73,10 +78,21 @@ public class Model extends Observable implements Observer{
 		if(arg0 instanceof EmergencyHandler)
 			notifyObservers(arg1);
 		if(arg0 instanceof TickEngine)
-			notifyObservers(arg1);
+			updateModelWithTickEngine(arg1);
 	}
 	
 	
+	private void updateModelWithTickEngine(Object arg1){
+
+		TickEngine te = null;
+		if(arg1 instanceof TickEngine)
+			te = (TickEngine) arg1;
+		System.out.println("Hallo1");
+		notifyObservers(te);
+
+		
+		this.vh.newTick();
+	}
 
 
 	private void updateViewWithVehicle(Object arg1) {

@@ -40,6 +40,9 @@ public class ConcreteVehicle implements Vehicle {
 		this.equipment = equipment;
 		this.fmsStatus = Status.ZWEI;
 		
+		this.emergencySpeed = emergencySpeed;
+		this.normSpeed = normSpeed;
+		
 		this.location = homeStation.getOsmNode();
 		this.emergency = null;
 		this.assignedTasks = new ArrayList<EmergencyTask>();

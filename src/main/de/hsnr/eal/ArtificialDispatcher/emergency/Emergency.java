@@ -13,6 +13,7 @@ public class Emergency implements Comparable {
 	private GeoLocation gl;
 	private List<EmergencyTask> tasks;
 	private List<Vehicle> assignedVehicles;
+	private long startTime;
 	
 	public Emergency(EmergencyType et, GeoLocation gl) {
         counter++;
@@ -107,5 +108,13 @@ public class Emergency implements Comparable {
 		if(this.getUnassingnedTasks().isEmpty())
 			return false;
 		return true;
+	}
+
+	public long getStartTime() {
+		return startTime;
+	}
+
+	public void setStartTime(long startTime) {
+		this.startTime = startTime;
 	}
 }

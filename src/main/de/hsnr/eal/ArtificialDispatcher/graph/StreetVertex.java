@@ -25,6 +25,10 @@ public class StreetVertex extends GraphVertex implements Serializable {
 		super(id, null, 0);
 	}
 
+	public StreetVertex(RouteableVertex rv) {
+		super(rv.getId(), rv.getPosition(), rv.getDistance());
+	}
+
 	@Override
 	public boolean isEdgesLoaded() {
 		return edgesLoaded;

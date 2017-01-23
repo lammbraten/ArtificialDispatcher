@@ -15,10 +15,11 @@ import de.hsnr.eal.ArtificialDispatcher.graph.Tuple;
 
 public class VehicleHandler extends Observable {
 	ArrayList<Vehicle> vehicles;
+	private TickEngine te;
 	
-	public VehicleHandler(ArrayList<Vehicle> vehicles) {
+	public VehicleHandler(ArrayList<Vehicle> vehicles, TickEngine te) {
 		this.vehicles = vehicles;
-	
+		this.te = te;
 	}
 	
 	public void moveVehicles(){
@@ -27,17 +28,18 @@ public class VehicleHandler extends Observable {
 	}
 	
 	private void moveVehicle(Vehicle v) {
-		this.setChanged();
-		if(v.hasRoute())
+		if(v.hasRoute()){
+			this.setChanged();
 			calcAndSetPosition(v);
-		if(v.isAtTarget()){
-			if(v.hasEmergency()){
-				v.setStatus(Status.VIER);
-			}else{
-				v.setStatus(Status.ZWEI);
+			if(v.isAtTarget()){
+				if(v.hasEmergency()){
+					v.setStatus(Status.VIER);
+				}else{
+					v.setStatus(Status.ZWEI);
+				}
 			}
+			this.notifyObservers(v);
 		}
-		this.notifyObservers(v);
 	}
 
 	private void calcAndSetPosition(Vehicle v) {
@@ -52,7 +54,7 @@ public class VehicleHandler extends Observable {
 
 	private double calcDrivableDistance(int speed, double remainingDistance) {
 		// s = v · t + s0 
-		return  ((speed * (1/60))*1000) + remainingDistance;
+		return  ((speed * 1000)/60) + remainingDistance;
 	}
 
 	public Set<Vehicle> getAvailableVehicles(){
@@ -97,6 +99,11 @@ public class VehicleHandler extends Observable {
 			if(v.getPosition() == osmNodeId)
 				vehiclesOnPosition.add(v);
 		return vehiclesOnPosition;
+	}
+
+	public void newTick() {
+		moveVehicles();
+		
 	}
 
 }

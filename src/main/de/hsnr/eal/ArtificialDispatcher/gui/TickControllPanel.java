@@ -56,7 +56,7 @@ public class TickControllPanel extends JPanel {
 		tickButton = new JButton("+1 Minute");
 		tickButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				te.tickPlus(60l*1000l);
+				te.tickPlusOne();
 			}
 		});
 		tickButton.setIcon(new ImageIcon(TickControllPanel.class.getResource("/com/sun/javafx/webkit/prism/resources/mediaPlayDisabled.png")));

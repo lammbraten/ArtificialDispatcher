@@ -4,7 +4,7 @@ import java.util.Observable;
 
 public class TickEngine extends Observable{
 	long tick;
-
+	public long TICK = 60l*1000l;
 
 	public TickEngine(){
 		this.tick = 1483513200000L;
@@ -20,9 +20,9 @@ public class TickEngine extends Observable{
 		notifyObservers();
 	}
 	
-	public void tickPlus(long t){
+	public void tickPlusOne(){
 		setChanged();		
-		tick += t;
+		tick += TICK;
 		notifyObservers(this);
 	}
 }

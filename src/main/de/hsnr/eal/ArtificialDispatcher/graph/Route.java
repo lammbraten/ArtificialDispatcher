@@ -10,9 +10,18 @@ public class Route {
 	private long startNodeId;
 	
 	public Route(LinkedList<RouteableVertex> vertices){
+		this(vertices, 1);
+	}
+	
+	public Route(LinkedList<RouteableVertex> vertices, int direction){
+		this.vertices = new LinkedList<RouteableVertex>();
+		for(RouteableVertex rv : vertices)
+			this.vertices.add(new StreetVertex(rv));
 		this.vertices = vertices;		
 		this.targetNodeId = vertices.getLast().getId();
 		this.startNodeId = vertices.getFirst().getId();
+		if(direction < 0)
+			invertRouteWeights();
 	}
 	
 	public List<Long> getNodeIds() {
@@ -22,8 +31,12 @@ public class Route {
 		return nodeIds;
 	}
 	
-	public double getRouteTimeDistance(){
-		return vertices.getLast().getDistance();
+	public double getRouteDistance(){
+		double firstDistance = vertices.getFirst().getDistance();
+		double lastDistance = vertices.getLast().getDistance();
+		if(firstDistance > lastDistance)
+			return firstDistance;
+		return lastDistance;
 	}
 
 	/**
@@ -39,7 +52,6 @@ public class Route {
 		for(int i = iNode; i < vertices.size(); i++){
 			if(vertices.get(i).getId() == targetNodeId)
 				return new Tuple<Long, Double>(targetNodeId, 0.0);
-
 			if(vertices.get(i).getDistance() > maxDistance)
 				return new Tuple<Long, Double>(vertices.get(i-1).getId(), (maxDistance - vertices.get(i-1).getDistance()));
 		}
@@ -60,6 +72,29 @@ public class Route {
 
 	public void setStartNodeId(long startNodeId) {
 		this.startNodeId = startNodeId;
+	}
+	
+	public void invertRoute(){
+		LinkedList<RouteableVertex> invertedRoute = new LinkedList<RouteableVertex>();
+
+		invertRouteWeights();
+		for(RouteableVertex rv: vertices)
+			invertedRoute.addFirst(rv);
+		
+		
+		this.vertices = invertedRoute;
+		this.setStartNodeId(vertices.getFirst().getId());
+		this.setTargetNodeId(vertices.getLast().getId());
+	
+	}
+
+	public void invertRouteWeights() {
+		double maxDistance = getRouteDistance();
+		for(RouteableVertex rv: vertices){
+			System.out.println(rv + " mDistance: " + maxDistance + "- actDistancd: " + rv.getDistance() + "new Distance: " + (maxDistance - rv.getDistance()));
+			rv.setDistance(maxDistance - rv.getDistance());
+		}
+
 	}
 
 }

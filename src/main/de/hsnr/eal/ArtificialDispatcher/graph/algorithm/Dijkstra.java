@@ -96,7 +96,7 @@ public class Dijkstra extends ObservableShortestPath {
 
 
 	private Route buildNewRoute(RouteableVertex actVertex) {
-		return new Route(buildShortestPathTo(actVertex));
+		return new Route(buildShortestPathTo(actVertex), -1);
 	}
 
 	/**
@@ -161,6 +161,10 @@ public class Dijkstra extends ObservableShortestPath {
 		//writeToLogFile(shortestPathMap.descendingMap());
 		RouteableVertex v = shortestPathMap.get(endVertex2);
 		LinkedList<RouteableVertex> returnValue = new LinkedList<RouteableVertex>();	
+		if(endVertex2.equals(startVertex)){
+			returnValue.add(endVertex2);
+			return returnValue;
+		}
 		returnValue.add(endVertex2);
 		returnValue.add(v);
 		while(v.getId() != startVertex.getId()){

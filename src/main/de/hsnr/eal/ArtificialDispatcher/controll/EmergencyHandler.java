@@ -13,16 +13,18 @@ public class EmergencyHandler extends Observable{
 	private ArrayList<Emergency> emergencies;
 	private VehicleHandler vh;
 	private MapLoader ml;
+	private TickEngine te;
 
-	public EmergencyHandler(VehicleHandler vh, MapLoader ml){
+	public EmergencyHandler(VehicleHandler vh, MapLoader ml, TickEngine te){
 		this.vh = vh;
 		this.ml = ml;		
 		this.emergencies = new ArrayList<Emergency>();
-		
+		this.te = te;
 	}
 
 	public void addEmergency(Emergency emergency) throws Exception {
 		this.setChanged();
+		emergency.setStartTime(te.tick);
 		handleEmergency(emergency);
 		this.notifyObservers(emergency);
 	}
