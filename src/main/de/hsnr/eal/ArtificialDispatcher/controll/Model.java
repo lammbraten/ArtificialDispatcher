@@ -94,11 +94,11 @@ public class Model extends Observable implements Observer{
 		TickEngine te = null;
 		if(arg1 instanceof TickEngine)
 			te = (TickEngine) arg1;
-		System.out.println("Hallo1");
 		notifyObservers(te);
 
 		
 		this.vh.newTick();
+		this.eh.newTick();
 	}
 
 

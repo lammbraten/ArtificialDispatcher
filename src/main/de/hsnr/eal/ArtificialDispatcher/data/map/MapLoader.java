@@ -51,15 +51,13 @@ public class MapLoader {
 	}
 	
 
-	public String calcPath(long startId, long endId){
+	public Route calcPath(long startId, long endId){
 		RouteableVertex startVertex = sg.getVertex(startId);
 		RouteableVertex endVertex = sg.getVertex(endId);
 		List<RouteableVertex> rvlist;
-		String route = "";		
+		Route route = null;		
 		try {
-			rvlist = dijkstra.getShortestPath(startVertex, endVertex);
-			for(RouteableVertex rv : rvlist)
-				route += rv.toString() + "\n";			
+			route = dijkstra.getShortestPath(startVertex, endVertex);		
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -100,7 +98,6 @@ public class MapLoader {
 				streetname += streetnamepart;
 			else
 				streetname += " Ecke " + streetnamepart;
-			
 		}
 		
 		return streetname;

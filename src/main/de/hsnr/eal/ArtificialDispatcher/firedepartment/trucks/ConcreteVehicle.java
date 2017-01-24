@@ -264,4 +264,17 @@ public class ConcreteVehicle implements Vehicle {
 			return true;
 		return false;
 	}
+
+	@Override
+	public boolean allTasksFinished() {
+		if(assignedTasks == null || assignedTasks.isEmpty())
+			return true;
+		int finishedCounter = 0;
+		for(EmergencyTask t : assignedTasks)
+			if(t.hasFinished())
+				finishedCounter++;
+		if(finishedCounter == assignedTasks.size())
+			return true;
+		return false;
+	}
 }

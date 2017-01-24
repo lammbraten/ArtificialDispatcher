@@ -3,6 +3,7 @@ package de.hsnr.eal.ArtificialDispatcher.graph.algorithm;
 import java.util.List;
 import java.util.PriorityQueue;
 
+import de.hsnr.eal.ArtificialDispatcher.graph.Route;
 import de.hsnr.eal.ArtificialDispatcher.graph.RouteableVertex;
 import de.hsnr.eal.ArtificialDispatcher.graph.StreetEdge;
 import de.hsnr.eal.ArtificialDispatcher.graph.StreetGraph;
@@ -25,11 +26,11 @@ public class AStar extends Dijkstra {
 	}
 	
 	@Override
-	public List<RouteableVertex> getShortestPath(RouteableVertex start, RouteableVertex end) throws Exception {
+	public Route getShortestPath(RouteableVertex start, RouteableVertex end) throws Exception {
 		endVertex = end;		
 		this.init(start);
 
-		return iterateThrougGraph();
+		return new Route(iterateThrougGraph());
 	}
 
 	RouteableVertex checkNextVertex() {

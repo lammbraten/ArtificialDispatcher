@@ -6,6 +6,7 @@ import java.util.Observable;
 import de.hsnr.eal.ArtificialDispatcher.data.map.MapLoader;
 import de.hsnr.eal.ArtificialDispatcher.emergency.Emergency;
 import de.hsnr.eal.ArtificialDispatcher.emergency.EmergencyTask;
+import de.hsnr.eal.ArtificialDispatcher.firedepartment.trucks.Status;
 import de.hsnr.eal.ArtificialDispatcher.firedepartment.trucks.Vehicle;
 import de.hsnr.eal.ArtificialDispatcher.graph.Route;
 
@@ -49,7 +50,7 @@ public class EmergencyHandler extends Observable{
 		if(emergency.hasUnassignedTasks()) //Kein geeignetes Fahrzeug zur Verfügung zur Zeit
 			throw new Exception("Kein oder nicht genügend geeignete Fahrzeuge verfügbar"); //TODO Warteliste
 
-		System.out.println(emergency);		
+		//System.out.println(emergency);		
 	}
 
 	private void alertVehicleIfHelpful(Emergency emergency, Vehicle v, Route route) {
@@ -69,8 +70,47 @@ public class EmergencyHandler extends Observable{
 
 	public List<Emergency> getEmergencies(){
 		return emergencies;
+	}
+
+	public void newTick() {
+		for(Emergency e : this.emergencies)
+			for(Vehicle v : e.getAssignedVehicles())
+				if(v.isAtTarget())
+					doTasks(v, e);
+			
+		
+	}
+
+	private void doTasks(Vehicle v, Emergency e) {
+		if(v.allTasksFinished())
+			sendBackToStation(v);
+		else{
+			for(EmergencyTask t : v.getAssignedTasks()){
+				if(t.canStart())
+					t.start(te.tick);
+				if(t.canFinish(te.tick))
+					t.finish();
+			}
+		}
+		
+	}
+
+	private void sendBackToStation(Vehicle v) {
+		
+		v.setRoute(calcRouteToHomeStation(v));
+		vh.sendBackToStation(v);
 	}	
 	
+
+	/**
+	 * Needed to be a extra method, because vehicles can be alerted when they were in Status 1 somewhere on the road,
+	 * so that a simple inverted Route wouldn't work.
+	 * @param v
+	 * @return
+	 */
+	private Route calcRouteToHomeStation(Vehicle v) {
+		return ml.calcPath(v.getPosition(), v.getHomeStation().getOsmNode());
+	}
 	
 	
 	

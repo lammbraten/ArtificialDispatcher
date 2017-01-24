@@ -9,9 +9,8 @@ public class EmergencyTask {
 	private int id;
 	private String name;
 	private List<EquipmentItem> neededEquipment;
-	private List<EquipmentItem> assignedEquipment;
 	private int estimatedTime;
-	private int startTimestamp;
+	private long startTimestamp;
 	private boolean assigned;
 	private boolean started;
 	private boolean finished;	
@@ -51,19 +50,28 @@ public class EmergencyTask {
 	}
 	
 	public void releaseAllEquipment(){
-		
+		for(EquipmentItem ei: neededEquipment)
+			ei.inUse(false);
 	}
 	
 	public boolean canStart(){
-		
+		if(started == false && !hasFinished())
+			return true;
 		return false;
 	}
 	
-	public void start(int actTimestamp){
-		//TODO: Setup-time nicht vergessen
-		
+	public void start(long tick){
+		startTimestamp = tick;
+		started = true;
 	}
 
+	private boolean isAllEquipmentAssigned(){
+		for(EquipmentItem ei: neededEquipment)
+			if(!ei.isInUse())	
+				return false;
+		return true;
+				
+	}
 	
 	@Override
 	public String toString(){
@@ -86,21 +94,21 @@ public class EmergencyTask {
 		return estimatedTime;
 	}
 	
-	public int getStartTimestamp() {
+	public long getStartTimestamp() {
 		return startTimestamp;
 	}
 	
-	public boolean isFinished() {
+	public boolean hasFinished() {
 		return finished;
 	}
 	
-	public boolean isFinished(int actTimestamp) {
+	private boolean isFinished(long actTimestamp) {
 		if(getRestTime(actTimestamp) >= 0)
 			finished = true;
 		return finished;
 	}
 
-	public int getRestTime(int actTimestamp) throws IllegalStateException{
+	public long getRestTime(long actTimestamp) throws IllegalStateException{
 		if(startTimestamp == -1)
 			throw new IllegalStateException("Task hasn't yet.");
 		return estimatedTime - (actTimestamp - startTimestamp);
@@ -112,6 +120,18 @@ public class EmergencyTask {
 
 	public void setAssigned(boolean assigned) {
 		this.assigned = assigned;
+	}
+
+	public boolean canFinish(long tick) {
+		if(started == false || finished == true)
+			return false;
+		return isFinished(tick);
+	}
+
+	public void finish() {
+		releaseAllEquipment();
+		finished = true;
+		
 	}
 
 	

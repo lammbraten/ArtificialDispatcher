@@ -42,6 +42,7 @@ public interface Vehicle {
 	public void assignTo(Emergency e, EmergencyTask t);
 	public List<EmergencyTask> getAssignedTasks();
 	public boolean isAvailable();
+	public boolean allTasksFinished();
 
 
 

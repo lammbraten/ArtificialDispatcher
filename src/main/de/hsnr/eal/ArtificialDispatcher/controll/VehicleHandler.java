@@ -51,12 +51,12 @@ public class VehicleHandler extends Observable {
 	}
 
 	private void checkIfCanRespondYet(Vehicle v) {
-		System.out.println(v.getEmergency().getStartTime() + v.getHomeStation().getType().getResponseTime() + " " + te.tick );
+		//System.out.println(v.getEmergency().getStartTime() + v.getHomeStation().getType().getResponseTime() + " " + te.tick );
 		if(v.getEmergency().getStartTime() + v.getHomeStation().getType().getResponseTime() < te.tick )
 			updateStatus(Status.DREI, v);
 	}
 	
-	private void updateStatus(Status s, Vehicle v){
+	public void updateStatus(Status s, Vehicle v){
 		v.setStatus(s);
 		if(s.isSendFromVehicle()){
 			rh.addMessage(new RadioMessage(v.getName(), LST, "Status " + s.toString() + " " + s.getLabel(), this.te.actTime())); 
@@ -76,7 +76,6 @@ public class VehicleHandler extends Observable {
 	}
 
 	private double calcDrivableTimeDistance(int speed, double remainingTimeDistance) {
-		System.out.println((speed ) + remainingTimeDistance);
 		return  (speed ) + remainingTimeDistance;
 	}
 
@@ -126,7 +125,12 @@ public class VehicleHandler extends Observable {
 
 	public void newTick() {
 		moveVehicles();
-		
 	}
+
+	public void sendBackToStation(Vehicle v) {
+
+		updateStatus(Status.EINS, v);		
+	}
+
 
 }

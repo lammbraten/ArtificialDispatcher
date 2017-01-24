@@ -49,8 +49,8 @@ public class OsmHighwayValues {
 				value.equals(TERTIARY_LINK)||
 				value.equals(LIVING_STREET)||
 				value.equals(BUS_GUIDEWAY)||
-				value.equals(ROAD)||
-				value.equals(TRACK))
+				value.equals(ROAD))
+				//value.equals(TRACK))
 			return true;
 		return false;
 	}

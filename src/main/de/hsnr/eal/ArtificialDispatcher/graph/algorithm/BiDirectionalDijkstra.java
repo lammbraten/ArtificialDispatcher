@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.TreeSet;
 
+import de.hsnr.eal.ArtificialDispatcher.graph.Route;
 import de.hsnr.eal.ArtificialDispatcher.graph.RouteableVertex;
 import de.hsnr.eal.ArtificialDispatcher.graph.StreetGraph;
 import de.hsnr.eal.ArtificialDispatcher.graph.StreetVertex;
@@ -31,7 +32,7 @@ public class BiDirectionalDijkstra extends ObservableShortestPath{
 	}
 
 	@Override
-	public List<RouteableVertex> getShortestPath(RouteableVertex start, RouteableVertex end) {
+	public Route getShortestPath(RouteableVertex start, RouteableVertex end) {
 		startVertex = start;
 		endVertex = end;
 		
@@ -45,7 +46,7 @@ public class BiDirectionalDijkstra extends ObservableShortestPath{
 			
 		}
 			
-		return buildShortestPath();
+		return new Route(buildShortestPath());
 	}
 	
 	@Override
@@ -94,12 +95,12 @@ public class BiDirectionalDijkstra extends ObservableShortestPath{
 		return intersection;
 	}
 
-	private List<RouteableVertex> buildShortestPath() {
+	private LinkedList<RouteableVertex> buildShortestPath() {
 		RouteableVertex jointValue = getMiddleVertex();
 		List<RouteableVertex> shortestSub1PathReverse = reverseDijkstra.buildShortestPathTo(jointValue);	
 		List<RouteableVertex> shortestSub2Path = straightDijkstra.buildShortestPathTo(jointValue);
 	    ListIterator<RouteableVertex> listIterator = shortestSub1PathReverse.listIterator();
-		List<RouteableVertex>  shortestPath = new LinkedList<RouteableVertex>();
+		LinkedList<RouteableVertex>  shortestPath = new LinkedList<RouteableVertex>();
 		
 	    //vorwaerts
 	    while(listIterator.hasNext())
