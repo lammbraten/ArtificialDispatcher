@@ -91,7 +91,6 @@ public class Route {
 	public void invertRouteWeights() {
 		double maxDistance = getRouteDistance();
 		for(RouteableVertex rv: vertices){
-			System.out.println(rv + " mDistance: " + maxDistance + "- actDistancd: " + rv.getDistance() + "new Distance: " + (maxDistance - rv.getDistance()));
 			rv.setDistance(maxDistance - rv.getDistance());
 		}
 

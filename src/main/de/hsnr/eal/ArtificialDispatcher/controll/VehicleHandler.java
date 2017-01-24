@@ -29,22 +29,32 @@ public class VehicleHandler extends Observable {
 	
 	private void moveVehicle(Vehicle v) {
 		if(v.hasRoute()){
+			if(v.getStatus().equals(Status.C))
+				checkIfCanRespondYet(v);
 			this.setChanged();
-			calcAndSetPosition(v);
-			if(v.isAtTarget()){
-				if(v.hasEmergency()){
-					v.setStatus(Status.VIER);
-				}else{
-					v.setStatus(Status.ZWEI);
+			if(v.getStatus().equals(Status.DREI) || v.getStatus().equals(Status.EINS)){	
+				calcAndSetPosition(v);
+				if(v.isAtTarget()){
+					if(v.hasEmergency()){
+						v.setStatus(Status.VIER);
+					}else{
+						v.setStatus(Status.ZWEI);
+					}
 				}
 			}
 			this.notifyObservers(v);
 		}
 	}
 
+	private void checkIfCanRespondYet(Vehicle v) {
+		System.out.println(v.getEmergency().getStartTime() + v.getHomeStation().getType().getResponseTime() + " " + te.tick );
+		if(v.getEmergency().getStartTime() + v.getHomeStation().getType().getResponseTime() < te.tick )
+			v.setStatus(Status.DREI);
+	}
+
 	private void calcAndSetPosition(Vehicle v) {
 		int iNode = v.getRoute().getNodeIds().indexOf(v.getPosition());
-		double distance = calcDrivableDistance(v.getSpeed(), v.getRemainingMeter());
+		double distance = calcDrivableTimeDistance(v.getSpeed(), v.getRemainingMeter());
 				
 		Tuple<Long, Double> t = v.getRoute().findNearestNodeFor(distance, iNode);
 		
@@ -52,9 +62,9 @@ public class VehicleHandler extends Observable {
 		v.setRemainingMeter(t.t2);
 	}
 
-	private double calcDrivableDistance(int speed, double remainingDistance) {
-		// s = v · t + s0 
-		return  ((speed * 1000)/60) + remainingDistance;
+	private double calcDrivableTimeDistance(int speed, double remainingTimeDistance) {
+		System.out.println((speed ) + remainingTimeDistance);
+		return  (speed ) + remainingTimeDistance;
 	}
 
 	public Set<Vehicle> getAvailableVehicles(){
