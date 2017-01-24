@@ -17,11 +17,11 @@ public class Route {
 		this.vertices = new LinkedList<RouteableVertex>();
 		for(RouteableVertex rv : vertices)
 			this.vertices.add(new StreetVertex(rv));
-		this.vertices = vertices;		
+	
 		this.targetNodeId = vertices.getLast().getId();
 		this.startNodeId = vertices.getFirst().getId();
-		if(direction > 0)
-			invertRouteWeights();
+		//if(direction > 0)
+		//invertRouteWeights();
 	}
 	
 	public List<Long> getNodeIds() {
@@ -53,7 +53,7 @@ public class Route {
 			if(vertices.get(i).getId() == targetNodeId)
 				return new Tuple<Long, Double>(targetNodeId, 0.0);
 			if(vertices.get(i).getDistance() > maxDistance)
-				return new Tuple<Long, Double>(vertices.get(i-1).getId(), (maxDistance - vertices.get(i-1).getDistance()));
+				return new Tuple<Long, Double>(vertices.get(i-1).getId(), (vertices.get(i-1).getDistance()));
 		}
 		throw new IllegalArgumentException("No Node Found!");
 	}

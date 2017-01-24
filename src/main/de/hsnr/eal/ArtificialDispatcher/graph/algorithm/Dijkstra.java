@@ -81,6 +81,8 @@ public class Dijkstra extends ObservableShortestPath {
 		while(!toVisitVertices.isEmpty() ){
 			if(actRadius > radius || toFind.isEmpty()){
 				//foundRoutes.sort(new RouteDistanceComparator());
+				for(Route r : foundRoutes)
+					r.invertRouteWeights();
 				return foundRoutes;
 			}
 			actVertex = checkNextVertex();
