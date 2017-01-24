@@ -41,11 +41,11 @@ public class Route {
 
 	/**
 	 * Zum fahren
-	 * @param distance
 	 * @param iNode
+	 * @param distance
 	 * @return
 	 */
-	public Tuple<Long, Double> findNearestNodeFor(double distance, int iNode) {
+	public Tuple<Long, Double> findNearestNodeFor(int iNode, double distance) {
 		double actDistance = vertices.get(iNode).getDistance();
 		double maxDistance = actDistance + distance;
 		
@@ -53,7 +53,7 @@ public class Route {
 			if(vertices.get(i).getId() == targetNodeId)
 				return new Tuple<Long, Double>(targetNodeId, 0.0);
 			if(vertices.get(i).getDistance() > maxDistance)
-				return new Tuple<Long, Double>(vertices.get(i-1).getId(), (vertices.get(i-1).getDistance()));
+				return new Tuple<Long, Double>(vertices.get(i-1).getId(), (maxDistance - vertices.get(i-1).getDistance()));
 		}
 		throw new IllegalArgumentException("No Node Found!");
 	}

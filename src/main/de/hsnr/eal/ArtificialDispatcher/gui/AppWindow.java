@@ -40,6 +40,7 @@ import org.jxmapviewer.viewer.GeoPosition;
 import org.jxmapviewer.viewer.WaypointPainter;
 
 import de.hsnr.eal.ArtificialDispatcher.controll.EmergencyHandler;
+import de.hsnr.eal.ArtificialDispatcher.controll.RadioHandler;
 import de.hsnr.eal.ArtificialDispatcher.controll.TickEngine;
 import de.hsnr.eal.ArtificialDispatcher.data.map.ConcreteGeoLocation;
 import de.hsnr.eal.ArtificialDispatcher.data.map.GeoLocation;
@@ -47,6 +48,7 @@ import de.hsnr.eal.ArtificialDispatcher.data.map.MapLoader;
 import de.hsnr.eal.ArtificialDispatcher.data.prolog.PLDatabase;
 import de.hsnr.eal.ArtificialDispatcher.emergency.Emergency;
 import de.hsnr.eal.ArtificialDispatcher.emergency.EmergencyType;
+import de.hsnr.eal.ArtificialDispatcher.firedepartment.RadioMessage;
 import de.hsnr.eal.ArtificialDispatcher.firedepartment.stations.Station;
 import de.hsnr.eal.ArtificialDispatcher.firedepartment.stations.StationType;
 import de.hsnr.eal.ArtificialDispatcher.firedepartment.trucks.Vehicle;
@@ -102,7 +104,10 @@ public class AppWindow extends Observable implements Observer{
 
 	private TickEngine te;
 
+	private RadioHandler rh;
+	
 	private TickControllPanel tcPanel;
+
 
 
 
@@ -110,9 +115,10 @@ public class AppWindow extends Observable implements Observer{
 	 * Create the application.
 	 * @param ml 
 	 */
-	public AppWindow(MapLoader ml, EmergencyHandler eh, TickEngine te, ArrayList<Vehicle> vehicles, ArrayList<Station> stations, List<EmergencyType> emergencyTypes) {
+	public AppWindow(MapLoader ml, EmergencyHandler eh, TickEngine te, RadioHandler rh, ArrayList<Vehicle> vehicles, ArrayList<Station> stations, List<EmergencyType> emergencyTypes) {
 		this.ml = ml;
 		this.eh = eh;
+		this.rh = rh;
 		this.vehicles = vehicles;
 		this.stations = stations;
 		this.emergencyTypes = emergencyTypes;
@@ -156,7 +162,7 @@ public class AppWindow extends Observable implements Observer{
 		JList<Emergency> emergencyList = new JList<Emergency>(emergencyModel);
         emergencyList.setCellRenderer(new EmergencyPanelRenderer());
 
-        eventPanel.removeAll();;
+        eventPanel.removeAll();
 		eventPanel.add(emergencyList);
 		
 		mainFrame.getContentPane().add(eventPanel, BorderLayout.WEST);
@@ -208,21 +214,19 @@ public class AppWindow extends Observable implements Observer{
 	}
 
 	public void renderRadioMessages(){
-		JList radioList = new JList();
-		radioList.setModel(new AbstractListModel() {
-			String[] values = new String[] {"Kommen ", "H\u00F6rt", "Verstande", "Moin Uwe"};
-			public int getSize() {
-				return values.length;
-			}
-			public Object getElementAt(int index) {
-				return values[index];
-			}
-		});
+		
+		DefaultListModel<RadioMessage> radioModel = new DefaultListModel<RadioMessage>();
+        for(RadioMessage r : rh.getMessages()){
+        	radioModel.addElement(r);
+        }
+        
+		JList<RadioMessage> radioList = new JList<RadioMessage>(radioModel);
+		radioList.setCellRenderer(new RadioMessagePanelRenderer());
 		
 		JScrollPane radioListScrollPane = new JScrollPane(radioList);	
+		
 
-		radioListPanel = new JPanel();
-		radioListPanel.setLayout(new BorderLayout(0, 0));
+		radioListPanel.removeAll();
 		JLabel radioListLabel = new JLabel("Funk");
 		radioListPanel.add(radioListLabel, BorderLayout.NORTH);		
 		radioListPanel.add(radioListScrollPane, BorderLayout.CENTER);
@@ -230,6 +234,16 @@ public class AppWindow extends Observable implements Observer{
 		//Provide minimum sizes for the two components in the split pane
 		Dimension minimumSize = new Dimension(200, 250);
 		radioListScrollPane.setMinimumSize(minimumSize);	
+		
+
+
+		JScrollBar vertical = radioListScrollPane.getVerticalScrollBar();
+		vertical.setValue( vertical.getMaximum() );
+
+
+		
+		//radioListPanel.validate();
+		//radioListPanel.repaint();
 	}
 
 	/**
@@ -289,6 +303,8 @@ public class AppWindow extends Observable implements Observer{
 
 	private void initSplitPane() {
 		renderVehicleList();
+		radioListPanel = new JPanel();
+		radioListPanel.setLayout(new BorderLayout(0, 0));
 		renderRadioMessages();
 		
 		vehicleSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, vehicleListPanel, radioListPanel);
@@ -336,6 +352,5 @@ public class AppWindow extends Observable implements Observer{
 		// TODO Auto-generated method stub
 		
 	}
-	
 
 }

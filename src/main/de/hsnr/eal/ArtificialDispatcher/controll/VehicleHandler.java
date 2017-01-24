@@ -7,6 +7,7 @@ import java.util.Observable;
 import java.util.Set;
 import de.hsnr.eal.ArtificialDispatcher.emergency.Emergency;
 import de.hsnr.eal.ArtificialDispatcher.emergency.EmergencyTask;
+import de.hsnr.eal.ArtificialDispatcher.firedepartment.RadioMessage;
 import de.hsnr.eal.ArtificialDispatcher.firedepartment.trucks.Status;
 import de.hsnr.eal.ArtificialDispatcher.firedepartment.trucks.Vehicle;
 import de.hsnr.eal.ArtificialDispatcher.firedepartment.trucks.VehicleType;
@@ -14,12 +15,15 @@ import de.hsnr.eal.ArtificialDispatcher.graph.Route;
 import de.hsnr.eal.ArtificialDispatcher.graph.Tuple;
 
 public class VehicleHandler extends Observable {
+	private static final String LST = "LST";
 	ArrayList<Vehicle> vehicles;
 	private TickEngine te;
+	private RadioHandler rh;
 	
-	public VehicleHandler(ArrayList<Vehicle> vehicles, TickEngine te) {
+	public VehicleHandler(ArrayList<Vehicle> vehicles, TickEngine te, RadioHandler rh) {
 		this.vehicles = vehicles;
 		this.te = te;
+		this.rh = rh;
 	}
 	
 	public void moveVehicles(){
@@ -36,9 +40,9 @@ public class VehicleHandler extends Observable {
 				calcAndSetPosition(v);
 				if(v.isAtTarget()){
 					if(v.hasEmergency()){
-						v.setStatus(Status.VIER);
+						updateStatus(Status.VIER, v);
 					}else{
-						v.setStatus(Status.ZWEI);
+						updateStatus(Status.ZWEI, v);
 					}
 				}
 			}
@@ -49,14 +53,23 @@ public class VehicleHandler extends Observable {
 	private void checkIfCanRespondYet(Vehicle v) {
 		System.out.println(v.getEmergency().getStartTime() + v.getHomeStation().getType().getResponseTime() + " " + te.tick );
 		if(v.getEmergency().getStartTime() + v.getHomeStation().getType().getResponseTime() < te.tick )
-			v.setStatus(Status.DREI);
+			updateStatus(Status.DREI, v);
+	}
+	
+	private void updateStatus(Status s, Vehicle v){
+		v.setStatus(s);
+		if(s.isSendFromVehicle()){
+			rh.addMessage(new RadioMessage(v.getName(), LST, "Status " + s.toString() + " " + s.getLabel(), this.te.actTime())); 
+		}else{
+			rh.addMessage(new RadioMessage(LST, v.getName(), "Status " + s.toString() + " " + s.getLabel(), this.te.actTime())); 			
+		}
 	}
 
 	private void calcAndSetPosition(Vehicle v) {
 		int iNode = v.getRoute().getNodeIds().indexOf(v.getPosition());
 		double distance = calcDrivableTimeDistance(v.getSpeed(), v.getRemainingMeter());
 				
-		Tuple<Long, Double> t = v.getRoute().findNearestNodeFor(distance, iNode);
+		Tuple<Long, Double> t = v.getRoute().findNearestNodeFor(iNode, distance);
 		
 		v.setLocation(t.t1);
 		v.setRemainingMeter(t.t2);
@@ -95,7 +108,7 @@ public class VehicleHandler extends Observable {
 			this.setChanged();
 			v.assignTo(e, t);
 			v.setRoute(r);
-			v.setStatus(Status.C);
+			updateStatus(Status.C, v);	
 			//v.setEmergency(e);
 			//e.addAssignedVehicle(v, t);
 			this.notifyObservers(v);

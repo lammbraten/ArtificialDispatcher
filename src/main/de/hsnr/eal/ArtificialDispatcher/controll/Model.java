@@ -19,6 +19,7 @@ public class Model extends Observable implements Observer{
 	ArrayList<Station> stations;
 	List<EmergencyType> emergencyTypes;
 	TickEngine te;	
+	RadioHandler rh;
 	
 	
 	private VehicleHandler vh;
@@ -33,7 +34,10 @@ public class Model extends Observable implements Observer{
 		te = new TickEngine();
 		te.addObserver(this);
 		
-		vh = new VehicleHandler(this.vehicles, this.te);
+		rh = new RadioHandler();
+		rh.addObserver(this);
+		
+		vh = new VehicleHandler(this.vehicles, this.te, this.rh);
 		vh.addObserver(this);
 		
 		eh = new EmergencyHandler(vh, ml, te);
@@ -69,7 +73,7 @@ public class Model extends Observable implements Observer{
 
 	@Override
 	public void update(Observable arg0, Object arg1) {
-		System.out.println("update Model");
+		//System.out.println("update Model");
 		
 		this.setChanged();
 		
@@ -79,6 +83,9 @@ public class Model extends Observable implements Observer{
 			notifyObservers(arg1);
 		if(arg0 instanceof TickEngine)
 			updateModelWithTickEngine(arg1);
+		if(arg0 instanceof RadioHandler){
+			notifyObservers(arg1);
+		}
 	}
 	
 	

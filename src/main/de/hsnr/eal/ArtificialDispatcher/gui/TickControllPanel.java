@@ -44,14 +44,15 @@ public class TickControllPanel extends JPanel {
 		add(timeTxtField);
 		timeTxtField.setColumns(5);
 		
+		/*
 		spinner = new JSpinner();
 		spinner.setModel(new SpinnerDateModel(new Date(te.getTick()), null, null, Calendar.HOUR_OF_DAY));
 		de = new JSpinner.DateEditor(spinner, "HH:mm");
 		de.getTextField().setEditable(false);
-		spinner.setEditor(de);
+		spinner.setEditor(de);*/
 		
 		
-		timeTxtField.setText(de.getFormat().format(spinner.getValue()));
+		timeTxtField.setText(te.actTime());
 		
 		tickButton = new JButton("+1 Minute");
 		tickButton.addActionListener(new ActionListener() {
@@ -66,12 +67,15 @@ public class TickControllPanel extends JPanel {
 	}
 
 	public void updateTime() {
+		/*
 		spinner.setModel(new SpinnerDateModel(new Date(te.getTick()), null, null, Calendar.HOUR_OF_DAY));
 		de = new JSpinner.DateEditor(spinner, "HH:mm");
 		de.getTextField().setEditable(false);
 		spinner.setEditor(de);
 		
 		timeTxtField.setText(de.getFormat().format(spinner.getValue()));
+		*/
+		timeTxtField.setText(te.actTime());
 		this.validate();
 		this.repaint();
 	}
