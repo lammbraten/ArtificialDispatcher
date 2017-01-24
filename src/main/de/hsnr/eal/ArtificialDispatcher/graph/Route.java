@@ -20,7 +20,7 @@ public class Route {
 		this.vertices = vertices;		
 		this.targetNodeId = vertices.getLast().getId();
 		this.startNodeId = vertices.getFirst().getId();
-		if(direction < 0)
+		if(direction > 0)
 			invertRouteWeights();
 	}
 	

@@ -80,7 +80,7 @@ public class Dijkstra extends ObservableShortestPath {
 		
 		while(!toVisitVertices.isEmpty() ){
 			if(actRadius > radius || toFind.isEmpty()){
-				foundRoutes.sort(new RouteDistanceComparator());
+				//foundRoutes.sort(new RouteDistanceComparator());
 				return foundRoutes;
 			}
 			actVertex = checkNextVertex();
@@ -96,7 +96,7 @@ public class Dijkstra extends ObservableShortestPath {
 
 
 	private Route buildNewRoute(RouteableVertex actVertex) {
-		return new Route(buildShortestPathTo(actVertex), -1);
+		return new Route(buildShortestPathTo(actVertex), 1);
 	}
 
 	/**
