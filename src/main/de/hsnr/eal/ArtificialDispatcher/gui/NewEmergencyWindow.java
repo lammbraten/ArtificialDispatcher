@@ -99,7 +99,6 @@ public class NewEmergencyWindow extends JDialog {
 							eh.addEmergency(new Emergency(new EmergencyType(et), gl));
 						} catch (Exception e) {
 							JOptionPane.showMessageDialog(null, e.getMessage(), "Fehler!", JOptionPane.ERROR_MESSAGE);
-							e.printStackTrace();
 						}
 					}
 				});

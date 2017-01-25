@@ -17,6 +17,10 @@ public class EquipmentItem {
 		this.inUse = false;
 	}
 	
+	public EquipmentItem(EquipmentItem e) {
+		this(e.typeId, e.name, e.setupTime, e.neededPeople);
+	}
+
 	public int getTypeId(){
 		return typeId;
 	}

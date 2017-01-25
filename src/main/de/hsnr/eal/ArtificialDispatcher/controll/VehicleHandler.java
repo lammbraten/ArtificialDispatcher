@@ -32,6 +32,8 @@ public class VehicleHandler extends Observable {
 	}
 	
 	private void moveVehicle(Vehicle v) {
+		if(needBackRoute(v))
+			sendBackToStation(v);
 		if(v.hasRoute()){
 			if(v.getStatus().equals(Status.C))
 				checkIfCanRespondYet(v);
@@ -50,9 +52,15 @@ public class VehicleHandler extends Observable {
 		}
 	}
 
+	private boolean needBackRoute(Vehicle v) {
+		if(v.getStatus().equals(Status.E))
+			return true;
+		return false;
+	}
+
 	private void checkIfCanRespondYet(Vehicle v) {
 		//System.out.println(v.getEmergency().getStartTime() + v.getHomeStation().getType().getResponseTime() + " " + te.tick );
-		if(v.getEmergency().getStartTime() + v.getHomeStation().getType().getResponseTime() < te.tick )
+		if(v.getEmergency().getStartTime() + v.getHomeStation().getType().getResponseTime() < te.tick || v.getPosition() != v.getHomeStation().getOsmNode())
 			updateStatus(Status.DREI, v);
 	}
 	
@@ -127,10 +135,12 @@ public class VehicleHandler extends Observable {
 		moveVehicles();
 	}
 
-	public void sendBackToStation(Vehicle v) {
+	private void sendBackToStation(Vehicle v) {
+		this.updateStatus(Status.EINS, v);
+		v.getEmergency().removeAssignedVehicle(v);
+		v.setEmergency(null);
 
-		updateStatus(Status.EINS, v);		
-	}
-
-
+	}	
+	
+	
 }

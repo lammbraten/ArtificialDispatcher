@@ -49,7 +49,9 @@ public class Dijkstra extends ObservableShortestPath {
 
 	@Override
 	public Route getShortestPath(RouteableVertex start, RouteableVertex end) throws Exception {
+		startVertex = start;
 		endVertex = end;		
+		reset();
 		init(start);
 
 		return new Route(iterateThrougGraph());
@@ -80,7 +82,7 @@ public class Dijkstra extends ObservableShortestPath {
 		
 		while(!toVisitVertices.isEmpty() ){
 			if(actRadius > radius || toFind.isEmpty()){
-				//foundRoutes.sort(new RouteDistanceComparator());
+				foundRoutes.sort(new RouteDistanceComparator());
 				for(Route r : foundRoutes)
 					r.invertRouteWeights();
 				return foundRoutes;
@@ -108,8 +110,10 @@ public class Dijkstra extends ObservableShortestPath {
 	LinkedList<RouteableVertex> iterateThrougGraph() throws Exception {
 		int i = 0;
 		while(!toVisitVertices.isEmpty()){
-			if(isEndVertexFound())
+			if(isEndVertexFound()){
+				endVertex.setDistance(toVisitVertices.peek().getDistance());
 				return buildShortestPathTo(endVertex);
+			}
 			checkNextVertex();
 			i++;
 		}

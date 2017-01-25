@@ -1,6 +1,7 @@
 package de.hsnr.eal.ArtificialDispatcher.emergency;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import de.hsnr.eal.ArtificialDispatcher.data.map.GeoLocation;
@@ -71,6 +72,10 @@ public class Emergency implements Comparable {
 	}
 	
 	
+	public void removeAssignedVehicle(Vehicle v) {
+		this.assignedVehicles.remove(v);
+	}
+
 	public boolean isHelpful(Vehicle v){
 		return false;
 	}
@@ -81,6 +86,15 @@ public class Emergency implements Comparable {
 
 	public void setTasks(List<EmergencyTask> tasks) {
 		this.tasks = tasks;
+	}
+	
+	public List<EmergencyTask> getUnfinishedTasks(){
+		LinkedList<EmergencyTask> unfinished = new LinkedList<EmergencyTask>();
+		
+		for(EmergencyTask et : tasks)
+			if(!et.hasFinished())
+				unfinished.add(et);
+		return unfinished;
 	}
 	
 	public List<EmergencyTask> getUnassingnedTasks() {

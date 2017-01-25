@@ -1,6 +1,7 @@
 package de.hsnr.eal.ArtificialDispatcher.firedepartment.trucks;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import de.hsnr.eal.ArtificialDispatcher.emergency.Emergency;
@@ -197,7 +198,9 @@ public class ConcreteVehicle implements Vehicle {
 
 	@Override
 	public boolean canDo(EmergencyTask t) {
-		List<EquipmentItem> freeEquipment = equipment;
+		LinkedList<EquipmentItem> freeEquipment = new LinkedList<EquipmentItem>();
+		for(EquipmentItem e : equipment)
+			freeEquipment.add(new EquipmentItem(e));
 				
 		for(EquipmentItem ei : t.getNeededEquipment()){
 			if(freeEquipment.contains(ei)){

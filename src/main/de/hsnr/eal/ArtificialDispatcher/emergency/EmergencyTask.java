@@ -21,7 +21,7 @@ public class EmergencyTask {
 		this.id = id;
 		this.name = name;
 		this.neededEquipment = neededEquipment;
-		this.estimatedTime = estimatedTime;
+		this.estimatedTime = estimatedTime *60*1000;
 		this.startTimestamp = -1;
 		this.finished = false;
 		this.started = false;
@@ -103,14 +103,14 @@ public class EmergencyTask {
 	}
 	
 	private boolean isFinished(long actTimestamp) {
-		if(getRestTime(actTimestamp) >= 0)
+		if(getRestTime(actTimestamp) <= 0)
 			finished = true;
 		return finished;
 	}
 
 	public long getRestTime(long actTimestamp) throws IllegalStateException{
 		if(startTimestamp == -1)
-			throw new IllegalStateException("Task hasn't yet.");
+			throw new IllegalStateException("Task hasn't started yet.");
 		return estimatedTime - (actTimestamp - startTimestamp);
 	}
 

@@ -54,7 +54,6 @@ public class MapLoader {
 	public Route calcPath(long startId, long endId){
 		RouteableVertex startVertex = sg.getVertex(startId);
 		RouteableVertex endVertex = sg.getVertex(endId);
-		List<RouteableVertex> rvlist;
 		Route route = null;		
 		try {
 			route = dijkstra.getShortestPath(startVertex, endVertex);		
@@ -112,7 +111,6 @@ public class MapLoader {
 		RouteableVertex start = sg.getVertex(emergencyNodeId);
 		for(Vehicle v : vehicles)
 			toFindVehicles.add(sg.getVertex(v.getPosition()));
-		
 		try {
 			return dijkstra.radiusSearch(start, toFindVehicles, 1000000);//TODO: Radius anpassen
 		} catch (Exception e) {

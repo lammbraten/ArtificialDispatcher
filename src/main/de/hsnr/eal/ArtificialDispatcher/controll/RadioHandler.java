@@ -12,7 +12,7 @@ public class RadioHandler extends Observable {
 	
 	public RadioHandler(){
 		this.setMessages(new LinkedList<RadioMessage>());
-		addMessage(new RadioMessage("LST", "Alle", "Hier Leitstelle Krefeld mit Funkalarm", ""));
+		addMessage(new RadioMessage("LST", "", "Hier Florian Krefeld mit Funkalarm!", ""));
 		
 	}
 

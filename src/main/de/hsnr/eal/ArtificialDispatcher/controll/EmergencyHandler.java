@@ -1,6 +1,7 @@
 package de.hsnr.eal.ArtificialDispatcher.controll;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Observable;
 import de.hsnr.eal.ArtificialDispatcher.data.map.MapLoader;
@@ -73,12 +74,26 @@ public class EmergencyHandler extends Observable{
 	}
 
 	public void newTick() {
-		for(Emergency e : this.emergencies)
-			for(Vehicle v : e.getAssignedVehicles())
-				if(v.isAtTarget())
-					doTasks(v, e);
+		LinkedList<Emergency> toRemove = new LinkedList<Emergency>();
+		for(Emergency e : this.emergencies){
+			if(e.getUnfinishedTasks().isEmpty() && e.getAssignedVehicles().isEmpty())
+				toRemove.add(e);
+			else if(!e.getAssignedVehicles().isEmpty()){
+				for(Vehicle v : e.getAssignedVehicles())
+					if(v.isAtTarget())
+						doTasks(v, e);
+			}
+		}
+
+		
+		deleteGarbae(toRemove);
 			
 		
+	}
+
+	private void deleteGarbae(LinkedList<Emergency> toRemove) {
+		for(Emergency e : toRemove)
+			emergencies.remove(e);
 	}
 
 	private void doTasks(Vehicle v, Emergency e) {
@@ -86,8 +101,10 @@ public class EmergencyHandler extends Observable{
 			sendBackToStation(v);
 		else{
 			for(EmergencyTask t : v.getAssignedTasks()){
-				if(t.canStart())
+				if(t.canStart()){
 					t.start(te.tick);
+					
+				}
 				if(t.canFinish(te.tick))
 					t.finish();
 			}
@@ -95,12 +112,15 @@ public class EmergencyHandler extends Observable{
 		
 	}
 
-	private void sendBackToStation(Vehicle v) {
-		
-		v.setRoute(calcRouteToHomeStation(v));
-		vh.sendBackToStation(v);
-	}	
+
 	
+
+	private void sendBackToStation(Vehicle v) {
+		v.setRoute(calcRouteToHomeStation(v));
+		v.getRoute().invertRoute();
+		v.getRoute().invertRouteWeights();
+		vh.updateStatus(Status.E, v);
+	}
 
 	/**
 	 * Needed to be a extra method, because vehicles can be alerted when they were in Status 1 somewhere on the road,
@@ -109,6 +129,7 @@ public class EmergencyHandler extends Observable{
 	 * @return
 	 */
 	private Route calcRouteToHomeStation(Vehicle v) {
+
 		return ml.calcPath(v.getPosition(), v.getHomeStation().getOsmNode());
 	}
 	
